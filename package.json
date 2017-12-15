@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "description": "tools for the node-jose library",
   "main": "index.js",
+  "homepage": "https://github.com/phish108/node-jose-tools",
+  "repository": "phish108/node-jose-tools",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
