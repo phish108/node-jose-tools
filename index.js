@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 require(`./lib/${process.argv[2]}.js`)(process.argv.slice(3))
     .then(() => process.exit(0))
