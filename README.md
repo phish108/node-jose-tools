@@ -1,6 +1,6 @@
 ## node-jose toolbox for key management, token signing and encryption
 
-Command line tools for getting the hang of [node-jose's](cisco/node-jose) features.
+Command line tools for getting the hang of the [cisco/node-jose](https://github.com/cisco/node-jose) features.
 
 ## Installation
 
