@@ -33,8 +33,8 @@ This package installs the jose script into your system.
 ### Creating new keys
 
 ```
-> jose newkey RSA 2048
-> jose newkey oct 256
+> jose newkey -t RSA -s 2048
+> jose newkey -t oct -s 256
 ```
 
 ### Adding a key to a keystore
@@ -84,7 +84,7 @@ the -U or --update flag.
 #### Create a new key and add it to a keystore
 
 ```
-> jose newkey oct 256 | jose addkey -U -j mykeystore.jwks
+> jose newkey -t oct -s 256 | jose addkey -U -j mykeystore.jwks
 ```
 
 #### Find the key for a given keyid
