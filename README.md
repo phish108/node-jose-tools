@@ -28,6 +28,61 @@ The following tools are supported:
 
 This package installs the jose script into your system.
 
+## Tools
+
+### addkey
+
+### newkey
+
+### listkeys
+
+### findkey
+
+finds a key id in a keystore and returns the JWK
+
+SYNOPSIS:
+
+```
+> jose findkey [-q -r -k -p --cnfkey --cnfref --public --quiet] [-j KEYSTORE] KEYID
+```
+
+findkey finds and returns a key from a keystore. If the key is present, then
+the JWK is returned in the requested format. If the keyid is not found, then
+findkey returns an error.
+
+By default findkey returns the key as it is stored in the keystore.
+
+findkey accepts different options to manipulate the output.
+
+ * -j, --jwks, --keystore loads the given keystore. If no keystore is provided,
+      the keystore is loaded from STDIN.
+
+ * -k, --cnfkey returns a RFC7800 confirmation key. This will include the key
+      of octet keys. For all other keys the public key is returned. This will
+      throw an error, if the keyid does not refer to a private key.
+
+ * -p, --public returns the public key instead of a private key. If the key is a
+     public key, this option does nothing.
+
+ * -q, --quiet generates no output. This flag is ideal to verify the presence
+      of a key without obtaining it.
+
+ * -r, --cnfref returns a RFC7800 confirmation key reference. This will
+      throw an error, if the keyid does not refer to a private key.
+
+If no keystore is provided, findkey will load the the keystore from STDIN,
+this allows to pipe directly from the addkey tool.
+
+### rmkey
+
+### sign
+
+### verify
+
+### encrypt
+
+### decrypt
+
 ## Examples
 
 ### Creating new keys
