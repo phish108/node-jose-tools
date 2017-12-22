@@ -87,6 +87,24 @@ the -U or --update flag.
 > jose newkey -t oct -s 256 | jose addkey -U -j mykeystore.jwks
 ```
 
+Alternatively, one can write this command:
+
+```
+> jose newkey -t oct -s 256 -U -j mykeystore.jwks
+```
+
+Tipp: the -q flag silences the command and it will not promt any other output
+than error messages
+
+#### Create multiple keys
+
+The -K flag tells the newkey command to return the keystore instead of an
+individual key.
+
+```
+> jose newkey -t oct -s 256 -K |  jose newkey -t ec -s 256 -K |  jose newkey -t rsa -s 2048 -K | jose addkey -U -j mykeystore.jwks
+```
+
 #### Find the key for a given keyid
 
 ```
