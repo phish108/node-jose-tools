@@ -297,7 +297,7 @@ Again, use the -U to store the extended keystore into mykeystore.jwks
 ### List the key ids for all keys in a keystore
 
 ```
-> jose listkeys mykeystore.jwks
+> jose listkeys example.jwks
 ```
 
 This will print one key ID per line.
@@ -342,7 +342,7 @@ individual key.
 #### Find the key for a given keyid
 
 ```
-> jose findkey -j mykeystore.jwks foobar
+> jose findkey -j example.jwks foobar
 ```
 
 This will return the private key for the key "foobar", if present.
@@ -350,55 +350,55 @@ This will return the private key for the key "foobar", if present.
 To export the public key, use
 
 ```
-> jose findkey -p -j mykeystore.jwks foobar
+> jose findkey -p -j example.jwks foobar
 ```
 
 To wrap the key into RFC7800 key confirmation use:
 
 ```
-> jose findkey -c -j mykeystore.jwks foobar
+> jose findkey -c -j example.jwks foobar
 ```
 
 To pass a key reference as a RFC7800 key confirmation use:
 
 ```
-> jose findkey -r -j mykeystore.jwks foobar
+> jose findkey -r -j example.jwks foobar
 ```
 
 ### Create a JWS token
 
 ```
-> jose sign -j mykeystore.jwks -a audience -i clientid
+> jose sign -j example.jwks -a audience -i clientid -l HS256 -k foobar
 ```
 
 Add some extra payload via STDIN.
 
 ```
-> echo '{"payload": "mypayload"}' | jose sign -j mykeystore.jwks -a audience -i clientid
+> echo '{"payload": "mypayload"}' | jose sign -j example.jwks -a audience -i clientid -l HS256 -k foobar
 ```
 
 ### Verify a JWS
 
 ```
-> jose verify -j mykeystore.jwks  -a audience -i issuer token.jwt
+> jose verify -j example.jwks  -a audience -i issuer token.jwt
 ```
 
 You can also pass the token via stdin:
 
 ```
-> echo TOKENSTRING | jose verify -j mykeystore.jwks -a audience -i issuer
+> echo TOKENSTRING | jose verify -j example.jwks -a audience -i issuer
 ```
 
 ### Encrypt a payload using RSA-OAEP and AES126GCM
 
 ```
-> echo PAYLOADSTRING | jose encrypt -j mykeystore.jwks -k pubkeyid -l RSA-OAEP -e A126GCM
+> echo PAYLOADSTRING | jose encrypt -j example.jwks -k pubkeyid -l RSA-OAEP -e A126GCM
 ```
 
 ### Decrypt a JWE for you
 
 ```
-> echo JWETOKENSTRING | jose decrypt -j mykeystore.jwks
+> echo JWETOKENSTRING | jose decrypt -j example.jwks
 ```
 
 ### Create a wrapped JWT (using RSA-OAEP and AES126GCM)
@@ -406,17 +406,17 @@ You can also pass the token via stdin:
 Note that yo are free to use any of the other alg/enc combinations if you have the appropriate keys.
 
 ```
-> jose sign -j mykeystore.jwks -a audience -i myid -l HS256 | jose encrypt -j mykeystore.jwks -k audpubkid -l RSA-OAEP -e A126GCM
+> jose sign -j example.jwks -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM
 ```
 
 Create a confirmation key for a targeted audience in a wrapped JWT:
 
 ```
-> jose findkey -k -j mycnfkeys.jwks barbaz | jose sign -j mykeystore.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j mykeystore.jwks -k audpubkid -l RSA-OAEP -e A126GCM
+> jose findkey -k -j example.jwks barbaz | jose sign -j example.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM
 ```
 
 ## Unwrap a JWE and verify the JWS
 
 ```
-> echo TOKENSTRING | jose decrypt -j mykeystore.jwks | jose verify -j mykeystore.jwks -a audience -i issuer
+> echo TOKENSTRING | jose decrypt -j example-priv.jwks | jose verify -j example-priv.jwks -a audience -i issuer
 ```
