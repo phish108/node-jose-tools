@@ -1,6 +1,12 @@
-## node-jose toolbox for key management, token signing and encryption
+## node-jose tools for JOSE key management, token signing and encryption
 
-Command line tools for getting the hang of the [cisco/node-jose](https://github.com/cisco/node-jose) features.
+Swiss-army knife tool for [node-jose](https://github.com/cisco/node-jose).
+
+It provides the ```jose``` command to
+[JSON web-key (JWK)](https://tools.ietf.org/html/rfc7517) key and keystore
+management as well as to handling
+[JSON web-tokens (JWT)](https://tools.ietf.org/html/rfc7519) in, both, the
+signed and encrypted variants.
 
 ## Contents
 
@@ -34,9 +40,7 @@ Command line tools for getting the hang of the [cisco/node-jose](https://github.
 
 ## Installing
 
-Clone this package.
-
-On the command line run ```npm install -g```. This will install all dependencies.
+On the command line run ```npm install -g node-jose-tools```.
 
 ## Running
 
