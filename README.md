@@ -174,7 +174,7 @@ creates a signed JWS token.
 SYNOPSIS:
 
 ```
-> jose sign -j KEYSTORE -l ALG -k KEYID -i ISSUER -a AUDIENCE [FLAGS] [PAYLOADFILE]
+> jose sign -j KEYSTORE -l ALG -k KEYID -i ISSUER -a AUDIENCE [FLAGS] [-p [PAYLOADFILE]]
 ```
 
 One can pass a payload via ```STDIN``` to the ```sign``` tool (e.g., the output of findkey).
@@ -193,11 +193,13 @@ The following parameters are accepted.
 
  * ```-j, --jwks, --keystore KEYSTORE``` - the keystore that contains the singing keys.
 
- * ```-k, --kid KEYID``` - the key id in the keystore to be used in this operation.
+ * ```-k, --kid KEYID``` - the key id in the keystore to be used in this operation. This MUST be a privat key.
 
  * ```-l, --alg JWA``` - the signing algorithm (e.g., ```HS256```).
 
  * ```-N, --no-reference``` - indicates that the header must not contain a reference to the key.
+
+ * ```-p, --payload``` - indicates to load a payload file. If no payload filename has been passed, then ```sign``` will load the payload from ```STDIN```.
 
  * ```-x, --exp TIMEOUT``` - add a validity timeout in seconds from now.
 
@@ -229,7 +231,7 @@ creates a JWE token.
 SYNOPSIS:
 
 ```
-> jose ecrypt -j KEYSTORE -l ALG -e ENC -k KEYID [PAYLOADFILE]
+> jose ecrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-p [PAYLOADFILE]]
 ```
 
 One can pass a payload via ```STDIN``` to the ```encrypt``` tool (e.g., the output of findkey).
@@ -238,13 +240,19 @@ The following parameters are accepted.
 
  * ```-j, --jwks, --keystore KEYSTORE``` - the keystore that contains the singing keys.
 
- * ```-k, --kid KEYID``` -
+ * ```-k, --kid KEYID``` - the id of the key that should be used for encryption. This MUST be a public key.
 
- * ```-l, --alg JWA_KEY_ENCCRYPT``` -
+ * ```-l, --alg JWA_KEY_ENCCRYPT``` - the key encryption algorithm as specified for JWA
 
- * ```-e, --enc JWA_CONTENT_ENCRYPT``` -
+ * ```-e, --enc JWA_CONTENT_ENCRYPT``` - The content encryption algorithm as specified for JWA.
+
+ * ```-F, --flat, --flattened``` - return the JWS as flattened JSON.
+
+ * ```-G, --general, --json, --JSON``` - return the JWS in the full JSON format.
 
  * ```-a, --aud AUDIENCE``` - OPTIONAL the audience of the token. ```encrypt``` tries to determine the audience from the payload (e.g. if a JWS is passed). If no audience is given and ```encrypt``` cannot determine the aud automatically , then the tools ends with an error.
+
+  * ```-p, --payload``` - indicates to load a payload file. If no payload filename has been passed, then ```encrypt``` will load the payload from ```STDIN```.
 
 ### decrypt
 
@@ -260,7 +268,7 @@ One can pass a payload via ```STDIN``` to ```decrypt``` (e.g., the output of ```
 
 The following parameters are accepted.
 
- * ```-j, --jwks, --keystore KEYSTORE``` - the keystore that contains the singing keys.
+ * ```-j, --jwks, --keystore KEYSTORE``` - the keystore that contains the private keys for decryption.
 
 ## Examples
 
@@ -288,9 +296,10 @@ For updating the keystore use the following variant:
 ### Merging two keystores
 
 ```
-> jose addkey -j mykeystore.jwks myotherkeystore.jwks
-
+> jose addkey -j example.jwks example-priv.jwks
 ```
+
+Note: if the keystores have the same keyids, then this will result in duplicate keyids in the keystore file.    
 
 Again, use the -U to store the extended keystore into mykeystore.jwks
 
@@ -300,19 +309,43 @@ Again, use the -U to store the extended keystore into mykeystore.jwks
 > jose listkeys example.jwks
 ```
 
-This will print one key ID per line.
+This will print one key ID per line, so the result will be:
+
+```
+foobar
+barfoo
+foorsa
+```
 
 #### Remove keys from a keystore
 
 ```
-> jose rmkey -j mykeystore.jwks foobar
+> jose rmkey -j example.jwks foorsa
 ```
 
-This will output a JWKS without the key "foobar". For updating the keystore use
-the -U or --update flag.
+This will output a JWKS without the key "foorsa" (linebreaks are inserted for readability).
 
 ```
-> jose rmkey -U -j mykeystore.jwks foobar
+{
+    "keys": [
+        {
+            "kty":"oct",
+            "kid":"foobar",
+            "k":"QYPTbIwxRbVuCLU0T3lQWYGP05asffZLAuM1KiNyqj4"
+        },
+        {
+            "kty":"oct",
+            "kid":"barfoo",
+            "k":"-E_-rcOr6iesQ_BKO21DAuKdblhUmwciIx8Q6gUcUuG42Fw0zdPHPQtfZh19upvrh1Epevwz3Yc2a3YMGCJh1w"
+        }
+    ]
+}
+```
+
+For updating the keystore use the -U or --update flag.
+
+```
+> jose rmkey -U -j example.jwks foorsa
 ```
 
 #### Create a new key and add it to a keystore
@@ -345,12 +378,27 @@ individual key.
 > jose findkey -j example.jwks foobar
 ```
 
-This will return the private key for the key "foobar", if present.
+This will return the private key for the key ```foobar```, if present.
 
 To export the public key, use
 
 ```
-> jose findkey -p -j example.jwks foobar
+> jose findkey -p -j example-priv.jwks foorsa
+```
+
+This results in the following output (linebreaks are inserted for readability):
+
+```
+{
+    "kty":"RSA",
+    "kid":"foorsa",
+    "e":"AQAB",
+    "n":"sFhX2R0ColcUrlU224bzhvCOwngQGGc23BT4btYBtMlM9kEnC_rHpbI45P4LGqGZO-vy8
+    PK9d9DPtvkdwsc1gxMOe__HoxwSG8aaapEd4NXgMKKXviAJUJbkY7pb9NHvImm6_1ESm6FRT4a
+    5LdRp5kAJdbfuwkfNRQxzWf-p3wYZoUMxcz3fAdWME55Z7y_YMTIMAI3hbRSw50eaNoY4gggGK
+    Huz42PrDeclxtQJFI_-nzm7jzEvs_JFIZ0yyTePi4nTOLWNzSFcc43gcfHHOK5okXuiAmZyu-3
+    voH3rnU85Xb2lkZrQd4Rjxhf6YNYzTzCsmh6Aa2gAloHBqfJU9Q"
+}
 ```
 
 To wrap the key into RFC7800 key confirmation use:
@@ -359,10 +407,34 @@ To wrap the key into RFC7800 key confirmation use:
 > jose findkey -c -j example.jwks foobar
 ```
 
+This results in (linebreaks are inserted for readability):
+
+```
+{
+    "cnf":{
+        "jwk":{
+            "kty":"oct",
+            "kid":"foobar",
+            "k":"QYPTbIwxRbVuCLU0T3lQWYGP05asffZLAuM1KiNyqj4"
+        }
+    }
+}
+```
+
 To pass a key reference as a RFC7800 key confirmation use:
 
 ```
 > jose findkey -r -j example.jwks foobar
+```
+
+This results in (linebreaks are inserted for readability):
+
+```
+{
+    "cnf":{
+        "kid":"foobar"
+    }
+}
 ```
 
 ### Create a JWS token
@@ -371,11 +443,45 @@ To pass a key reference as a RFC7800 key confirmation use:
 > jose sign -j example.jwks -a audience -i clientid -l HS256 -k foobar
 ```
 
-Add some extra payload via STDIN.
+This results in the following compact JWS (linebreaks are inserted for readability):
 
 ```
-> echo '{"payload": "mypayload"}' | jose sign -j example.jwks -a audience -i clientid -l HS256 -k foobar
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZvb2JhciJ9.eyJleHRyYSI6e30sImlz
+cyI6ImNsaWVudGlkIiwiYXVkIjoiYXVkaWVuY2UiLCJzdWIiOiJjbGllbnRpZCIsImlhdCI6MTUxN
+DAyMTg5MH0.3n7UkVtMA12ZuQ7fjf0h6FsmPqusTBOrs7N7zNMTcfg
 ```
+
+Add some extra payload via ```STDIN```.
+
+```
+> echo '{"payload": "mypayload"}' | jose sign -j example.jwks -a audience -i clientid -l HS256 -k foobar -p
+```
+
+This will result in:
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZvb2JhciJ9.eyJwYXlsb2FkIjoibXlw
+YXlsb2FkIiwiaXNzIjoiY2xpZW50aWQiLCJhdWQiOiJhdWRpZW5jZSIsInN1YiI6ImNsaWVudGlkI
+iwiaWF0IjoxNTE0MDIyMTA0fQ.gRSQAU8HcoVnkAcXeeBPGyaFI2qdAD5wsR31AbpkBYc
+```
+
+Use the ```-F``` flag to request the flattened JWS format:
+
+```
+> jose sign -j example.jwks -a audience -i clientid -l HS256 -k foobar -F
+```
+
+will result in:
+
+```
+{
+    "payload":"eyJleHRyYSI6e30sImlzcyI6ImNsaWVudGlkIiwiYXVkIjoiYXVkaWVuY2UiLCJzdWIiOiJjbGllbnRpZCIsImlhdCI6MTUxNDAyMjIxNX0",
+    "protected":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImZvb2JhciJ9",
+    "signature":"XfsZELWK84ZPiANAls8GbeYk7dg06HDDE94YhPT57EY"
+}
+```
+
+Use the ```-G``` flag to load get the general JWS format.
 
 ### Verify a JWS
 
@@ -392,13 +498,13 @@ You can also pass the token via stdin:
 ### Encrypt a payload using RSA-OAEP and AES126GCM
 
 ```
-> echo PAYLOADSTRING | jose encrypt -j example.jwks -k pubkeyid -l RSA-OAEP -e A126GCM
+> echo PAYLOADSTRING | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM
 ```
 
 ### Decrypt a JWE for you
 
 ```
-> echo JWETOKENSTRING | jose decrypt -j example.jwks
+> echo JWETOKENSTRING | jose decrypt -j example-priv.jwks
 ```
 
 ### Create a wrapped JWT (using RSA-OAEP and AES126GCM)
@@ -412,11 +518,11 @@ Note that yo are free to use any of the other alg/enc combinations if you have t
 Create a confirmation key for a targeted audience in a wrapped JWT:
 
 ```
-> jose findkey -k -j example.jwks barbaz | jose sign -j example.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM
+> jose findkey -k -j example.jwks barfoo | jose sign -j example.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM
 ```
 
-## Unwrap a JWE and verify the JWS
+## Unwrap a JWE and verify an included JWS
 
 ```
-> echo TOKENSTRING | jose decrypt -j example-priv.jwks | jose verify -j example-priv.jwks -a audience -i issuer
+> echo TOKENSTRING | jose decrypt -j example-priv.jwks | jose verify -j example.jwks -a audience -i issuer
 ```
