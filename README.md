@@ -32,9 +32,84 @@ This package installs the jose script into your system.
 
 ### addkey
 
+adds a key to a keystore and returns the JWK
+
+SYNOPSIS:
+
+```
+> jose addkey [-q -U -C --update --quiet --create] [-j KEYSTORE] [KEYFILE ...]
+```
+
+Use this tool for adding keys to a keystore. If no keyfile is provided,
+then ```addkey``` reads the key from STDIN.
+
+The tool handles JWK, JWKS, PEM, DER, PKCS#8, PKIX, SPKI, and X509 formats.
+If another keystore is presented for import, all keys are imported.
+
+The ```addkey``` tool tries to import all provided keyfiles.
+
+The following options and flags are supported:
+
+ * ```-C, --create``` - creates a new keystore if the keystore file is not present.
+
+ * ```-j, --jwks, --keystore KEYSTORE``` - loads the given keystore.
+
+ * ```-q, --quiet``` - generates no output. This flag omits the output of the keystore.
+
+ * ```-U, --update``` - updates the provided keystore.
+
 ### newkey
 
+creates a new key according to the secifiations.
+
+SYNOPSIS:
+
+```
+> jose newkey -s KEYSIZE [-t KEYTYPE] [-u USAGE] [-j KEYSTORE] [FLAGS]
+```
+
+The ```newkey``` allows to create one key or key-pair. It always returns the private key,
+so one can add it to a keystore.
+
+By default ```newkey``` returns the newly created private key in JWK format.
+
+The following parameters are supported:
+
+ * ```-s, --size KEYSIZE``` - creates a key for the given keysize or curve, if ```EC``` or ```OKP``` keys are requested.
+
+ * ```-t, --type KEYTYPE``` - creates a new key of the provided key type. Only ```RSA```, ```oct```, ```EC```, and ```OKP``` are supported values.
+
+ * ```-j, --jwks, --keystore KEYSTORE``` - loads the given keystore. If this parameter is missing ```newkey``` tries to load a keystore from ```STDIN```. If that fails, then a new keystore is created.
+
+ * ```-K, --as-keystore``` - return the new key in JWKS format.
+
+ * ```-q, --quiet``` - generates no output. This flag omits the output of the keystore.
+
+ * ```-U, --update``` - updates the provided keystore if -j, --jwks, or --keystore is present.
+
+ * ```-r, --RSA, --rsa``` - alternative for --type rsa
+
+ * ```-e, --EC, --ec``` - alternative for --type ec
+
+ * ```-o, --oct, --OCT``` - alternative for --type oct
+
+ * ```-d, --dh, --OKP, --okp``` - alternative for --type okp (RFC8037 D&H keypairs)
+
+ Note that ```oct``` require a minimum keysize of 256 bit and RSA-keys require a
+ minimum keysize of 2048 bit.
+
 ### listkeys
+
+lists all keyids in a given keystore.
+
+SYNOPSIS
+
+```
+> jose listkeys -j KEYSTORE
+```
+
+The tool accepts the ```-j, --jwks, and --keystore``` parameters. If no keystore is
+provided, then ```listkeys``` will try to read the keystore from ```STDIN```.
 
 ### findkey
 
@@ -46,42 +121,146 @@ SYNOPSIS:
 > jose findkey [-q -r -k -p --cnfkey --cnfref --public --quiet] [-j KEYSTORE] KEYID
 ```
 
-findkey finds and returns a key from a keystore. If the key is present, then
+The tool ```findkey``` finds and returns a key from a keystore. If the key is present, then
 the JWK is returned in the requested format. If the keyid is not found, then
 findkey returns an error.
 
-By default findkey returns the key as it is stored in the keystore.
+By default ```findkey``` returns the key as it is stored in the keystore.
 
-findkey accepts different options to manipulate the output.
+The following options are accepted for manipulating the output.
 
- * -j, --jwks, --keystore loads the given keystore. If no keystore is provided,
-      the keystore is loaded from STDIN.
+ * ```-j, --jwks, --keystore KEYSTORE``` - loads the given keystore. If no keystore is provided, the keystore is loaded from ```STDIN```.
 
- * -k, --cnfkey returns a RFC7800 confirmation key. This will include the key
-      of octet keys. For all other keys the public key is returned. This will
-      throw an error, if the keyid does not refer to a private key.
+ * ```-c, --cnfkey``` - returns a RFC7800 confirmation key. This will include the key of octet keys. For all other keys the public key is returned. This will throw an error, if the keyid does not refer to a private key.
 
- * -p, --public returns the public key instead of a private key. If the key is a
-     public key, this option does nothing.
+ * ```-k, --kid KEYID``` - OPTIONAL the key id to return. This option is for compliance with other tools.
 
- * -q, --quiet generates no output. This flag is ideal to verify the presence
-      of a key without obtaining it.
+ * ```-p, --public``` - returns the public key instead of a private key. If the key is a public key, this option does nothing.
 
- * -r, --cnfref returns a RFC7800 confirmation key reference. This will
-      throw an error, if the keyid does not refer to a private key.
+ * ```-q, --quiet``` - generates no output. This flag is ideal to verify the presence of a key without obtaining it.
 
-If no keystore is provided, findkey will load the the keystore from STDIN,
-this allows to pipe directly from the addkey tool.
+ * ```-r, --cnfref``` - returns a RFC7800 confirmation key reference. This will throw an error, if the keyid does not refer to a private key.
+
+If no keystore is provided, findkey will load the the keystore from ```STDIN```,
+this allows to pipe directly from the ```addkey``` tool.
 
 ### rmkey
 
+removes a key with the provided keyid from the provided keystore
+
+SYNOPSIS
+
+```
+> jose rmkey KEYID [-j KEYSTORE] [-U --update -q --quiet]
+```
+
+The tool ```rmkey``` allows to remove multiple keys in one got. In this case each key id must
+be provided in a separate line of the ```KEYID```-string. If no ```KEYID``` is provided, ```rmkey``` tries to load the ```KEYID``` from the command line. Alternatively, ONE keyid can be passed using the ```-k``` or ```--kid``` option.   
+
+ * ```-j, --jwks, --keystore KEYSTORE``` - loads the given keystore. If this parameter is missing newkey tries to load a keystore from ```STDIN```. If that fails, then ```rmkey``` fails with an error
+
+ * ```-k, --kid KEYID``` - the key id in the keystore to be used in this operation.
+
+ * ```-q, --quiet``` - generates no output. This flag omits the output of the keystore.
+
+ * ```-U, --update``` - updates the provided keystore if ```-j, --jwks```, or ```--keystore``` is present.
+
+By default ```rmkey``` returns the updated keystore on ```STDOUT```. If ```-j, --jwks``` or ```--keystore``` is provided, then the ```-U``` flag will overwrite the provided keystore.
+
 ### sign
+
+creates a signed JWS token.
+
+SYNOPSIS:
+
+```
+> jose sign -j KEYSTORE -l ALG -k KEYID -i ISSUER -a AUDIENCE [FLAGS] [PAYLOADFILE]
+```
+
+One can pass a payload via ```STDIN``` to the ```sign``` tool (e.g., the output of findkey).
+
+By default, ```sign``` will return the JWS in compact format.
+
+The following parameters are accepted.
+
+ * ```-a, --aud AUDIENCE``` - the target of the JWS that will verify the token
+
+ * ```-F, --flat, --flattened``` - return the JWS as flattened JSON.
+
+ * ```-G, --general, --json, --JSON``` - return the JWS in the full JSON format.
+
+ * ```-i, --issuer ISSUER``` - the issuer of the JWS (probably used by the audience)
+
+ * ```-j, --jwks, --keystore KEYSTORE``` - the keystore that contains the singing keys.
+
+ * ```-k, --kid KEYID``` - the key id in the keystore to be used in this operation.
+
+ * ```-l, --alg JWA``` - the signing algorithm (e.g., ```HS256```).
+
+ * ```-N, --no-reference``` - indicates that the header must not contain a reference to the key.
+
+ * ```-x, --exp TIMEOUT``` - add a validity timeout in seconds from now.
+
 
 ### verify
 
+verifies a signed JWS token and returns the payload
+
+SYNOPSIS:
+
+```
+> jose verify -j KEYSTORE -i ISSUER -a AUDIENCE
+```
+
+One can pass a payload via ```STDIN``` to the ```sign``` tool (e.g., the output of findkey).
+
+The following parameters are accepted.
+
+ * ```-a, --aud AUDIENCE``` - the target of the JWS that will verify the token
+
+ * ```-i, --issuer ISSUER``` - the issuer of the JWS
+
+ * ```-j, --jwks, --keystore KEYSTORE``` - the keystore that contains the singing keys.
+
 ### encrypt
 
+creates a JWE token.
+
+SYNOPSIS:
+
+```
+> jose ecrypt -j KEYSTORE -l ALG -e ENC -k KEYID [PAYLOADFILE]
+```
+
+One can pass a payload via ```STDIN``` to the ```encrypt``` tool (e.g., the output of findkey).
+
+The following parameters are accepted.
+
+ * ```-j, --jwks, --keystore KEYSTORE``` - the keystore that contains the singing keys.
+
+ * ```-k, --kid KEYID``` -
+
+ * ```-l, --alg JWA_KEY_ENCCRYPT``` -
+
+ * ```-e, --enc JWA_CONTENT_ENCRYPT``` -
+
+ * ```-a, --aud AUDIENCE``` - OPTIONAL the audience of the token. ```encrypt``` tries to determine the audience from the payload (e.g. if a JWS is passed). If no audience is given and ```encrypt``` cannot determine the aud automatically , then the tools ends with an error.
+
 ### decrypt
+
+decrypts a JWE token and returns the payload.
+
+SYNOPSIS:
+
+```
+> jose decrypt -j KEYSTORE [PAYLOADFILE]
+```
+
+One can pass a payload via ```STDIN``` to ```decrypt``` (e.g., the output of ```encrypt```).
+
+The following parameters are accepted.
+
+ * ```-j, --jwks, --keystore KEYSTORE``` - the keystore that contains the singing keys.
 
 ## Examples
 
@@ -177,7 +356,7 @@ To export the public key, use
 To wrap the key into RFC7800 key confirmation use:
 
 ```
-> jose findkey -k -j mykeystore.jwks foobar
+> jose findkey -c -j mykeystore.jwks foobar
 ```
 
 To pass a key reference as a RFC7800 key confirmation use:
