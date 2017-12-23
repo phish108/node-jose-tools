@@ -2,11 +2,41 @@
 
 Command line tools for getting the hang of the [cisco/node-jose](https://github.com/cisco/node-jose) features.
 
-## Installation
+## Contents
+
+- [Installing](#installing)
+- [Running](#running)
+- [Tools](#tools)
+  - [addkey](#addkey) - add a new key to a jwks
+  - [newkey](#newkey) - create a new key (that can be used by addkey)
+  - [listkeys](#listkeys) - list the key ids for all keys in a jwks
+  - [findkey](#findkey) - find a kid in a jwks
+  - [rmkey](#rmkey) - remove a kid from a jwks
+  - [sign](#sign) - creates and signs a JWS for a given payload
+  - [verify](#verify) - verifies a JWS and return the payload
+  - [encrypt](#encrypt) - encrypt a payload into a JWE
+  - [decrypt](#decrypt) - decrypts a JWE and returns the payload
+- [Examples](#examples)
+  - [Creating new keys](#creating-new-keys)
+  - [Adding a key to a keystore](#adding-a-key-to-a-keystore)
+  - [Merging two keystores](#merging-two-keystores)
+  - [List the key ids in a keystore](#list-the-key-ids-for-all-keys-in-a-keystore)
+  - [Remove a key from a keystore](#remove-keys-from-a-keystore)
+  - [Create a new key and add it to a keystore](#create-a-new-key-and-add-it-to-a-keystore)
+  - [Create multiple keys](#create-multiple-keys)
+  - [Find a key for a key id](#find-the-key-for-a-given-keyid)
+  - [Create a JWS token](#create-a-jws-token)
+  - [Verify a JWS token](#verify-a-jws)
+  - [Encrypt a payload using RSA-OAEP and AES126GCM](#encrypt-a-payload-using-rsa-oaep-and-aes126gcm)
+  - [Decrypt a JWE for you](#decrypt-a-jwe-for-you)
+  - [Create a wrapped JWT using RSA-OAEP and AES126GCM](#create-a-wrapped-jwt-using-rsa-oaep-and-aes126gcm)
+  - [Unwrap a JWE and verify an included JWS](#unwrap-a-jwe-and-verify-an-included-jws)
+
+## Installing
 
 Clone this package.
 
-On the command line run ```npm install```. This will install all dependencies.
+On the command line run ```npm install -g```. This will install all dependencies.
 
 ## Running
 
@@ -16,17 +46,18 @@ On the command line run ```npm install```. This will install all dependencies.
 
 The following tools are supported:
 
- - addkey - add a new key to a jwks
- - newkey - create a new key (that can be used by addkey)
- - listkeys - list the key ids for all keys in a jwks
- - findkey - find a kid in a jwks
- - rmkey - remove a kid from a jwks
- - sign - creates and signs a JWS for a given payload
- - verify - verifies a JWS and return the payload
- - encrypt - encrypt a payload into a JWE
- - decrypt - decrypts a JWE and returns the payload
+ - [addkey](#addkey) - add a new key to a jwks
+ - [newkey](#newkey) - create a new key (that can be used by addkey)
+ - [listkeys](#listkeys) - list the key ids for all keys in a jwks
+ - [findkey](#findkey) - find a kid in a jwks
+ - [rmkey](#rmkey) - remove a kid from a jwks
+ - [sign](#sign) - creates and signs a JWS for a given payload
+ - [verify](#verify) - verifies a JWS and return the payload
+ - [encrypt](#encrypt) - encrypt a payload into a JWE
+ - [decrypt](#decrypt) - decrypts a JWE and returns the payload
 
 This package installs the jose script into your system.
+
 
 ## Tools
 
@@ -317,7 +348,7 @@ barfoo
 foorsa
 ```
 
-#### Remove keys from a keystore
+### Remove keys from a keystore
 
 ```
 > jose rmkey -j example.jwks foorsa
@@ -348,7 +379,7 @@ For updating the keystore use the -U or --update flag.
 > jose rmkey -U -j example.jwks foorsa
 ```
 
-#### Create a new key and add it to a keystore
+### Create a new key and add it to a keystore
 
 ```
 > jose newkey -t oct -s 256 | jose addkey -U -j mykeystore.jwks
@@ -363,7 +394,7 @@ Alternatively, one can write this command:
 Tipp: the -q flag silences the command and it will not promt any other output
 than error messages
 
-#### Create multiple keys
+### Create multiple keys
 
 The -K flag tells the newkey command to return the keystore instead of an
 individual key.
@@ -372,7 +403,7 @@ individual key.
 > jose newkey -t oct -s 256 -K |  jose newkey -t ec -s 256 -K |  jose newkey -t rsa -s 2048 -K | jose addkey -U -j mykeystore.jwks
 ```
 
-#### Find the key for a given keyid
+### Find the key for a given keyid
 
 ```
 > jose findkey -j example.jwks foobar
