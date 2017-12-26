@@ -35,6 +35,7 @@ signed and encrypted variants.
   - [Create a JWS token](#create-a-jws-token)
   - [Verify a JWS token](#verify-a-jws)
   - [Encrypt a payload using RSA-OAEP and AES126GCM](#encrypt-a-payload-using-rsa-oaep-and-aes126gcm)
+  - [Encrypt a string using the dir algorithm](#encrypt-a-string-using-the-dir-algorithm)
   - [Decrypt a JWE for you](#decrypt-a-jwe-for-you)
   - [Create a wrapped JWT using RSA-OAEP and AES126GCM](#create-a-wrapped-jwt-using-rsa-oaep-and-aes126gcm)
   - [Unwrap a JWE and verify an included JWS](#unwrap-a-jwe-and-verify-an-included-jws)
@@ -60,6 +61,7 @@ The following tools are supported:
  - [verify](#verify) - verifies a JWS and return the payload
  - [encrypt](#encrypt) - encrypt a payload into a JWE
  - [decrypt](#decrypt) - decrypts a JWE and returns the payload
+ - [digest](#digest) - computes a SHA-2 digest of the provided input
 
 This package installs the jose script into your system.
 
@@ -267,7 +269,7 @@ creates a JWE token.
 SYNOPSIS:
 
 ```
-> jose ecrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-p [PAYLOADFILE]]
+> jose ecrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-p [PAYLOADFILE]] [PAYLOAD]
 ```
 
 One can pass a payload via ```STDIN``` to the ```encrypt``` tool (e.g., the output of findkey).
@@ -288,7 +290,7 @@ The following parameters are accepted.
 
  * ```-a, --aud AUDIENCE``` - OPTIONAL the audience of the token. ```encrypt``` tries to determine the audience from the payload (e.g. if a JWS is passed). If no audience is given and ```encrypt``` cannot determine the aud automatically , then the tools ends with an error.
 
-  * ```-p, --payload``` - indicates to load a payload file. If no payload filename has been passed, then ```encrypt``` will load the payload from ```STDIN```.
+  * ```-p, --payload``` - indicates to load a payload file. If no payload filename has been passed, then ```encrypt``` will load the payload from ```STDIN```. If ```-p``` is not provided, then the first command line parameter is used as payload.
 
 ### decrypt
 
@@ -305,6 +307,26 @@ One can pass a payload via ```STDIN``` to ```decrypt``` (e.g., the output of ```
 The following parameters are accepted.
 
  * ```-j, --jwks, --keystore KEYSTORE``` - the keystore that contains the private keys for decryption.
+
+### digest
+
+computes a SHA-2 digest (aka hash or checksum) of the provided input.
+
+SYNOPSIS:
+
+```
+> jose digest [-s SIZE] [DATA]
+```
+
+The SHA-digest is returned as a base64url-encoded string.
+
+The tool accepts the following sizes
+
+- 256
+- 384
+- 512
+
+as well as the corresponding SHA-labels.
 
 ## Examples
 
@@ -341,7 +363,7 @@ This will return the extended local keystore.
 
 Use the ```-U``` flag to update the local keystore.
 
-It is possible to read any supported key-format from a URL. 
+It is possible to read any supported key-format from a URL.
 
 ### Merging two keystores
 
@@ -548,7 +570,13 @@ You can also pass the token via stdin:
 ### Encrypt a payload using RSA-OAEP and AES126GCM
 
 ```
-> echo PAYLOADSTRING | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM
+> echo PAYLOADSTRING | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -p
+```
+
+### Encrypt a string using the dir algorithm
+
+```
+> jose encrypt -j example.jwks -k foobar -l dir "hello world"
 ```
 
 ### Decrypt a JWE for you
@@ -562,13 +590,13 @@ You can also pass the token via stdin:
 Note that yo are free to use any of the other alg/enc combinations if you have the appropriate keys.
 
 ```
-> jose sign -j example.jwks -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM
+> jose sign -j example.jwks -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -p
 ```
 
 Create a confirmation key for a targeted audience in a wrapped JWT:
 
 ```
-> jose findkey -k -j example.jwks barfoo | jose sign -j example.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM
+> jose findkey -k -j example.jwks barfoo | jose sign -j example.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -p
 ```
 
 ## Unwrap a JWE and verify an included JWS
