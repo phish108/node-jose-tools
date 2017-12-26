@@ -25,6 +25,7 @@ signed and encrypted variants.
 - [Examples](#examples)
   - [Creating new keys](#creating-new-keys)
   - [Adding a key to a keystore](#adding-a-key-to-a-keystore)
+  - [Add a remote keystore locally](#add-a-remote-keystore-locally)
   - [Merging two keystores](#merging-two-keystores)
   - [List the key ids in a keystore](#list-the-key-ids-for-all-keys-in-a-keystore)
   - [Remove a key from a keystore](#remove-keys-from-a-keystore)
@@ -327,6 +328,20 @@ For updating the keystore use the following variant:
 ```
 > jose addkey -U -j mykeystore.jwks privatekey.PEM
 ```
+
+### Add a remote keystore locally
+
+This is useful to cache public keys from a server.
+
+```
+> jose addkey -j example.jwks https://your.server.host/certs
+```
+
+This will return the extended local keystore.
+
+Use the ```-U``` flag to update the local keystore.
+
+It is possible to read any supported key-format from a URL. 
 
 ### Merging two keystores
 
