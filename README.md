@@ -269,7 +269,7 @@ creates a JWE token.
 SYNOPSIS:
 
 ```
-> jose ecrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-p [PAYLOADFILE]] [PAYLOAD]
+> jose ecrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-f [PAYLOADFILE]] [PAYLOAD]
 ```
 
 One can pass a payload via ```STDIN``` to the ```encrypt``` tool (e.g., the output of findkey).
@@ -290,7 +290,7 @@ The following parameters are accepted.
 
  * ```-a, --aud AUDIENCE``` - OPTIONAL the audience of the token. ```encrypt``` tries to determine the audience from the payload (e.g. if a JWS is passed). If no audience is given and ```encrypt``` cannot determine the aud automatically , then the tools ends with an error.
 
-  * ```-p, --payload``` - indicates to load a payload file. If no payload filename has been passed, then ```encrypt``` will load the payload from ```STDIN```. If ```-p``` is not provided, then the first command line parameter is used as payload.
+  * ```-f, --in, --file, --payload``` - indicates to load a payload file. If no payload filename has been passed, then ```encrypt``` will load the payload from ```STDIN```. If ```-f``` or its long variants is not provided, then the first command line parameter is used as payload.
 
 ### decrypt
 
@@ -432,7 +432,7 @@ Alternatively, one can write this command:
 > jose newkey -t oct -s 256 -U -j mykeystore.jwks
 ```
 
-Tipp: the -q flag silences the command and it will not promt any other output
+Tipp: the -q flag silences the command and it will not prompt any other output
 than error messages
 
 ### Create multiple keys
@@ -570,7 +570,7 @@ You can also pass the token via stdin:
 ### Encrypt a payload using RSA-OAEP and AES126GCM
 
 ```
-> echo PAYLOADSTRING | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -p
+> echo PAYLOADSTRING | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -f
 ```
 
 ### Encrypt a string using the dir algorithm
@@ -590,13 +590,13 @@ You can also pass the token via stdin:
 Note that yo are free to use any of the other alg/enc combinations if you have the appropriate keys.
 
 ```
-> jose sign -j example.jwks -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -p
+> jose sign -j example.jwks -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -f
 ```
 
 Create a confirmation key for a targeted audience in a wrapped JWT:
 
 ```
-> jose findkey -k -j example.jwks barfoo | jose sign -j example.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -p
+> jose findkey -k -j example.jwks barfoo | jose sign -j example.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -f
 ```
 
 ## Unwrap a JWE and verify an included JWS
