@@ -269,7 +269,7 @@ creates a JWE token.
 SYNOPSIS:
 
 ```
-> jose ecrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-f [PAYLOADFILE]] [PAYLOAD]
+> jose encrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-f [PAYLOADFILE]] [-p] [PAYLOAD]
 ```
 
 One can pass a payload via ```STDIN``` to the ```encrypt``` tool (e.g., the output of findkey).
@@ -290,7 +290,9 @@ The following parameters are accepted.
 
  * ```-a, --aud AUDIENCE``` - OPTIONAL the audience of the token. ```encrypt``` tries to determine the audience from the payload (e.g. if a JWS is passed). If no audience is given and ```encrypt``` cannot determine the aud automatically , then the tools ends with an error.
 
-  * ```-f, --in, --file, --payload``` - indicates to load a payload file. If no payload filename has been passed, then ```encrypt``` will load the payload from ```STDIN```. If ```-f``` or its long variants is not provided, then the first command line parameter is used as payload.
+  * ```-f, --in, --file``` - indicates to load a payload file. If no payload filename has been passed, then ```encrypt``` will load the payload from ```STDIN```. If ```-f``` or its long variants is not provided, then the first command line parameter is used as payload.
+
+  * ```-p, --payload``` - indicate that the last argument is a filename and not the actual payload. If this flag is used and no additional argument is provided the, then the payload is read from ```STDIN```.
 
 ### decrypt
 
@@ -587,7 +589,7 @@ You can also pass the token via stdin:
 
 ### Create a wrapped JWT (using RSA-OAEP and AES126GCM)
 
-Note that yo are free to use any of the other alg/enc combinations if you have the appropriate keys.
+Note that you are free to use any of the other alg/enc combinations if you have the appropriate keys.
 
 ```
 > jose sign -j example.jwks -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -f
