@@ -18,6 +18,7 @@ signed and encrypted variants.
   - [listkeys](#listkeys) - list the key ids for all keys in a jwks
   - [findkey](#findkey) - find a kid in a jwks
   - [rmkey](#rmkey) - remove a kid from a jwks
+  - [info](#info) - return basic information about a JWT without processing it
   - [sign](#sign) - creates and signs a JWS for a given payload
   - [verify](#verify) - verifies a JWS and return the payload
   - [encrypt](#encrypt) - encrypt a payload into a JWE
@@ -57,6 +58,7 @@ The following tools are supported:
  - [listkeys](#listkeys) - list the key ids for all keys in a jwks
  - [findkey](#findkey) - find a kid in a jwks
  - [rmkey](#rmkey) - remove a kid from a jwks
+ - [info](#info) - return basic information about a JWT without processing it
  - [sign](#sign) - creates and signs a JWS for a given payload
  - [verify](#verify) - verifies a JWS and return the payload
  - [encrypt](#encrypt) - encrypt a payload into a JWE
@@ -75,7 +77,7 @@ adds a key to a keystore and returns the JWK
 SYNOPSIS:
 
 ```
-> jose addkey [-q -U -C --update --quiet --create] [-j KEYSTORE] [KEYFILE ...]
+> jose addkey [-q -U -C -b --update --quiet --create --beauty] [-j KEYSTORE] [KEYFILE ...]
 ```
 
 Use this tool for adding keys to a keystore. If no keyfile is provided,
@@ -95,6 +97,8 @@ The following options and flags are supported:
  * ```-q, --quiet``` - generates no output. This flag omits the output of the keystore.
 
  * ```-U, --update``` - updates the provided keystore.
+
+ * ```-b, --beauty``` - pretty print JSON
 
 ### newkey
 
@@ -133,6 +137,8 @@ The following parameters are supported:
 
  * ```-d, --dh, --OKP, --okp``` - alternative for --type okp (RFC8037 D&H keypairs)
 
+ * ```-b, --beauty``` - pretty print JSON
+
  Note that ```oct``` require a minimum keysize of 256 bit and RSA-keys require a
  minimum keysize of 2048 bit.
 
@@ -156,7 +162,7 @@ finds a key id in a keystore and returns the JWK
 SYNOPSIS:
 
 ```
-> jose findkey [-q -r -k -p --cnfkey --cnfref --public --quiet] [-j KEYSTORE] KEYID
+> jose findkey [-q -r -k -p -b --cnfkey --cnfref --public --quiet --beauty] [-j KEYSTORE] KEYID
 ```
 
 The tool ```findkey``` finds and returns a key from a keystore. If the key is present, then
@@ -179,17 +185,19 @@ The following options are accepted for manipulating the output.
 
  * ```-r, --cnfref``` - returns a RFC7800 confirmation key reference. This will throw an error, if the keyid does not refer to a private key.
 
+ * ```-b, --beauty``` - pretty print JSON
+
 If no keystore is provided, findkey will load the the keystore from ```STDIN```,
 this allows to pipe directly from the ```addkey``` tool.
 
 ### rmkey
 
-removes a key with the provided keyid from the provided keystore
+removes a key with the provided keyid from the provided keystore and returns it
 
 SYNOPSIS
 
 ```
-> jose rmkey KEYID [-j KEYSTORE] [-U --update -q --quiet]
+> jose rmkey KEYID [-j KEYSTORE] [-U --update -q --quiet -b --beauty]
 ```
 
 The tool ```rmkey``` allows to remove multiple keys in one got. In this case each key id must
@@ -203,7 +211,28 @@ be provided in a separate line of the ```KEYID```-string. If no ```KEYID``` is p
 
  * ```-U, --update``` - updates the provided keystore if ```-j, --jwks```, or ```--keystore``` is present.
 
+ * ```-b, --beauty``` - pretty print JSON
+
 By default ```rmkey``` returns the updated keystore on ```STDOUT```. If ```-j, --jwks``` or ```--keystore``` is provided, then the ```-U``` flag will overwrite the provided keystore.
+
+### info
+
+prints basic information for compressed JWT without processing it.
+
+SYNOPSIS:
+
+```
+> jose info [-b] [JWTFILE]
+```
+
+If no ```JWTFILE``` is provided ```info``` will read the JWT from STDIN.
+
+Add the ```-b``` flag to pretty print the result.
+
+This tool provides quick information about a JWT, such as token type
+and header claims. For JWS ```info``` also includes the payload claims.
+
+Note that ```info``` does not attempt to validate or decrypt a token.
 
 ### sign
 
@@ -241,6 +270,7 @@ The following parameters are accepted.
 
  * ```-x, --exp TIMEOUT``` - add a validity timeout in seconds from now.
 
+ * ```-b, --beauty``` - pretty print JSON
 
 ### verify
 
@@ -269,7 +299,7 @@ creates a JWE token.
 SYNOPSIS:
 
 ```
-> jose encrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-f [PAYLOADFILE]] [-p] [PAYLOAD]
+> jose encrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-p [PAYLOADFILE]]
 ```
 
 One can pass a payload via ```STDIN``` to the ```encrypt``` tool (e.g., the output of findkey).
@@ -289,8 +319,6 @@ The following parameters are accepted.
  * ```-G, --general, --json, --JSON``` - return the JWS in the full JSON format.
 
  * ```-a, --aud AUDIENCE``` - OPTIONAL the audience of the token. ```encrypt``` tries to determine the audience from the payload (e.g. if a JWS is passed). If no audience is given and ```encrypt``` cannot determine the aud automatically , then the tools ends with an error.
-
-  * ```-f, --in, --file``` - indicates to load a payload file. If no payload filename has been passed, then ```encrypt``` will load the payload from ```STDIN```. If ```-f``` or its long variants is not provided, then the first command line parameter is used as payload.
 
   * ```-p, --payload``` - indicate that the last argument is a filename and not the actual payload. If this flag is used and no additional argument is provided the, then the payload is read from ```STDIN```.
 
@@ -394,10 +422,10 @@ foorsa
 ### Remove keys from a keystore
 
 ```
-> jose rmkey -j example.jwks foorsa
+> jose rmkey -b -j example.jwks foorsa
 ```
 
-This will output a JWKS without the key "foorsa" (linebreaks are inserted for readability).
+This will output a JWKS without the key "foorsa".
 
 ```
 {
@@ -415,6 +443,8 @@ This will output a JWKS without the key "foorsa" (linebreaks are inserted for re
     ]
 }
 ```
+
+If you like to have less spaces in the output, remove the ```-b``` flag.
 
 For updating the keystore use the -U or --update flag.
 
@@ -572,7 +602,7 @@ You can also pass the token via stdin:
 ### Encrypt a payload using RSA-OAEP and AES126GCM
 
 ```
-> echo PAYLOADSTRING | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -f
+> echo PAYLOADSTRING | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -p
 ```
 
 ### Encrypt a string using the dir algorithm
@@ -592,13 +622,13 @@ You can also pass the token via stdin:
 Note that you are free to use any of the other alg/enc combinations if you have the appropriate keys.
 
 ```
-> jose sign -j example.jwks -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -f
+> jose sign -j example.jwks -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -p
 ```
 
 Create a confirmation key for a targeted audience in a wrapped JWT:
 
 ```
-> jose findkey -k -j example.jwks barfoo | jose sign -j example.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -f
+> jose findkey -k -j example.jwks barfoo | jose sign -j example.jwks -k foobar -a audience -i myid -l HS256 | jose encrypt -j example.jwks -k foorsa -l RSA-OAEP -e A126GCM -p
 ```
 
 ## Unwrap a JWE and verify an included JWS
