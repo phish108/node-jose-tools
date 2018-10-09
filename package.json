@@ -28,12 +28,11 @@
   "dependencies": {
     "minimist": "^1.2.0",
     "node-jose": "^1.0.0",
-    "base64url": "^3.0.0",
-    "superagent": "^3.8.2"
+    "superagent": "^3.8.3"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.0",
-    "eslint": "^5.6.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.6.1",
     "eslint-plugin-babel": "^4.1.2"
   },
   "bin": {
