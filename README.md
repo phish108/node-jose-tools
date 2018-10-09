@@ -13,11 +13,11 @@ signed and encrypted variants.
 - [Installing](#installing)
 - [Running](#running)
 - [Tools](#tools)
-  - [addkey](#addkey) - add a new key to a jwks
+  - [addkey](#addkey) - add a new key to a JWKS
   - [newkey](#newkey) - create a new JWK key
-  - [listkeys](#listkeys) - list the key ids for all keys in a jwks
-  - [findkey](#findkey) - find a kid in a jwks
-  - [rmkey](#rmkey) - remove a kid from a jwks
+  - [listkeys](#listkeys) - list the key ids for all keys in a JWKS
+  - [findkey](#findkey) - find a kid in a JWKS
+  - [rmkey](#rmkey) - remove a kid from a JWKS
   - [thumbprint](#thumbprint) - generate the thumbprint for a key
   - [info](#info) - return basic information about a JWT without processing it
   - [sign](#sign) - creates and signs a JWS for a given payload
@@ -68,8 +68,7 @@ The following tools are supported:
  - [decrypt](#decrypt) - decrypts a JWE and returns the payload
  - [digest](#digest) - computes a SHA-2 digest of the provided input
 
-This package installs the jose script into your system.
-
+This package installs the ```jose``` script into your system.
 
 ## Tools
 
@@ -282,27 +281,27 @@ By default, ```sign``` will return the JWS in compact format.
 
 The following parameters are accepted.
 
- * ```-a, --aud AUDIENCE``` - the target of the JWS that will verify the token
+  * ```-a, --aud AUDIENCE``` - the target of the JWS that will verify the token
 
- * ```-F, --flat, --flattened``` - return the JWS as flattened JSON.
+  * ```-F, --flat, --flattened``` - return the JWS as flattened JSON.
 
- * ```-G, --general, --json, --JSON``` - return the JWS in the full JSON format.
+  * ```-G, --general, --json, --JSON``` - return the JWS in the full JSON format.
 
- * ```-i, --issuer ISSUER``` - the issuer of the JWS (probably used by the audience)
+  * ```-i, --issuer ISSUER``` - the issuer of the JWS (probably used by the audience)
 
- * ```-j, --jwks, --keystore KEYSTORE``` - the ```KEYSTORE``` that contains the singing keys.
+  * ```-j, --jwks, --keystore KEYSTORE``` - the ```KEYSTORE``` that contains the singing keys.
 
- * ```-k, --kid KEYID``` - the key id in the key store that this operation should use. This MUST be a private key.
+  * ```-k, --kid KEYID``` - the key id in the key store that this operation should use. This MUST be a private key.
 
- * ```-l, --alg JWA``` - the signing algorithm (e.g., ```HS256```).
+  * ```-l, --alg JWA``` - the signing algorithm (e.g., ```HS256```).
 
- * ```-N, --no-reference``` - indicates that the header must not contain a reference to the key.
+  * ```-N, --no-reference``` - indicates that the header must not contain a reference to the key.
 
- * ```-p, --payload``` - indicates to load a payload file. If no payload filename has been passed, then ```sign``` will load the payload from ```STDIN```.
+  * ```-p, --payload``` - indicates to load a payload file. If no payload filename has been passed, then ```sign``` will load the payload from ```STDIN```.
 
- * ```-x, --exp TIMEOUT``` - add a validity timeout in seconds from now.
+  * ```-x, --exp TIMEOUT``` - add a validity timeout in seconds from now.
 
- * ```-b, --beauty``` - pretty print JSON
+  * ```-b, --beauty``` - pretty print JSON
 
 ### verify
 
