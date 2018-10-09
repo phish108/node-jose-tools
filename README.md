@@ -18,6 +18,7 @@ signed and encrypted variants.
   - [listkeys](#listkeys) - list the key ids for all keys in a jwks
   - [findkey](#findkey) - find a kid in a jwks
   - [rmkey](#rmkey) - remove a kid from a jwks
+  - [thumbprint](#thumbprint) - generate the thumbprint for a key
   - [info](#info) - return basic information about a JWT without processing it
   - [sign](#sign) - creates and signs a JWS for a given payload
   - [verify](#verify) - verifies a JWS and return the payload
@@ -59,6 +60,7 @@ The following tools are supported:
  - [listkeys](#listkeys) - list the key ids for all keys in a jwks
  - [findkey](#findkey) - find a kid in a jwks
  - [rmkey](#rmkey) - remove a kid from a jwks
+ - [thumbprint](#thumbprint) - generate the thumbprint for a key
  - [info](#info) - return basic information about a JWT without processing it
  - [sign](#sign) - creates and signs a JWS for a given payload
  - [verify](#verify) - verifies a JWS and return the payload
@@ -151,12 +153,14 @@ lists all key ids in a given key store.
 SYNOPSIS
 
 ```
-> jose listkeys -j KEYSTORE
+> jose listkeys -j KEYSTORE [-b]
 ```
 
-The tool accepts the ```-j```, ```--jwks```, and ```--keystore``` parameters. If no key store is
-provided, then ```listkeys``` will try to read the key store from ```STDIN```.
-The key store must be provided in JWKS format.
+The tool accepts the ```-j```, ```--jwks```, and ```--keystore``` parameters. If
+no key store is provided, then ```listkeys``` will try to read the key store
+from ```STDIN```. The key store must be provided in JWKS format.
+
+The result will be a JSON array that contains the key ids.
 
 ### findkey
 
@@ -218,6 +222,30 @@ be provided in a separate line of the ```KEYID```-string. If no ```KEYID``` is p
 By default ```rmkey``` returns the updated key store on ```STDOUT```. If ```-j, --jwks``` or ```--keystore``` is provided, then the ```-U``` flag will overwrite the provided key store.
 
 Make sure that you make a copy of your original key store if you use the ```-U``` flag.
+
+### thumbprint
+
+generate the thumbprint for a key
+
+SYNOPSIS
+
+```
+jose thumbprint [-s SHASIZE | --sha SHASIZE] [-U --update [-b --beauty -p --private]] [-k|--key] [JWKSTRING]
+```
+
+Prints the thumbprint for the provided ```JWKSTRING``` and ```SHASIZE```.
+
+If no key is provided, then ```thumbprint``` reads the key from ```STDIN```.
+
+The ```SHASIZE``` can be either ```1```, ```256```, ```384```, or ```512```. Default SHASIZE is 1.
+
+If ```-U``` or ```--update``` are present, then the tool will update the key id
+to the new thumbprint and return the updated key. In this case the ```-b```
+or ```--beauty``` option will beautify the key for readability, and the tool
+accepts the ```-p``` or ```--private``` option. If this option is not present,
+then the key will only contain the public components. In order to get all key
+components of the initial key passing ```-p``` or ```--private``` might be
+useful. This option has no effect if the initial key was a public key.
 
 ### info
 
@@ -412,15 +440,17 @@ Again, use the ```-U``` to store the extended key store into ```mykeystore.jwks`
 ### List the key ids for all keys in a keystore
 
 ```
-> jose listkeys example.jwks
+> jose listkeys -b -j example.jwks
 ```
 
 This will print one key id per line, so the result will be:
 
 ```
-foobar
-barfoo
-foorsa
+[
+   "foobar",
+   "barfoo",
+   "foorsa"
+]
 ```
 
 ### Remove keys from a keystore
