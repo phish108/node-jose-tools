@@ -79,7 +79,7 @@ adds a key to a key store and returns the JWK
 SYNOPSIS:
 
 ```
-> jose addkey [-q -U -C -b --update --quiet --create --beauty] [-j KEYSTORE] [KEYFILE ...]
+> jose addkey [-q -U -C -b --update --quiet --create --beautify] [-j KEYSTORE] [KEYFILE ...]
 ```
 
 Use this tool for adding keys to a key store. If no key file is provided,
@@ -100,7 +100,7 @@ The following options and flags are supported:
 
  * ```-U, --update``` - updates the provided key store.
 
- * ```-b, --beauty``` - pretty print JSON
+ * ```-b, --beautify``` - pretty print JSON
 
 ### newkey
 
@@ -140,7 +140,7 @@ The following parameters are supported:
 
  * ```-d, --dh, --OKP, --okp``` - alternative for --type okp (RFC8037 D&H keypairs)
 
- * ```-b, --beauty``` - pretty print JSON
+ * ```-b, --beautify``` - pretty print JSON
 
  Note that ```oct``` require a minimum key size of 256 bit and RSA-keys require a
  minimum key size of 2048 bit.
@@ -168,7 +168,7 @@ finds a key id in a key store and returns the JWK
 SYNOPSIS:
 
 ```
-> jose findkey [-q -r -k -p -b --cnfkey --cnfref --public --quiet --beauty] [-j KEYSTORE] KEYID
+> jose findkey [-q -r -k -p -b --cnfkey --cnfref --public --quiet --beautify] [-j KEYSTORE] KEYID
 ```
 
 The tool ```findkey``` finds and returns a key from a key store. If the key is present, then
@@ -190,7 +190,7 @@ The following options are accepted for manipulating the output.
 
  * ```-r, --cnfref``` - returns a RFC7800 confirmation key reference. This will throw an error, if the keyid does not refer to a private key.
 
- * ```-b, --beauty``` - pretty print JSON
+ * ```-b, --beautify``` - pretty print JSON
 
 If no key store is provided, ```findkey``` will load the the key store from ```STDIN```,
 this allows to pipe directly from the ```addkey``` tool.
@@ -202,7 +202,7 @@ removes a key with the provided key id from the provided key store and returns i
 SYNOPSIS
 
 ```
-> jose rmkey KEYID [-j KEYSTORE] [-U --update -q --quiet -b --beauty]
+> jose rmkey KEYID [-j KEYSTORE] [-U --update -q --quiet -b --beautify]
 ```
 
 The tool ```rmkey``` allows to remove multiple keys in one got. In this case each key id must
@@ -216,7 +216,7 @@ be provided in a separate line of the ```KEYID```-string. If no ```KEYID``` is p
 
  * ```-U, --update``` - updates the provided key store if ```-j, --jwks```, or ```--keystore``` is present.
 
- * ```-b, --beauty``` - pretty print JSON
+ * ```-b, --beautify``` - pretty print JSON
 
 By default ```rmkey``` returns the updated key store on ```STDOUT```. If ```-j, --jwks``` or ```--keystore``` is provided, then the ```-U``` flag will overwrite the provided key store.
 
@@ -229,7 +229,7 @@ generate the thumbprint for a key
 SYNOPSIS
 
 ```
-jose thumbprint [-s SHASIZE | --sha SHASIZE] [-U --update [-b --beauty -p --private]] [-k|--key] [JWKSTRING]
+jose thumbprint [-s SHASIZE | --sha SHASIZE] [-U --update [-b --beautify -p --private]] [-k|--key] [JWKSTRING]
 ```
 
 Prints the thumbprint for the provided ```JWKSTRING``` and ```SHASIZE```.
@@ -240,7 +240,7 @@ The ```SHASIZE``` can be either ```1```, ```256```, ```384```, or ```512```. Def
 
 If ```-U``` or ```--update``` are present, then the tool will update the key id
 to the new thumbprint and return the updated key. In this case the ```-b```
-or ```--beauty``` option will beautify the key for readability, and the tool
+or ```--beautify``` option will beautify the key for readability, and the tool
 accepts the ```-p``` or ```--private``` option. If this option is not present,
 then the key will only contain the public components. In order to get all key
 components of the initial key passing ```-p``` or ```--private``` might be
@@ -301,7 +301,7 @@ The following parameters are accepted.
 
   * ```-x, --exp TIMEOUT``` - add a validity timeout in seconds from now.
 
-  * ```-b, --beauty``` - pretty print JSON
+  * ```-b, --beautify``` - pretty print JSON
 
 ### verify
 
