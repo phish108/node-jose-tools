@@ -272,7 +272,7 @@ creates a signed JWS token.
 SYNOPSIS:
 
 ```
-> jose sign -j KEYSTORE -l ALG -k KEYID -i ISSUER -a AUDIENCE [FLAGS] [-p [PAYLOADFILE]]
+> jose sign -j KEYSTORE -l ALG -k KEYID -i ISSUER -a AUDIENCE [FLAGS] [-p [PAYLOADFILE]] [--header claim=value]
 ```
 
 One can pass a payload via ```STDIN``` to the ```sign``` tool (e.g., the output of ```findkey```).
@@ -303,6 +303,8 @@ The following parameters are accepted.
 
   * ```-b, --beautify``` - pretty print JSON
 
+  * ```--header claim=value``` - adds an extra claim to the protected header. It is possible to pass this option multiple times to add all extra headers. This option parses JSON values and adds them correctly, in this case appropriate quote are required.
+
 ### verify
 
 verifies a signed JWS token and returns the payload
@@ -310,7 +312,7 @@ verifies a signed JWS token and returns the payload
 SYNOPSIS:
 
 ```
-> jose verify -j KEYSTORE -i ISSUER -a AUDIENCE
+> jose verify -j KEYSTORE -i ISSUER -a AUDIENCE [--alg ALLOWEDALGORITHM] [--noalg FORBIDDENALGORITHM]
 ```
 
 One can pass a payload via ```STDIN``` to the ```verify``` tool (e.g., the output of ```sign```).
@@ -323,6 +325,10 @@ The following parameters are accepted.
 
  * ```-j, --jwks, --keystore KEYSTORE``` - the ```KEYSTORE``` file that contains the singing keys.
 
+ * ```--alg ALLOWEDALGORITHM``` - allow a signing algorithm. This is typically used in combination with ```--noalg``` options. It is possible to use the ```node-jose``` algorithm wildcards. To allow multiple algorithms, use this option multiple times.
+
+ * ```--noalg FORBIDDENALGORITHM``` - forbid a signing algorithm. It is possible to use the ```node-jose``` algorithm wildcards. To forbid multiple algorithms, use this option multiple times.
+
 ### encrypt
 
 creates a JWE token.
@@ -330,7 +336,7 @@ creates a JWE token.
 SYNOPSIS:
 
 ```
-> jose encrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-p [PAYLOADFILE]]
+> jose encrypt -j KEYSTORE -l ALG -e ENC -k KEYID [-p [PAYLOADFILE]] [--header claim=value]
 ```
 
 One can pass a payload via ```STDIN``` to the ```encrypt``` tool (e.g., the output of ```findkey```).
@@ -352,6 +358,8 @@ The following parameters are accepted.
  * ```-a, --aud AUDIENCE``` - OPTIONAL the audience of the token. ```encrypt``` tries to determine the audience from the payload (e.g. if a JWS is passed). If no audience is given and ```encrypt``` cannot determine the ```aud``` automatically , then the tools ends with an error.
 
   * ```-p, --payload``` - indicate that the last argument is a filename and not the actual payload. If this flag is used and no additional argument is provided the, then the payload is read from ```STDIN```.
+
+  * ```--header claim=value``` - adds an extra claim to the protected header. It is possible to pass this option multiple times to add all extra headers. This option parses JSON values and adds them correctly, in this case appropriate quote are required.
 
 ### decrypt
 
