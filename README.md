@@ -140,6 +140,8 @@ The following parameters are supported:
 
  * ```-d, --dh, --OKP, --okp``` - alternative for --type okp (RFC8037 D&H keypairs)
 
+ * ```-a, --alg ALG``` - add the alg-claim to the key, for using a key for specific algorithms.
+
  * ```-b, --beautify``` - pretty print JSON
 
  Note that ```oct``` require a minimum key size of 256 bit and RSA-keys require a
