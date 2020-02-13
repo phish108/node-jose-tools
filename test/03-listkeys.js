@@ -5,5 +5,5 @@ const chai = require("chai");
 const expect = chai.expect;
 
 describe( "listkeys tool tests", function() {
-
+    it("list all keys", async () => {});
 } );
