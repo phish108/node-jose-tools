@@ -30,7 +30,7 @@ if (!file.isFile()) {
 
 
 require(`./lib/${tool}.js`)(process.argv.slice(3))
-    .then(() => process.exit(0))
+    .then((data) => process.stdout.write(data, "utf8"))
     .catch((err) => {
         // process.stderr.write(err.message);
         console.log(err); // eslint-disable-line no-console
