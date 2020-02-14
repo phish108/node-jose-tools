@@ -43,7 +43,7 @@ describe( "newkey tool tests", function() {
 
         let result = "";
 
-        try { 
+        try {
             result = await tool(["--type", "rsa"]);
         }
         catch (err) {
@@ -54,11 +54,12 @@ describe( "newkey tool tests", function() {
         expect(counter).to.be.equal(0);
         expect(result.length).not.equal(0);
 
-        jsonKey = JSON.parse(result);
+        const jsonKey = JSON.parse(result);
+
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("kty");
         expect(jsonKey.kty).to.be.equal("RSA");
-        
+
         expect(jsonKey).to.haveOwnProperty("kid");
 
         expect(jsonKey).to.haveOwnProperty("e");
@@ -76,7 +77,7 @@ describe( "newkey tool tests", function() {
 
         let result = "";
 
-        try { 
+        try {
             result = await tool(["--type", "rsa", "-K"]);
         }
         catch (err) {
@@ -87,7 +88,8 @@ describe( "newkey tool tests", function() {
         expect(counter).to.be.equal(0);
         expect(result.length).not.equal(0);
 
-        jsonKey = JSON.parse(result);
+        const jsonKey = JSON.parse(result);
+
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("keys");
         expect(jsonKey.keys).to.be.an("array");
@@ -101,7 +103,7 @@ describe( "newkey tool tests", function() {
 
         let result = "";
 
-        try { 
+        try {
             result = await tool(["--type", "rsa", "-K", "-j", "examples/example-priv.jwks"]);
         }
         catch (err) {
@@ -112,7 +114,8 @@ describe( "newkey tool tests", function() {
         expect(counter).to.be.equal(0);
         expect(result.length).not.equal(0);
 
-        jsonKey = JSON.parse(result);
+        const jsonKey = JSON.parse(result);
+
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("keys");
         expect(jsonKey.keys).to.be.an("array");
@@ -122,10 +125,8 @@ describe( "newkey tool tests", function() {
     it("new rsa (bad) 1024 key ", async () => {
         let counter = 0;
 
-        let result = "";
-
-        try { 
-            result = await tool(["--type", "rsa", "--size", "1024"]);
+        try {
+            await tool(["--type", "rsa", "--size", "1024"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -135,13 +136,13 @@ describe( "newkey tool tests", function() {
 
         expect(counter).to.be.equal(1);
     });
-    
+
     it("new rsa 4096 key ", async () => {
         let counter = 0;
 
         let result = "";
 
-        try { 
+        try {
             result = await tool(["--type", "rsa", "--size", "4096"]);
         }
         catch (err) {
@@ -152,11 +153,12 @@ describe( "newkey tool tests", function() {
         expect(counter).to.be.equal(0);
         expect(result.length).not.equal(0);
 
-        jsonKey = JSON.parse(result);
+        const jsonKey = JSON.parse(result);
+
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("kty");
         expect(jsonKey.kty).to.be.equal("RSA");
-        
+
         expect(jsonKey).to.haveOwnProperty("kid");
 
         expect(jsonKey).to.haveOwnProperty("e");
@@ -174,7 +176,7 @@ describe( "newkey tool tests", function() {
 
         let result = "";
 
-        try { 
+        try {
             result = await tool(["--type", "oct", "--size", "256"]);
         }
         catch (err) {
@@ -185,7 +187,8 @@ describe( "newkey tool tests", function() {
         expect(counter).to.be.equal(0);
         expect(result.length).not.equal(0);
 
-        jsonKey = JSON.parse(result);
+        const jsonKey = JSON.parse(result);
+
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("kty");
         expect(jsonKey.kty).to.be.equal("oct");
@@ -198,7 +201,7 @@ describe( "newkey tool tests", function() {
 
         let result = "";
 
-        try { 
+        try {
             result = await tool(["--type", "ec", "--size", "256"]);
         }
         catch (err) {
@@ -209,7 +212,8 @@ describe( "newkey tool tests", function() {
         expect(counter).to.be.equal(0);
         expect(result.length).not.equal(0);
 
-        jsonKey = JSON.parse(result);
+        const jsonKey = JSON.parse(result);
+
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("kty");
         expect(jsonKey.kty).to.be.equal("EC");
@@ -223,10 +227,8 @@ describe( "newkey tool tests", function() {
     it("new oct invalidly small key ", async () => {
         let counter = 0;
 
-        let result = "";
-
-        try { 
-            result = await tool(["--type", "oct", "--size", "128"]);
+        try {
+            await tool(["--type", "oct", "--size", "128"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -240,10 +242,8 @@ describe( "newkey tool tests", function() {
     it("new okp key ", async () => {
         let counter = 0;
 
-        let result = "";
-
-        try { 
-            result = await tool(["--type", "okp", "--size", "448"]);
+        try {
+            await tool(["--type", "okp", "--size", "448"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -267,7 +267,7 @@ describe( "newkey tool tests", function() {
 
         let result = "";
 
-        try { 
+        try {
             result = await tool(["--type", "oct", "--size", "256", "-b"]);
         }
         catch (err) {
@@ -277,10 +277,10 @@ describe( "newkey tool tests", function() {
 
         expect(counter).to.be.equal(0);
         expect(result.length).not.equal(0);
-        
+
         let lines = result.split(/\r\n|\r|\n/).length;
 
-        expect(lines).to.be.equal(6)
+        expect(lines).to.be.equal(6);
     });
 
     it("new key for signing", async () => {
@@ -288,7 +288,7 @@ describe( "newkey tool tests", function() {
 
         let result = "";
 
-        try { 
+        try {
             result = await tool(["--type", "oct", "--size", "256", "--use", "sign"]);
         }
         catch (err) {
@@ -298,19 +298,21 @@ describe( "newkey tool tests", function() {
 
         expect(counter).to.be.equal(0);
         expect(result.length).not.equal(0);
-        jsonKey = JSON.parse(result);
+
+        const jsonKey = JSON.parse(result);
+
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("use");
         expect(jsonKey.use).to.be.equal("sig");
     });
 
-    
+
     it("new key for encrypting", async () => {
         let counter = 0;
 
         let result = "";
 
-        try { 
+        try {
             result = await tool(["--type", "oct", "--size", "256", "--use", "enc"]);
         }
         catch (err) {
@@ -320,7 +322,9 @@ describe( "newkey tool tests", function() {
 
         expect(counter).to.be.equal(0);
         expect(result.length).not.equal(0);
-        jsonKey = JSON.parse(result);
+
+        const jsonKey = JSON.parse(result);
+
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("use");
         expect(jsonKey.use).to.be.equal("enc");
@@ -329,15 +333,13 @@ describe( "newkey tool tests", function() {
     it("new key for bad usage", async () => {
         let counter = 0;
 
-        let result = "";
-
-        try { 
-            result = await tool(["--type", "oct", "--size", "256", "--use", "baz"]);
+        try {
+            await tool(["--type", "oct", "--size", "256", "--use", "baz"]);
         }
         catch (err) {
             // this should complain about a missing type.
             counter = 1;
-            expect(err.message).to.be.equal("unknown use baz")
+            expect(err.message).to.be.equal("unknown use baz");
         }
 
         expect(counter).to.be.equal(1);
