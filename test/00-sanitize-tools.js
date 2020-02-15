@@ -6,19 +6,19 @@ const expect = chai.expect;
 
 
 describe( "sanitize tool names", function() {
-    it("valid tool name", async () => {
+    it.skip("valid tool name", async () => {
 
     });
 
-    it("empty tool name", async () => {
+    it.skip("empty tool name", async () => {
 
     });
 
-    it("dotted tool name", async () => {
+    it.skip("dotted tool name", async () => {
 
     });
 
-    it("pathlike tool name", async () => {
+    it.skip("pathlike tool name", async () => {
 
     });
 });
