@@ -4,6 +4,9 @@
 const chai = require("chai");
 const expect = chai.expect;
 
+const tool = require("../lib/thumbprint");
+// const findtool = require("../lib/findkey");
+
 describe( "thumbprint tool tests", function() {
     it.skip("thumbprint key sha1", async () => {});
     it.skip("thumbprint key sha256", async () => {});
@@ -12,7 +15,7 @@ describe( "thumbprint tool tests", function() {
 
     it.skip("thumbprint private key", async () => {});
     it.skip("thumbprint missing kid", async () => {});
-    it.skip("thumbprint private key, which is actually public", async () => {});
+    it.skip("thumbprint private key, that is actually public", async () => {});
 
     it.skip("thumbprint with bad hashing function", async () => {});
 
