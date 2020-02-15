@@ -2,6 +2,8 @@
 
 Swiss-army knife tool for [node-jose](https://github.com/cisco/node-jose).
 
+![Tests](https://github.com/phish108/node-jose-tools/workflows/Node.js%20CI/badge.svg)
+
 It provides the ```jose``` command for
 [JSON web-key (JWK)](https://tools.ietf.org/html/rfc7517) key and key store
 management as well as for handling
