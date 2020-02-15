@@ -30,7 +30,7 @@ describe( "listkeys tool tests", function() {
         let result, count = 0
 
         try { 
-            result = await tool(["-j", "examples/empty.jwks"]);
+            result = await tool(["-j", "test/files/empty.jwks"]);
         }
         catch (err) {
             count++;
@@ -49,7 +49,7 @@ describe( "listkeys tool tests", function() {
         let result, count = 0
 
         try { 
-            result = await tool(["-j", "examples/non-existant.jwks"]);
+            result = await tool(["-j", "test/files/non-existant.jwks"]);
         }
         catch (err) {
             count++;
