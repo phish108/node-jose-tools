@@ -4,6 +4,8 @@
 const chai = require("chai");
 const expect = chai.expect;
 
+const tool = require("../lib/verify");
+
 describe( "verify tool tests", function() {
     it.skip("verify with key", async () => {});
     it.skip("verify with kid", async () => {});
