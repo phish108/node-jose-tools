@@ -8,6 +8,8 @@ const tool = require("../lib/verify");
 const signtool = require("../lib/sign");
 
 describe( "verify tool tests", function() {
+    this.timeout(3000);
+
     const signstore = "examples/example-priv.jwks";
     const verifystore = "examples/example-pub.jwks";
 
@@ -26,59 +28,137 @@ describe( "verify tool tests", function() {
         expect(result).to.be.undefined;
     });
 
-    it.skip("verify with key", async () => {
+    it("verify with key", async () => {
+        // first prepare the signed jws
+        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256"]);
 
+        let result, count = 0;
+
+        try {
+            result = await tool(["-j", verifystore, jws]);
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.be.equal(0);
+        expect(result).to.be.an("string");
+
+        const payload = JSON.parse(result);
+
+        expect(payload).to.own.property("iat");
     });
 
-    it.skip("verify with kid", async () => {
-        
+    it("verify aud header", async () => {
+        // first prepare the signed jws
+        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-a", "foo"]);
+
+        let result, count = 0;
+
+        try {
+            result = await tool(["-j", verifystore, "-a", "foo", jws]);
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.be.equal(0);
+        expect(result).to.be.an("string");
+
+        const payload = JSON.parse(result);
+
+        expect(payload).to.own.property("iat");
+        expect(payload).to.own.property("aud", "foo");
     });
 
-    it.skip("verify without key", async () => {
+    it("verify iss header", async () => {
+        // first prepare the signed jws
+        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-i", "foo"]);
 
+        let result, count = 0;
+
+        try {
+            result = await tool(["-j", verifystore, "-i", "foo", jws]);
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.be.equal(0);
+        expect(result).to.be.an("string");
+
+        const payload = JSON.parse(result);
+
+        expect(payload).to.own.property("iat");
+        expect(payload).to.own.property("iss", "foo");
     });
 
-    it.skip("verify aud header", async () => {
+    it("verify sub header", async () => {
+        // first prepare the signed jws
+        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-s", "foo"]);
 
+        let result, count = 0;
+
+        try {
+            result = await tool(["-j", verifystore, "-s", "foo", jws]);
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.be.equal(0);
+        expect(result).to.be.an("string");
+
+        const payload = JSON.parse(result);
+
+        expect(payload).to.own.property("iat");
+        expect(payload).to.own.property("sub", "foo");
     });
 
-    it.skip("verify iss header", async () => {
+    it("verify exp times header", async () => {
+        // first prepare the signed jws
+        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-s", "foo", "-x", "5"]);
 
+        let result, count = 0;
+
+        try {
+            result = await tool(["-j", verifystore, "-s", "foo", jws]);
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.be.equal(0);
+        expect(result).to.be.an("string");
+
+        // console.log(result);
+        const payload = JSON.parse(result);
+
+        expect(payload).to.own.property("iat");
+        expect(payload).to.own.property("exp");
+        expect(payload).to.own.property("sub", "foo");
     });
 
-    it.skip("verify sub header", async () => {
+    it("verify outdated exp times header", async () => {
+        // first prepare the signed jws
+        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-s", "foo", "-x", "1"]);
 
-    });
+        let count = 0;
 
-    it.skip("verify iat times header", async () => {
+        await new Promise((result) => setTimeout(result, 2000));
+        try {
+            await tool(["-j", verifystore, "-s", "foo", jws]);
+        }
+        catch (err) {
+            count += 1;
+            expect(err.message).to.equal("token is too old");
+        }
 
-    });
-
-    it.skip("verify exp times header", async () => {
-
-    });
-
-    it.skip("verify aud payload", async () => {
-
-    });
-
-    it.skip("verify iss payload", async () => {
-
-    });
-
-    it.skip("verify sub payload", async () => {
-
-    });
-
-    it.skip("verify iat times payload", async () => {
-
-    });
-
-    it.skip("verify exp times payload", async () => {
-
-    });
-
-    it.skip("determine alg", async () => {
-
+        expect(count).to.be.equal(1);
     });
 } );
