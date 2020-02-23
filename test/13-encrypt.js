@@ -14,8 +14,9 @@ describe( "encrypt tool tests", function() {
 
     it("encrypt without parameters", async () => {
         let count = 0;
+
         try {
-            await tool([])
+            await tool([]);
         }
         catch (err) {
             count += 1;
@@ -27,6 +28,7 @@ describe( "encrypt tool tests", function() {
 
     it("encrypt for aud with kid with alg and enc missing", async () => {
         let result, count = 0;
+
         try {
             result = await tool(["-k", "foorsa", "-j", pubkeys, "hello world"]);
         }
@@ -44,12 +46,13 @@ describe( "encrypt tool tests", function() {
         const key = "foobar";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar", 
-                "-k", key, 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", key,
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -64,7 +67,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         //console.log(JSON.stringify(header));
@@ -74,7 +77,7 @@ describe( "encrypt tool tests", function() {
         expect(header).to.ownProperty("alg", alg);
         expect(header).to.ownProperty("kid", key);
         expect(header).to.ownProperty("enc", "A256GCM");
-        
+
     });
 
     it("encrypt for aud with kid and alg=dir auto enc with 512-bit key", async () => {
@@ -82,12 +85,13 @@ describe( "encrypt tool tests", function() {
         const key = "barfoo";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar", 
-                "-k", key, 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", key,
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -102,7 +106,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         // console.log(JSON.stringify(header));
@@ -113,20 +117,21 @@ describe( "encrypt tool tests", function() {
         expect(header).to.ownProperty("kid", key);
         expect(header).to.ownProperty("enc", "A256CBC-HS512");
     });
-    
+
     it("encrypt for aud with kid and alg=dir explicit enc with 256-bit key", async () => {
         const alg = "dir";
         const enc = "A256GCM";
-        const key = "foobar"
+        const key = "foobar";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                // "-k", "foobar", 
-                "-k", key, 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", key,
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -141,7 +146,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         // console.log(JSON.stringify(header));
@@ -156,16 +161,17 @@ describe( "encrypt tool tests", function() {
     it("encrypt for aud with kid and alg=dir explicit enc with 256-bit key", async () => {
         const alg = "dir";
         const enc = "A128CBC-HS256";
-        const key = "foobar"
+        const key = "foobar";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                // "-k", "foobar", 
-                "-k", key, 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", key,
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -180,7 +186,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         // console.log(JSON.stringify(header));
@@ -195,16 +201,17 @@ describe( "encrypt tool tests", function() {
     it("encrypt for aud with kid and alg=dir explicit enc with 512-bit key", async () => {
         const alg = "dir";
         const enc = "A256CBC-HS512";
-        const key = "barfoo"
+        const key = "barfoo";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                // "-k", "foobar", 
-                "-k", key, 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", key,
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -219,7 +226,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         // console.log(JSON.stringify(header));
@@ -234,23 +241,24 @@ describe( "encrypt tool tests", function() {
     it("encrypt for aud with kid and alg=dir explicit enc with 512-bit key", async () => {
         const alg = "dir";
         const enc = "A256GCM";
-        const key = "barfoo"
+        const key = "barfoo";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                // "-k", "foobar", 
-                "-k", key, 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", key,
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
         catch (err) {
             count += 1;
             // console.log(err.message);
-            expect(err.message).to.equal("unsupported algorithm")
+            expect(err.message).to.equal("unsupported algorithm");
         }
 
         // console.log(result);
@@ -258,26 +266,27 @@ describe( "encrypt tool tests", function() {
     });
 
     it("encrypt with enc", async () => {
-// fail without alg
+        // fail without alg
         const alg = "A256KW"; // because we use a key enc, node-jose is choosing this for us
         const enc = "A256GCM";
-        const key = "foobar"
+        const key = "foobar";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 // "-l", alg,
                 "-e", enc,
-                // "-k", "foobar", 
-                "-k", key, 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", key,
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
         catch (err) {
             count += 1;
             // console.log(err.message);
-            expect(err.message).to.equal("unsupported algorithm")
+            expect(err.message).to.equal("unsupported algorithm");
         }
 
         // console.log(result);
@@ -286,7 +295,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).not.to.have.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         // console.log(JSON.stringify(header));
@@ -302,12 +311,13 @@ describe( "encrypt tool tests", function() {
         const alg = "dir";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar", 
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -325,12 +335,13 @@ describe( "encrypt tool tests", function() {
         const alg = "RSA1_5";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar", 
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -361,12 +372,13 @@ describe( "encrypt tool tests", function() {
         const alg = "RSA-OAEP";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar", 
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -397,12 +409,13 @@ describe( "encrypt tool tests", function() {
         const alg = "RSA-OAEP-256";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar", 
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -435,12 +448,13 @@ describe( "encrypt tool tests", function() {
         const enc = "A128CBC-HS256";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -455,7 +469,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.not.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         // console.log(JSON.stringify(header));
@@ -472,12 +486,13 @@ describe( "encrypt tool tests", function() {
         const enc = "A256CBC-HS512";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -492,7 +507,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.not.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         // console.log(JSON.stringify(header));
@@ -509,12 +524,13 @@ describe( "encrypt tool tests", function() {
         const enc = "A256GCM";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -529,7 +545,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.not.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         // console.log(JSON.stringify(header));
@@ -546,12 +562,13 @@ describe( "encrypt tool tests", function() {
         const enc = "A128GCM";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -566,7 +583,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.not.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         // console.log(JSON.stringify(header));
@@ -582,13 +599,14 @@ describe( "encrypt tool tests", function() {
         const alg = "dir";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-G",
-                // "-k", "foobar", 
-                "-k", "barfoo", 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", "barfoo",
+                "-j", pubkeys,
                 "hello world",
                 // "-b"
             ]);
@@ -628,13 +646,14 @@ describe( "encrypt tool tests", function() {
         const alg = "dir";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
                 "-F",
-                // "-k", "foobar", 
-                "-k", "barfoo", 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                "-k", "barfoo",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -655,7 +674,7 @@ describe( "encrypt tool tests", function() {
         expect(token).to.own.property("iv");
         expect(token).to.own.property("ciphertext");
         expect(token).to.own.property("tag");
-        
+
         expect(token).not.to.own.property("recipients");
         // expect(token.recipients).to.be.an("array");
 
@@ -675,13 +694,14 @@ describe( "encrypt tool tests", function() {
         const enc = "A128GCM";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-G",
                 "-l", alg,
                 "-e", enc,
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world",
             ]);
         }
@@ -702,7 +722,7 @@ describe( "encrypt tool tests", function() {
         expect(token).to.own.property("iv");
         expect(token).to.own.property("ciphertext");
         expect(token).to.own.property("tag");
-        
+
         expect(token).to.own.property("recipients");
         expect(token.recipients).to.be.an("array");
         expect(token.recipients[0]).to.own.property("encrypted_key");
@@ -719,19 +739,20 @@ describe( "encrypt tool tests", function() {
         expect(header).to.ownProperty("enc", enc);
     });
 
-    
+
     it("encrypt to flattened with rsa and enc", async () => {
         const alg = "RSA-OAEP-256";
         const enc = "A128GCM";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-F",
                 "-l", alg,
                 "-e", enc,
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world",
                 "-b"
             ]);
@@ -754,9 +775,9 @@ describe( "encrypt tool tests", function() {
         expect(token).to.own.property("ciphertext");
         expect(token).to.own.property("tag");
         expect(token).to.own.property("encrypted_key");
-        
+
         expect(token).not.to.own.property("recipients");
-        
+
         const header = JSON.parse(base64.decode(token.protected));
 
         // console.log(JSON.stringify(header));
@@ -772,12 +793,13 @@ describe( "encrypt tool tests", function() {
         const alg = "dir";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar", 
-                // "-k", "foorsa", 
-                "-j", pubkeys, 
+                // "-k", "foobar",
+                // "-k", "foorsa",
+                "-j", pubkeys,
                 "hello world"
             ]);
         }
@@ -792,7 +814,7 @@ describe( "encrypt tool tests", function() {
 
         expect(parts).to.have.length(5);
         expect(parts[1]).to.have.length(0);
-        
+
         const header = JSON.parse(base64.decode(parts[0]));
 
         //console.log(JSON.stringify(header));
@@ -810,13 +832,14 @@ describe( "encrypt tool tests", function() {
         const enc = "A128GCM";
 
         let result, count = 0;
+
         try {
             result = await tool([
                 "-F",
                 "-l", alg,
                 "-e", enc,
-                "-k", "foorsa", 
-                "-j", pubkeys, 
+                "-k", "foorsa",
+                "-j", pubkeys,
                 // "hello world",
             ]);
         }
@@ -838,9 +861,9 @@ describe( "encrypt tool tests", function() {
         expect(token).to.own.property("ciphertext");
         expect(token).to.own.property("tag");
         expect(token).to.own.property("encrypted_key");
-        
+
         expect(token).not.to.own.property("recipients");
-        
+
         const header = JSON.parse(base64.decode(token.protected));
 
         // console.log(JSON.stringify(header));

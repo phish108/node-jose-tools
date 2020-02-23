@@ -56,7 +56,7 @@ describe( "decrypt tool tests", function() {
             count += 1;
             console.log(err.message);
         }
-        
+
         expect(count).to.be.equal(0);
     });
 
