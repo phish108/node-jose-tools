@@ -238,4 +238,4 @@ describe( "decrypt tool tests", function() {
         expect(count).to.be.equal(0);
         expect(result).to.equal(payload);
     });
-} );
+});
