@@ -1,9 +1,11 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
+const fs = require("fs");
 const chai = require("chai");
 const expect = chai.expect;
 
+const newkeyTool = require("../lib/newkey");
 const encrypttool = require("../lib/encrypt");
 const tool = require("../lib/decrypt");
 
@@ -13,16 +15,21 @@ describe( "decrypt tool tests", function() {
     const tmpkeys = "test/files/tmp-keystore.jwks";
 
     // create temporary keystore and RSA and EC Keys
-    before(async () => {});
+    before(async () => {
+        await newkeyTool(["-r", "-U", "-j", tmpkeys, "-k", "foobaz"]);
+        // await newkeyTool(["-e", "-U", "-j", tmpkeys, "-k", "fecbar"]);
+    });
 
     // remove temporary keystore
-    after(async () => {});
+    after(() => {
+        fs.unlinkSync(tmpkeys);
+    });
 
     it("decrypt without parameters", async () => {
-        let result, token, count = 0;
+        let count = 0;
 
         try {
-            result = await tool([]);
+            await tool([]);
         }
         catch (err) {
             count += 1;
@@ -64,8 +71,8 @@ describe( "decrypt tool tests", function() {
 
     // for this test a temporary key store is needed
     it("decrypt with bad kid", async () => {
-        let result, token, count = 0;
-        const alg = "dir";
+        let token, count = 0;
+        const alg = "RSA-OAEP";
         const kid = "foobaz";
         const payload = "hello world";
 
@@ -77,14 +84,15 @@ describe( "decrypt tool tests", function() {
         ]);
 
         try {
-            result = await tool([
+            await tool([
                 "-j", prvkeys,
                 token
             ]);
         }
         catch (err) {
             count += 1;
-            console.log(err.message);
+            // console.log(err.message);
+            expect(err.message).to.equal("no key found");
         }
 
         expect(count).to.be.equal(1);
@@ -148,7 +156,7 @@ describe( "decrypt tool tests", function() {
     });
 
     it("rsa decrypt with kid to public key", async () => {
-        let result, token, count = 0;
+        let token, count = 0;
         const alg = "RSA-OAEP";
         const kid = "foorsa";
         const payload = "hello world";
@@ -161,7 +169,7 @@ describe( "decrypt tool tests", function() {
         ]);
 
         try {
-            result = await tool([
+            await tool([
                 "-j", pubkeys,
                 token
             ]);
