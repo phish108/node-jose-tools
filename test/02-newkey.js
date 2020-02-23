@@ -345,4 +345,32 @@ describe( "newkey tool tests", function() {
         expect(counter).to.be.equal(1);
     });
 
+    it("new key for encrypting with crafted kid", async () => {
+        let counter = 0;
+
+        let result = "";
+
+        try {
+            result = await tool([
+                "--type", "oct",
+                "--size", "256",
+                "--use", "enc",
+                "--kid", "octopus",
+            ]);
+        }
+        catch (err) {
+            // this should complain about a missing type.
+            counter = 1;
+        }
+
+        expect(counter).to.be.equal(0);
+        expect(result.length).not.equal(0);
+
+        const jsonKey = JSON.parse(result);
+
+        expect(jsonKey).to.be.an("object");
+        expect(jsonKey).to.haveOwnProperty("use");
+        expect(jsonKey.use).to.be.equal("enc");
+        expect(jsonKey.kid).to.be.equal("octopus");
+    });
 } );
