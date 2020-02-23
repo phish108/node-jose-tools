@@ -590,6 +590,7 @@ describe( "encrypt tool tests", function() {
                 "-k", "barfoo", 
                 "-j", pubkeys, 
                 "hello world",
+                // "-b"
             ]);
         }
         catch (err) {
