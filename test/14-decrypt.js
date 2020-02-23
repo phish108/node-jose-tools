@@ -57,7 +57,9 @@ describe( "decrypt tool tests", function() {
             console.log(err.message);
         }
 
+        // console.log(JSON.stringify(result));
         expect(count).to.be.equal(0);
+        expect(result).to.equal(payload);
     });
 
     // for this test a temporary key store is needed
@@ -113,6 +115,7 @@ describe( "decrypt tool tests", function() {
         }
 
         expect(count).to.be.equal(0);
+        expect(result).to.equal(payload);
     });
 
 
@@ -140,6 +143,7 @@ describe( "decrypt tool tests", function() {
         }
 
         expect(count).to.be.equal(0);
+        expect(result).to.equal("");
 
     });
 
@@ -164,10 +168,11 @@ describe( "decrypt tool tests", function() {
         }
         catch (err) {
             count += 1;
-            console.log(err.message);
+            // console.log(err.message);
+            expect(err.message).to.equal("no key found");
         }
 
-        expect(count).to.be.equal(0);
+        expect(count).to.be.equal(1);
     });
 
     it("enforce crit headers on the receiver", async () => {
@@ -195,6 +200,7 @@ describe( "decrypt tool tests", function() {
         }
 
         expect(count).to.be.equal(0);
+        expect(result).to.equal(payload);
     });
 
     it("include crit headers on the sender", async () => {
@@ -222,5 +228,6 @@ describe( "decrypt tool tests", function() {
         }
 
         expect(count).to.be.equal(0);
+        expect(result).to.equal(payload);
     });
 } );
