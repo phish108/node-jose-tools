@@ -18,21 +18,21 @@ describe( "decrypt tool tests", function() {
     // remove temporary keystore
     after(async () => {});
 
-    it.skip("decrypt without parameters", async () => {
+    it("decrypt without parameters", async () => {
         let result, token, count = 0;
 
         try {
-            result = tool([]);
+            result = await tool([]);
         }
         catch (err) {
             count += 1;
             expect(err.message).to.equal("no options provided");
         }
-        
+
         expect(count).to.be.equal(1);
     });
 
-    it.skip("dir decrypt with keystore", async () => {
+    it("dir decrypt with keystore", async () => {
         let result, token, count = 0;
         const alg = "dir";
         // const enc;
@@ -40,12 +40,16 @@ describe( "decrypt tool tests", function() {
         const payload = "hello world";
 
         token = await encrypttool([
-
+            "-j", prvkeys,
+            "-l", alg,
+            "-k", kid,
+            payload
         ]);
 
         try {
-            result = tool([
-                
+            result = await tool([
+                "-j", prvkeys,
+                token
             ]);
         }
         catch (err) {
@@ -57,19 +61,23 @@ describe( "decrypt tool tests", function() {
     });
 
     // for this test a temporary key store is needed
-    it.skip("decrypt with bad kid", async () => {
+    it("decrypt with bad kid", async () => {
         let result, token, count = 0;
         const alg = "dir";
         const kid = "foobaz";
         const payload = "hello world";
 
         token = await encrypttool([
-
+            "-j", tmpkeys,
+            "-l", alg,
+            "-k", kid,
+            payload
         ]);
 
         try {
-            result = tool([
-
+            result = await tool([
+                "-j", prvkeys,
+                token
             ]);
         }
         catch (err) {
@@ -80,19 +88,23 @@ describe( "decrypt tool tests", function() {
         expect(count).to.be.equal(1);
     });
 
-    it.skip("rsa decrypt", async () => {
+    it("rsa decrypt", async () => {
         let result, token, count = 0;
         const alg = "RSA-OAEP";
         const kid = "foorsa";
         const payload = "hello world";
 
         token = await encrypttool([
-
+            "-j", pubkeys,
+            "-l", alg,
+            "-k", kid,
+            payload
         ]);
 
         try {
-            result = tool([
-
+            result = await tool([
+                "-j", prvkeys,
+                token
             ]);
         }
         catch (err) {
@@ -104,19 +116,22 @@ describe( "decrypt tool tests", function() {
     });
 
 
-    it.skip("rsa decrypt without payload", async () => {
+    it("rsa decrypt without payload", async () => {
         let result, token, count = 0;
         const alg = "RSA-OAEP";
         const kid = "foorsa";
         // const payload = "hello world";
 
         token = await encrypttool([
-
+            "-j", pubkeys,
+            "-l", alg,
+            "-k", kid,
         ]);
 
         try {
-            result = tool([
-
+            result = await tool([
+                "-j", prvkeys,
+                token
             ]);
         }
         catch (err) {
@@ -128,19 +143,23 @@ describe( "decrypt tool tests", function() {
 
     });
 
-    it.skip("rsa decrypt with kid to public key", async () => {
+    it("rsa decrypt with kid to public key", async () => {
         let result, token, count = 0;
         const alg = "RSA-OAEP";
         const kid = "foorsa";
         const payload = "hello world";
 
         token = await encrypttool([
-
+            "-j", pubkeys,
+            "-l", alg,
+            "-k", kid,
+            payload
         ]);
 
         try {
-            result = tool([
-
+            result = await tool([
+                "-j", pubkeys,
+                token
             ]);
         }
         catch (err) {
@@ -151,19 +170,23 @@ describe( "decrypt tool tests", function() {
         expect(count).to.be.equal(0);
     });
 
-    it.skip("enforce crit headers on the receiver", async () => {
+    it("enforce crit headers on the receiver", async () => {
         let result, token, count = 0;
         const alg = "RSA-OAEP";
         const kid = "foorsa";
         const payload = "hello world";
 
         token = await encrypttool([
-
+            "-j", pubkeys,
+            "-l", alg,
+            "-k", kid,
+            payload
         ]);
 
         try {
-            result = tool([
-
+            result = await tool([
+                "-j", prvkeys,
+                token
             ]);
         }
         catch (err) {
@@ -174,19 +197,23 @@ describe( "decrypt tool tests", function() {
         expect(count).to.be.equal(0);
     });
 
-    it.skip("include crit headers on the sender", async () => {
+    it("include crit headers on the sender", async () => {
         let result, token, count = 0;
         const alg = "RSA-OAEP";
         const kid = "foorsa";
         const payload = "hello world";
 
         token = await encrypttool([
-
+            "-j", pubkeys,
+            "-l", alg,
+            "-k", kid,
+            payload
         ]);
 
         try {
-            result = tool([
-
+            result = await tool([
+                "-j", prvkeys,
+                token
             ]);
         }
         catch (err) {
