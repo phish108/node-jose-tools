@@ -340,4 +340,4 @@ describe( "info tool tests", function() {
         }
         expect(count).to.be.equal(1);
     });
-} );
+});
