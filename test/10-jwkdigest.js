@@ -229,7 +229,7 @@ describe( "digest tool tests", function() {
         let count = 0;
 
         try {
-            result = await tool([
+            await tool([
                 "-s", "sha128",
                 "hello world"
             ]);
@@ -246,7 +246,7 @@ describe( "digest tool tests", function() {
         let count = 0;
 
         try {
-            result = await tool([
+            await tool([
                 "-s", "128",
                 "hello world"
             ]);
