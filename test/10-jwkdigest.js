@@ -33,7 +33,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "256", 
+                "-s", "256",
                 "hello world"
             ]);
         }
@@ -55,7 +55,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "384", 
+                "-s", "384",
                 "hello world"
             ]);
         }
@@ -77,7 +77,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "512", 
+                "-s", "512",
                 "hello world"
             ]);
         }
@@ -99,7 +99,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "sha-256", 
+                "-s", "sha-256",
                 "hello world"
             ]);
         }
@@ -121,7 +121,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "sha-384", 
+                "-s", "sha-384",
                 "hello world"
             ]);
         }
@@ -142,7 +142,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "sha-512", 
+                "-s", "sha-512",
                 "hello world"
             ]);
         }
@@ -164,7 +164,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "sha256", 
+                "-s", "sha256",
                 "hello world"
             ]);
         }
@@ -186,7 +186,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "sha384", 
+                "-s", "sha384",
                 "hello world"
             ]);
         }
@@ -208,7 +208,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "sha512", 
+                "-s", "sha512",
                 "hello world"
             ]);
         }
@@ -230,7 +230,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "sha128", 
+                "-s", "sha128",
                 "hello world"
             ]);
         }
@@ -247,7 +247,7 @@ describe( "digest tool tests", function() {
 
         try {
             result = await tool([
-                "-s", "128", 
+                "-s", "128",
                 "hello world"
             ]);
         }
