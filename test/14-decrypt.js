@@ -4,6 +4,7 @@
 const fs = require("fs");
 const chai = require("chai");
 const expect = chai.expect;
+const stdinmock = require("mock-stdin");
 
 const newkeyTool = require("../lib/newkey");
 const encrypttool = require("../lib/encrypt");
@@ -24,6 +25,7 @@ describe( "decrypt tool tests", function() {
     after(() => {
         fs.unlinkSync(tmpkeys);
     });
+
 
     it("decrypt without parameters", async () => {
         let count = 0;
@@ -125,7 +127,6 @@ describe( "decrypt tool tests", function() {
         expect(count).to.be.equal(0);
         expect(result).to.equal(payload);
     });
-
 
     it("rsa decrypt without payload", async () => {
         let result, token, count = 0;
@@ -237,5 +238,55 @@ describe( "decrypt tool tests", function() {
 
         expect(count).to.be.equal(0);
         expect(result).to.equal(payload);
+    });
+
+    describe( "decrypt tool tests from stdin", function() {
+        let mockStdin;
+
+        beforeEach(function() {
+            // console.log("prep");
+            mockStdin = stdinmock.stdin();
+        });
+
+        afterEach(function() {
+            // console.log("cleanup");
+            mockStdin.reset();
+        });
+
+
+        it("rsa decrypt from stdin", async () => {
+            let result, token, count = 0;
+            const alg = "RSA-OAEP";
+            const kid = "foorsa";
+            const payload = "hello world";
+
+            token = await encrypttool([
+                "-j", pubkeys,
+                "-l", alg,
+                "-k", kid,
+                payload
+            ]);
+
+            try {
+                const prom = tool([
+                    "-j", prvkeys
+                ]);
+
+                // give the tool some time to set itself up
+                await new Promise((resolve) => setTimeout(resolve, 10));
+
+                mockStdin.send(token);
+                mockStdin.end();
+
+                result = await prom;
+            }
+            catch (err) {
+                count += 1;
+                console.log(err.message);
+            }
+
+            expect(count).to.be.equal(0);
+            expect(result).to.equal(payload);
+        });
     });
 });

@@ -15,7 +15,7 @@ describe( "readfile helper tests", function() {
     // mockStdin.restore();
     // the following function is inspired by https://glebbahmutov.com/blog/unit-testing-cli-programs/
     beforeEach(function() {
-        mockStdin = require("mock-stdin").stdin();;
+        mockStdin = require("mock-stdin").stdin();
         // process.stdin.on("data", (chunk) => console.log("test data " + chunk.length));
     });
 
