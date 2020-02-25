@@ -4,13 +4,85 @@
 const chai = require("chai");
 const expect = chai.expect;
 
-describe( "readfile helper tests", function() {
-    it.skip("load file from disk", async () => {
+const readfile = require("../lib/helper/readfile");
 
+// process.stdin.on("data", (chunk) => console.log("pretest data " + chunk.length));
+
+describe( "readfile helper tests", function() {
+    let mockStdin;
+
+    // mockStdin.reset();
+    // mockStdin.restore();
+    // the following function is inspired by https://glebbahmutov.com/blog/unit-testing-cli-programs/
+    beforeEach(function() {
+        mockStdin = require("mock-stdin").stdin();
+        // process.stdin.on("data", (chunk) => console.log("test data " + chunk.length));
     });
 
-    it.skip("load file from stdin", async () => {
+    afterEach(function() {
+        mockStdin.reset();
+        // mockStdin.resteore();
+    });
 
+    it("read from stdin", async () => {
+        process.stdin = mockStdin;
+
+        let result, count = 0;
+
+        try {
+            const foo = readfile.readStdin();
+
+            mockStdin.send("hello world");
+            mockStdin.end();
+
+            result = await foo;
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+        expect(result).to.equal("hello world");
+    });
+
+    it("load file from disk", async () => {
+        let result, count = 0;
+
+        const emptyKeys = "test/files/empty.jwks";
+
+        try {
+            const foo = readfile.loadFile(emptyKeys);
+
+            result = await foo;
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+        expect(result).to.equal("{\"keys\":[]}");
+    });
+
+    it("load file from stdin", async () => {
+        let result, count = 0;
+        const data = "{\"keys\":[]}";
+
+        try {
+            const foo = readfile.loadFile("--");
+
+            mockStdin.send(data);
+            mockStdin.end();
+            result = await foo;
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+        expect(result).to.equal(data);
     });
 
     it.skip("load file from url", async () => {
@@ -21,31 +93,114 @@ describe( "readfile helper tests", function() {
 
     });
 
-    it.skip("load missing file from disk", async () => {
+    it("load missing file from disk", async () => {
+        let count = 0;
 
+        const missingFile = "test/files/missing.jwks";
+
+        try {
+            const foo = readfile.loadFile(missingFile);
+
+            await foo;
+        }
+        catch (err) {
+            count += 1;
+            // console.log(err.message);
+            expect(err.message).to.equal("ENOENT: no such file or directory, open 'test/files/missing.jwks'");
+        }
+
+        expect(count).to.equal(1);
     });
 
     it.skip("load missing file from URI", async () => {
 
     });
 
-    it.skip("load keystore from disk", async () => {
+    it("load keystore from stdin", async () => {
+        let result, count = 0;
+        const data = "{\"keys\":[]}";
 
+        try {
+            const foo = readfile.loadKeyStore("--");
+
+            mockStdin.send(data);
+            mockStdin.end();
+            result = await foo;
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+        expect(result).to.be.an("object");
+        expect(result.all()).to.have.length(0);
+    });
+
+    it("load keystore from disk", async () => {
+        let result, count = 0;
+
+        const emptyKeys = "test/files/empty.jwks";
+
+        try {
+            const foo = readfile.loadKeyStore(emptyKeys);
+
+            result = await foo;
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+        expect(result).to.be.an("object");
+        expect(result.all()).to.have.length(0);
     });
 
     it.skip("load keystore from URI", async () => {
 
     });
 
-    it.skip("load missing keystore from disk", async () => {
+    it("load missing keystore from disk", async () => {
         // should fail
+        let result, count = 0;
+
+        const missingFile = "test/files/empty2.jwks";
+
+        try {
+            const foo = readfile.loadKeyStore(missingFile);
+
+            result = await foo;
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+        expect(result).to.be.null;
+        // expect(result).to.be.an("object");
+        // expect(result.all()).to.have.length(0);
     });
 
-    it.skip("load missing keystore from disk with autocreate", async () => {
-        
-    });
+    it("load missing keystore from disk with autocreate", async () => {
+        let result, count = 0;
 
-    it.skip("create keystore", async () => {
+        const missingFile = "test/files/empty2.jwks";
 
+        try {
+            const foo = readfile.loadKeyStore(missingFile, true);
+
+            result = await foo;
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+        // expect(result).to.be.null;
+        expect(result).to.be.an("object");
+        expect(result.all()).to.have.length(0);
     });
-} );
+});

@@ -3,6 +3,7 @@
 
 const chai = require("chai");
 const expect = chai.expect;
+const mockStdin = require("mock-stdin");
 
 const tool = require("../lib/digest");
 
@@ -259,5 +260,33 @@ describe( "digest tool tests", function() {
         expect(count).to.equal(1);
     });
 
-    it.skip("digest from stdin", async () => {});
-} );
+    it("digest from stdin", async () => {
+        const stdin = mockStdin.stdin();
+
+        let result, count = 0;
+
+        try {
+            const prom = tool([
+                "-s", "256"
+            ]);
+
+            await new Promise((resolve) => setTimeout(resolve, 10));
+
+            stdin.send("hello world");
+            stdin.end();
+
+            result = await prom;
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+
+        // console.log(result);
+        expect(result).to.be.a("string");
+        expect(result).not.to.have.length(0);
+        expect(result).to.equal("uU0nuZNNPgilLlLX2n2r-sSE7-N6U4DukIj3rOLvzek");
+    });
+});
