@@ -138,8 +138,17 @@ describe( "addkey tool tests", function() {
         expect(jsonKS.keys[0].kty).to.equal("RSA");
 
         // this order is based on timing, not on argument position
-        expect(jsonKS.keys[1].kty).to.equal("oct");
-        expect(jsonKS.keys[2].kty).to.equal("RSA");
+        if (jsonKS.keys[1].kid === "9cZErBEjsJWNN6z61pXrwo2OEABuDa-t5BXGRrtgkUU") {
+            expect(jsonKS.keys[2].kty).to.equal("RSA");
+            expect(jsonKS.keys[2].kid).to.equal("vNieFjZ3b6Mt8khz-IvimaDtymlri3acmEnuIHZkOuU");
+            expect(jsonKS.keys[1].kty).to.equal("oct");
+        }
+        else {
+            expect(jsonKS.keys[1].kty).to.equal("RSA");
+            expect(jsonKS.keys[1].kid).to.equal("vNieFjZ3b6Mt8khz-IvimaDtymlri3acmEnuIHZkOuU");
+            expect(jsonKS.keys[2].kty).to.equal("oct");
+            expect(jsonKS.keys[2].kid).to.equal("9cZErBEjsJWNN6z61pXrwo2OEABuDa-t5BXGRrtgkUU");
+        }
     });
 
     it.skip("add multiple keys by merging multiple keystores with overlapping keys", async () => {
