@@ -3,17 +3,30 @@
 
 const chai = require("chai");
 const expect = chai.expect;
-const mockStdin = require("mock-stdin").stdin();
 
 const readfile = require("../lib/helper/readfile");
 
-describe( "readfile helper tests", function() {
+// process.stdin.on("data", (chunk) => console.log("pretest data " + chunk.length));
 
-    this.afterEach(function() {
+describe( "readfile helper tests", function() {
+    let mockStdin;
+
+    // mockStdin.reset();
+    // mockStdin.restore();
+    // the following function is inspired by https://glebbahmutov.com/blog/unit-testing-cli-programs/
+    beforeEach(function() {
+        mockStdin = require("mock-stdin").stdin();;
+        // process.stdin.on("data", (chunk) => console.log("test data " + chunk.length));
+    });
+
+    afterEach(function() {
         mockStdin.reset();
+        // mockStdin.resteore();
     });
 
     it("read from stdin", async () => {
+        process.stdin = mockStdin;
+
         let result, count = 0;
 
         try {
@@ -21,6 +34,7 @@ describe( "readfile helper tests", function() {
 
             mockStdin.send("hello world");
             mockStdin.end();
+
             result = await foo;
         }
         catch (err) {
