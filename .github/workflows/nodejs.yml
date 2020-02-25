@@ -60,7 +60,7 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
-      node-version: ${{ matrix.node-version }}
+        node-version: ${{ matrix.node-version }}
     - run: echo "CONTEXT ${{ github.ref }}"
     - run: npm install
   
