@@ -244,4 +244,4 @@ describe( "thumbprint tool tests", function() {
     it.skip("thumbprint private key", async () => {});
     it.skip("thumbprint private key, that is actually public", async () => {});
     it.skip("thumbprint private key and update kid", async () => {});
-} );
+});
