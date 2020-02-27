@@ -44,6 +44,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   needs: build
   #   steps:
+      
 
   merge: 
     runs-on: ubuntu-latest
@@ -54,6 +55,7 @@ jobs:
       uses: "pascalgn/automerge-action@5ad9f38505afff96c6ad2d1c1bf2775135a7d309"
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        MERGE_LABELS: ""
 
   # release: 
   #   runs-on: ubuntu-latest
