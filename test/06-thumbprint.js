@@ -216,7 +216,32 @@ describe( "thumbprint tool tests", function() {
 
     });
 
+    it("thumbprint key sha256 from stdin", async () => {
+        const tp256 = "gGKfJUyAshkpKJvVbUJM-kwW0QfS3KxlzOzSagUiAgw";
+        const mockStdin = require("mock-stdin").stdin();
+
+        let result, count = 0;
+
+        try {
+            const prom = tool(["-s", 256]);
+
+            await new Promise((resolve) => setTimeout(resolve, 10));
+
+            mockStdin.send(key);
+            mockStdin.end();
+
+            result = await prom;
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+        expect(result).to.equal(tp256);
+    });
+
     it.skip("thumbprint private key", async () => {});
     it.skip("thumbprint private key, that is actually public", async () => {});
     it.skip("thumbprint private key and update kid", async () => {});
-} );
+});
