@@ -23,7 +23,7 @@ jobs:
 
   build:
     needs: lint
-    
+
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -84,7 +84,7 @@ jobs:
   publish-npm:
     needs: release
     runs-on: ubuntu-latest
-    if: github.actor == "phish108" || github.actor == "dependabot"
+    if: github.actor == 'phish108'
 
     steps:
       - uses: actions/checkout@v2

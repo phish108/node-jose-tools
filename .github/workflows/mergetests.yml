@@ -49,10 +49,10 @@ jobs:
 
   merge: 
     needs: build
-    if: github.actor == "phish108" || github.actor == "dependabot"
+    if: github.actor == 'phish108' || github.actor == 'dependabot'
     
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
     - name: automerge
@@ -63,7 +63,7 @@ jobs:
 
   release: 
     needs: merge
-    if: github.actor == "phish108" || github.actor == "dependabot"
+    if: github.actor == 'phish108' || github.actor == 'dependabot'
 
     runs-on: ubuntu-latest
 
@@ -98,7 +98,7 @@ jobs:
 
   publish-npm:
     needs: release
-    if: github.actor == "phish108" || github.actor == "dependabot"
+    if: github.actor == 'phish108' || github.actor == "dependabot"
 
     runs-on: ubuntu-latest
 
