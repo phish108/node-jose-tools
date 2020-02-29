@@ -2,6 +2,9 @@
 /* eslint-disable require-jsdoc */
 
 const chai = require("chai");
+
+chai.use(require("chai-string"));
+
 const expect = chai.expect;
 
 const readfile = require("../lib/helper/readfile");
@@ -106,7 +109,7 @@ describe( "readfile helper tests", function() {
         catch (err) {
             count += 1;
             // console.log(err.message);
-            expect(err.message).to.equal("ENOENT: no such file or directory, open 'test/files/missing.jwks'");
+            expect(err.message).to.startWith("ENOENT: no such file or directory, open ");
         }
 
         expect(count).to.equal(1);
