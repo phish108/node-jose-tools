@@ -7,6 +7,7 @@ const expect = chai.expect;
 const tool = require("../lib/newkey.js");
 
 describe( "newkey tool tests", function() {
+    this.timeout(15000);
 
     it("no parameters", async () => {
         let counter = 0;
@@ -137,7 +138,9 @@ describe( "newkey tool tests", function() {
         expect(counter).to.be.equal(1);
     });
 
-    it("new rsa 4096 key ", async () => {
+    it("new rsa 4096 key ", async function () {
+        this.timeout(8000);
+
         let counter = 0;
 
         let result = "";
