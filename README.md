@@ -10,6 +10,8 @@ management as well as for handling
 [JSON web-tokens (JWT)](https://tools.ietf.org/html/rfc7519) in, both, the
 signed and encrypted variants.
 
+**Important**: this package provides a CLI tool and is not intended to be included into other code.
+
 ## Contents
 
 - [Installing](#installing)
