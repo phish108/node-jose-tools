@@ -139,6 +139,7 @@ describe( "newkey tool tests", function() {
     });
 
     it("new rsa 4096 key ", async function () {
+        // this 1 minute timeout is needed because node version 8 on macOS is extremely slow.
         this.timeout(60000);
 
         let counter = 0;
