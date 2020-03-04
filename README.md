@@ -18,6 +18,8 @@ The `jose` command allows quick feature testing of node-jose functions.
 
 `node-jose-tools` are tested with node versions 8, 10, 12, and 13 on linux (ubuntu), Windows, and macOS. 
 
+It is recommended to use node version 12 or higher, due to better performance of the cryptographic functions.
+
 ### Installing
 
 On the command line run ```npm install -g node-jose-tools```.
