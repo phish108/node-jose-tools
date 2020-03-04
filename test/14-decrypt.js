@@ -15,6 +15,8 @@ describe( "decrypt tool tests", function() {
     const prvkeys = "examples/example-priv.jwks";
     const tmpkeys = "test/files/tmp-keystore.jwks";
 
+    this.timeout(15000);
+
     // create temporary keystore and RSA and EC Keys
     before(async () => {
         await newkeyTool(["-r", "-U", "-j", tmpkeys, "-k", "foobaz"]);
