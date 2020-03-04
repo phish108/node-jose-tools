@@ -11,6 +11,8 @@ describe( "thumbprint tool tests", function() {
     const key = "{\"kty\":\"oct\",\"kid\":\"foobar\",\"k\":\"QYPTbIwxRbVuCLU0T3lQWYGP05asffZLAuM1KiNyqj4\"}";
     const key0 = "{\"kty\":\"oct\",\"k\":\"QYPTbIwxRbVuCLU0T3lQWYGP05asffZLAuM1KiNyqj4\"}";
 
+    this.timeout(5000);
+
     it("thumbprint key sha256 implicit", async () => {
         const tp256 = "gGKfJUyAshkpKJvVbUJM-kwW0QfS3KxlzOzSagUiAgw";
 

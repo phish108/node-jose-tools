@@ -243,6 +243,8 @@ describe( "decrypt tool tests", function() {
     describe( "decrypt tool tests from stdin", function() {
         let mockStdin;
 
+        this.timeout(5000);
+
         beforeEach(function() {
             // console.log("prep");
             mockStdin = stdinmock.stdin();
