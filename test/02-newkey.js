@@ -139,7 +139,7 @@ describe( "newkey tool tests", function() {
     });
 
     it("new rsa 4096 key ", async function () {
-        this.timeout(8000);
+        this.timeout(30000);
 
         let counter = 0;
 
