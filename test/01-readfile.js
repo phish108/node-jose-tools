@@ -14,6 +14,8 @@ const readfile = require("../lib/helper/readfile");
 describe( "readfile helper tests", function() {
     let mockStdin;
 
+    this.timeout(5000);
+
     // mockStdin.reset();
     // mockStdin.restore();
     // the following function is inspired by https://glebbahmutov.com/blog/unit-testing-cli-programs/
