@@ -10,6 +10,8 @@ const tool = require("../lib/addkey.js");
 describe( "addkey tool tests", function() {
     const filestore = "test/files/";
 
+    this.timeout(15000);
+
     it("load key from json", async () => {
         let result, count = 0;
 

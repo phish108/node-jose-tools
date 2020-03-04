@@ -27,10 +27,10 @@ describe( "encrypt tool tests", function() {
     });
 
     it("encrypt for aud with kid with alg and enc missing", async () => {
-        let result, count = 0;
+        let count = 0;
 
         try {
-            result = await tool(["-k", "foorsa", "-j", pubkeys, "hello world"]);
+            await tool(["-k", "foorsa", "-j", pubkeys, "hello world"]);
         }
         catch (err) {
             count += 1;
@@ -243,10 +243,10 @@ describe( "encrypt tool tests", function() {
         const enc = "A256GCM";
         const key = "barfoo";
 
-        let result, count = 0;
+        let count = 0;
 
         try {
-            result = await tool([
+            await tool([
                 "-l", alg,
                 "-e", enc,
                 // "-k", "foobar",
@@ -310,10 +310,10 @@ describe( "encrypt tool tests", function() {
     it("encrypt for aud with kid and alg=dir auto enc with rsa key", async () => {
         const alg = "dir";
 
-        let result, count = 0;
+        let count = 0;
 
         try {
-            result = await tool([
+            await tool([
                 "-l", alg,
                 // "-k", "foobar",
                 "-k", "foorsa",

@@ -8,7 +8,7 @@ const tool = require("../lib/verify");
 const signtool = require("../lib/sign");
 
 describe( "verify tool tests", function() {
-    this.timeout(3000);
+    this.timeout(15000);
 
     const signstore = "examples/example-priv.jwks";
     const verifystore = "examples/example-pub.jwks";

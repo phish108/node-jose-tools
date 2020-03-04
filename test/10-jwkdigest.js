@@ -8,7 +8,7 @@ const mockStdin = require("mock-stdin");
 const tool = require("../lib/digest");
 
 describe( "digest tool tests", function() {
-    this.timeout(5000);
+    this.timeout(15000);
 
     it("digest JWT implicit sha256", async () => {
         let result, count = 0;
