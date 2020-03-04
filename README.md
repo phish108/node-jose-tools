@@ -54,7 +54,7 @@ The detailed documentation of the tools and plenty example application scenarios
 
 Please, use [github](https://github.com/phish108/node-jose-tools/issues) for reporting issues and bugs.
 
-If a certain part of the JOSE specifications is not supported by `node-jose`, then these parts are also unsupported by this tool. 
+If a certain part of the JOSE specifications is not supported by `node-jose`, then these parts are also unsupported by this tool and **not** considered a bug.
 
 ### License
 
