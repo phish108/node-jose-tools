@@ -33,18 +33,18 @@ Open your favorite shell and type.
 The following tools are supported:
 
 Key management
- - [addkey](docs/00_INDEX.md#addkey) - add a new key to a jwks
- - [newkey](docs/00_INDEX.md#newkey) - create a new key (that can be used by addkey)
- - [listkeys](docs/00_INDEX.md#listkeys) - list the key ids for all keys in a jwks
- - [findkey](docs/00_INDEX.md#findkey) - find a kid in a jwks
- - [rmkey](docs/00_INDEX.md#rmkey) - remove a kid from a jwks
- - [thumbprint](docs/00_INDEX.md#thumbprint) - generate key thumbprints and key-ids
- - [info](docs/00_INDEX.md#info) - return basic information about a JWT without processing it
- - [sign](docs/00_INDEX.md#sign) - creates and signs a JWS for a given payload
- - [verify](docs/00_INDEX.md#verify) - verifies a JWS and return the payload
- - [encrypt](docs/00_INDEX.md#encrypt) - encrypt a payload into a JWE
- - [decrypt](docs/00_INDEX.md#decrypt) - decrypts a JWE and returns the payload
- - [digest](docs/00_INDEX.md#digest) - computes a SHA-2 digest of the provided input
+ - [addkey](docs/addkey.md) - add a new key to a jwks
+ - [newkey](docs/newkey.md) - create a new key (that can be used by addkey)
+ - [listkeys](docs/listkeys.md) - list the key ids for all keys in a jwks
+ - [findkey](docs/findkey.md) - find a kid in a jwks
+ - [rmkey](docs/rmkey.md) - remove a kid from a jwks
+ - [thumbprint](docs/thumbprint.md) - generate key thumbprints and key-ids
+ - [info](docs/info.md) - return basic information about a JWT without processing it
+ - [sign](docs/sign.md) - creates and signs a JWS for a given payload
+ - [verify](docs/verify.md) - verifies a JWS and return the payload
+ - [encrypt](docs/encrypt.md) - encrypt a payload into a JWE
+ - [decrypt](docs/decrypt.md) - decrypts a JWE and returns the payload
+ - [digest](docs/digest.md) - computes a SHA-2 digest of the provided input
 
 ### Documentation and Examples
 
