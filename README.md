@@ -50,6 +50,8 @@ Key management
 
 ### Documentation and Examples
 
+**Pro-tip** Use the `--help` or `-h` flag to get the documentation directly on the command line. 
+
 The detailed documentation of the tools and plenty example application scenarios are available in the [docs](docs/00_INDEX.md) folder. 
 
 ### Reporting Bugs, Issues and Missing Features
