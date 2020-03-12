@@ -7,6 +7,12 @@ const expect = chai.expect;
 const tool = require("../lib/helper/sanitize");
 
 describe( "sanitize tool names", function() {
+    const cwd = process.cwd();
+
+    after(() => {
+        process.chdir(cwd);
+    });
+
     it("undefined toolname", async () => {
         let count = 0;
 
@@ -147,4 +153,21 @@ describe( "sanitize tool names", function() {
 
         expect(count).to.equal(1);
     });
+
+    it("verify tool from a different path", async () => {
+        let count = 0;
+
+        process.chdir("docs");
+        // console.log(process.cwd());
+
+        try {
+            await tool("addkey");
+        }
+        catch (err) {
+            count += 1;
+            console.log(err.message);
+        }
+
+        expect(count).to.equal(0);
+    })
 });
