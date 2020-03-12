@@ -7,6 +7,12 @@ const expect = chai.expect;
 const tool = require("../lib/helper/sanitize");
 
 describe( "sanitize tool names", function() {
+    const cwd = process.cwd();
+
+    after(() => {
+        process.chdir(cwd);
+    });
+
     it("undefined toolname", async () => {
         let count = 0;
 
