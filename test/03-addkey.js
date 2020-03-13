@@ -74,9 +74,15 @@ describe( "addkey tool tests", function() {
         expect(jsonKS).to.own.property("keys");
         expect(jsonKS.keys).to.have.length(2);
 
-        // The order is based on timing, not on position in the arguments
-        expect(jsonKS.keys[0].kty).to.equal("RSA");
-        expect(jsonKS.keys[1].kty).to.equal("oct");
+        if (jsonKS.keys[0].kid === "cgY12wKXDD2r-UFwS5eQDo2rUhI6TkIWIrr-DxNabWs") {
+            // The order is based on timing, not on position in the arguments
+            expect(jsonKS.keys[0].kty).to.equal("RSA");
+            expect(jsonKS.keys[1].kty).to.equal("oct");
+        }
+        else {
+            expect(jsonKS.keys[1].kty).to.equal("RSA");
+            expect(jsonKS.keys[0].kty).to.equal("oct");
+        }
     });
 
     it("add multiple keys by merging keystores", async () => {
