@@ -80,7 +80,6 @@ jobs:
 
       - name: Autotag
         uses: phish108/autotag-action@1.0.2
-        id: tagger
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           with-v: 'true'
