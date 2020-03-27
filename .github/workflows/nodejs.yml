@@ -61,7 +61,7 @@ jobs:
           git config --local user.name "GitHub Action"
   
       - name: Autotag Draft
-        uses: phish108/autotag-action@1.0.2
+        uses: phish108/autotag-action@master
         id: tagger
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -79,7 +79,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Autotag
-        uses: phish108/autotag-action@1.0.2
+        uses: phish108/autotag-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           with-v: 'true'
