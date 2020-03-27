@@ -70,14 +70,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - id: contributor 
-        run: echo ::set-output name=release::minor
-        if: github.actor == 'phish108'
-
-      - id: bot
-        run: echo ::set-output name=release::patch
-        if: startsWith(github.actor, 'dependabot')
-
       - uses: actions/checkout@v2
         with:
           ref: master
@@ -92,13 +84,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
-          bump: ${{ steps.contributor.outputs.release || steps.bot.outputs.release }}
           dry-run: 'true'
 
       - run: | 
-          echo "${{ steps.tagger.outputs.new_tag }}"
-          npm --no-git-tag-version --allow-same-version version "${{ steps.tagger.outputs.new_tag }}"
-          git commit -m "version bump to ${{ steps.tagger.outputs.new_tag }}" -a
+          echo "${{ steps.tagger.outputs.new-tag }}"
+          npm --no-git-tag-version --allow-same-version version "${{ steps.tagger.outputs.new-tag }}"
+          git commit -m "version bump to ${{ steps.tagger.outputs.new-tag }}" -a
         
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -110,7 +101,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
-          bump: ${{ steps.contributor.outputs.release || steps.bot.outputs.release }}
           with-v: 'true'
 
   publish-npm:
