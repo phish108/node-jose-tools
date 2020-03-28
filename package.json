@@ -6,6 +6,7 @@
   "homepage": "https://github.com/phish108/node-jose-tools",
   "repository": "phish108/node-jose-tools",
   "keywords": [
+    "cli",
     "jose",
     "jwt",
     "web-token",
@@ -18,7 +19,10 @@
     "crypto",
     "cryptography",
     "shell",
-    "command-line"
+    "command-line",
+    "RSA",
+    "EC",
+    "AES"
   ],
   "scripts": {
     "test": "mocha --exit",
