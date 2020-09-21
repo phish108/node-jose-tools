@@ -34,7 +34,7 @@
     "marked": "1.1.1",
     "marked-terminal": "4.1.0",
     "minimist": "1.2.5",
-    "node-jose": "1.1.4",
+    "node-jose": "2.0.0",
     "superagent": "6.1.0"
   },
   "devDependencies": {
