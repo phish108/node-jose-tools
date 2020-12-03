@@ -16,7 +16,7 @@ The `jose` command allows quick feature testing of node-jose functions.
 
 ### Supported platforms and node versions
 
-`node-jose-tools` are tested with node versions 8, 10, 12, 13, and 14 on linux (ubuntu), Windows, and macOS. 
+`node-jose-tools` are tested with node versions 12, 13, 14, and 15 on linux (ubuntu), Windows, and macOS. 
 
 It is recommended to use node version 12 or higher, due to the *much* better performance of the cryptographic functions.
 

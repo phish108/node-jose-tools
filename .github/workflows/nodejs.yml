@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         node-version: 
-        - 12
+        - 14
 
     steps:
     - uses: actions/checkout@v2
@@ -29,11 +29,12 @@ jobs:
     strategy:
       matrix:
         node-version: 
-        - 8.x
-        - 10.x
+        # - 8.x
+        # - 10.x
         - 12.x
         - 13.x
         - 14.x
+        - 15.x
         os:
         - ubuntu-latest
         - macos-latest
@@ -95,7 +96,7 @@ jobs:
           ref: master
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm publish --access public
