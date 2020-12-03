@@ -77,9 +77,9 @@ jobs:
       - run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-  
+ 
       - name: Autotag Draft
-        uses: phish108/autotag-action@master
+        uses: phish108/autotag-action@1.1.26
         id: tagger
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -97,7 +97,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Autotag
-        uses: phish108/autotag-action@master
+        uses: phish108/autotag-action@1.1.26
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
