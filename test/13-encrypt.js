@@ -50,7 +50,6 @@ describe( "encrypt tool tests", function() {
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar",
                 "-k", key,
                 "-j", pubkeys,
                 "hello world"
@@ -89,7 +88,6 @@ describe( "encrypt tool tests", function() {
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar",
                 "-k", key,
                 "-j", pubkeys,
                 "hello world"
@@ -169,7 +167,6 @@ describe( "encrypt tool tests", function() {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                // "-k", "foobar",
                 "-k", key,
                 "-j", pubkeys,
                 "hello world"
@@ -209,7 +206,6 @@ describe( "encrypt tool tests", function() {
             result = await tool([
                 "-l", alg,
                 "-e", enc,
-                // "-k", "foobar",
                 "-k", key,
                 "-j", pubkeys,
                 "hello world"
@@ -249,7 +245,6 @@ describe( "encrypt tool tests", function() {
             await tool([
                 "-l", alg,
                 "-e", enc,
-                // "-k", "foobar",
                 "-k", key,
                 "-j", pubkeys,
                 "hello world"
@@ -277,7 +272,6 @@ describe( "encrypt tool tests", function() {
             result = await tool([
                 // "-l", alg,
                 "-e", enc,
-                // "-k", "foobar",
                 "-k", key,
                 "-j", pubkeys,
                 "hello world"
@@ -315,7 +309,6 @@ describe( "encrypt tool tests", function() {
         try {
             await tool([
                 "-l", alg,
-                // "-k", "foobar",
                 "-k", "foorsa",
                 "-j", pubkeys,
                 "hello world"
@@ -339,7 +332,6 @@ describe( "encrypt tool tests", function() {
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar",
                 "-k", "foorsa",
                 "-j", pubkeys,
                 "hello world"
@@ -376,7 +368,6 @@ describe( "encrypt tool tests", function() {
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar",
                 "-k", "foorsa",
                 "-j", pubkeys,
                 "hello world"
@@ -413,7 +404,6 @@ describe( "encrypt tool tests", function() {
         try {
             result = await tool([
                 "-l", alg,
-                // "-k", "foobar",
                 "-k", "foorsa",
                 "-j", pubkeys,
                 "hello world"
@@ -604,7 +594,6 @@ describe( "encrypt tool tests", function() {
             result = await tool([
                 "-l", alg,
                 "-G",
-                // "-k", "foobar",
                 "-k", "barfoo",
                 "-j", pubkeys,
                 "hello world",
@@ -651,7 +640,6 @@ describe( "encrypt tool tests", function() {
             result = await tool([
                 "-l", alg,
                 "-F",
-                // "-k", "foobar",
                 "-k", "barfoo",
                 "-j", pubkeys,
                 "hello world"
