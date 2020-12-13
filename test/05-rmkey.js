@@ -25,7 +25,7 @@ describe( "rmkey tool tests", function() {
         const jsonKey = JSON.parse(result);
 
         expect(jsonKey).to.own.property("keys");
-        expect(jsonKey.keys).to.have.length(2);
+        expect(jsonKey.keys).to.have.length(3);
         expect(jsonKey.keys[0]).to.own.property("kid", "barfoo");
         expect(jsonKey.keys[1]).to.own.property("kid", "foorsa");
     });
@@ -46,7 +46,7 @@ describe( "rmkey tool tests", function() {
         const jsonKey = JSON.parse(result);
 
         expect(jsonKey).to.own.property("keys");
-        expect(jsonKey.keys).to.have.length(1);
+        expect(jsonKey.keys).to.have.length(2);
         expect(jsonKey.keys[0]).to.own.property("kid", "barfoo");
     });
 
@@ -66,7 +66,7 @@ describe( "rmkey tool tests", function() {
         const jsonKey = JSON.parse(result);
 
         expect(jsonKey).to.own.property("keys");
-        expect(jsonKey.keys).to.have.length(2);
+        expect(jsonKey.keys).to.have.length(3);
         expect(jsonKey.keys[0]).to.own.property("kid", "barfoo");
         expect(jsonKey.keys[1]).to.own.property("kid", "foorsa");
     });
@@ -87,7 +87,7 @@ describe( "rmkey tool tests", function() {
         const jsonKey = JSON.parse(result);
 
         expect(jsonKey).to.own.property("keys");
-        expect(jsonKey.keys).to.have.length(1);
+        expect(jsonKey.keys).to.have.length(2);
         expect(jsonKey.keys[0]).to.own.property("kid", "barfoo");
     });
 
@@ -107,7 +107,7 @@ describe( "rmkey tool tests", function() {
         const jsonKey = JSON.parse(result);
 
         expect(jsonKey).to.own.property("keys");
-        expect(jsonKey.keys).to.have.length(3);
+        expect(jsonKey.keys).to.have.length(4);
         expect(jsonKey.keys[0]).to.own.property("kid", "foobar");
         expect(jsonKey.keys[1]).to.own.property("kid", "barfoo");
         expect(jsonKey.keys[2]).to.own.property("kid", "foorsa");
@@ -129,7 +129,7 @@ describe( "rmkey tool tests", function() {
         const jsonKey = JSON.parse(result);
 
         expect(jsonKey).to.own.property("keys");
-        expect(jsonKey.keys).to.have.length(3);
+        expect(jsonKey.keys).to.have.length(4);
         expect(jsonKey.keys[0]).to.own.property("kid", "foobar");
         expect(jsonKey.keys[1]).to.own.property("kid", "barfoo");
         expect(jsonKey.keys[2]).to.own.property("kid", "foorsa");

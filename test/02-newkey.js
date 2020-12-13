@@ -120,7 +120,7 @@ describe( "newkey tool tests", function() {
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("keys");
         expect(jsonKey.keys).to.be.an("array");
-        expect(jsonKey.keys.length).to.be.equal(4);
+        expect(jsonKey.keys.length).to.be.equal(5);
     });
 
     it("new rsa (bad) 1024 key ", async () => {

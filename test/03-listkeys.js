@@ -23,7 +23,7 @@ describe( "listkeys tool tests", function() {
         const keyids = JSON.parse(result);
 
         expect(keyids).to.be.an("array");
-        expect(keyids).to.have.length(3);
+        expect(keyids).to.have.length(4);
     });
 
     it("list keys of an empty store", async () => {
