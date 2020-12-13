@@ -120,7 +120,7 @@ describe( "newkey tool tests", function() {
         expect(jsonKey).to.be.an("object");
         expect(jsonKey).to.haveOwnProperty("keys");
         expect(jsonKey.keys).to.be.an("array");
-        expect(jsonKey.keys.length).to.be.equal(4);
+        expect(jsonKey.keys.length).to.be.equal(5);
     });
 
     it("new rsa (bad) 1024 key ", async () => {
@@ -207,6 +207,34 @@ describe( "newkey tool tests", function() {
 
         try {
             result = await tool(["--type", "ec", "--size", "256"]);
+        }
+        catch (err) {
+            // this should complain about a missing type.
+            counter = 1;
+        }
+
+        expect(counter).to.be.equal(0);
+        expect(result.length).not.equal(0);
+
+        const jsonKey = JSON.parse(result);
+
+        expect(jsonKey).to.be.an("object");
+        expect(jsonKey).to.haveOwnProperty("kty");
+        expect(jsonKey.kty).to.be.equal("EC");
+        expect(jsonKey).to.haveOwnProperty("crv", "P-256");
+        expect(jsonKey).to.haveOwnProperty("x");
+        expect(jsonKey).to.haveOwnProperty("y");
+        expect(jsonKey).to.haveOwnProperty("d");
+        expect(jsonKey).to.haveOwnProperty("kid");
+    });
+
+    it("new ec 256 key via short cut", async () => {
+        let counter = 0;
+
+        let result = "";
+
+        try {
+            result = await tool(["-e", "--size", "256"]);
         }
         catch (err) {
             // this should complain about a missing type.
