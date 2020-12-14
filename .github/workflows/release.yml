@@ -1,0 +1,54 @@
+name: Tag and Release to NPM
+
+# This workflow is only manually triggered or from one the CI/CD actions of push and PR
+# It is triggered only by authorised users or bots, therefore we will not check here.
+on:
+  workflow_dispatch:
+
+jobs:
+  release: 
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+          registry-url: https://registry.npmjs.org/
+
+      - uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: setup actions user
+        run: |
+          git config --local user.email "cpglahn@gmail.com"
+          git config --local user.name "phish108"
+  
+      - name: Autotag Draft
+        uses: phish108/autotag-action@1.1.26
+        id: tagger
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          dry-run: 'true'
+
+      - run: |
+          echo "${{ steps.tagger.outputs.new-tag }}"
+          npm --no-git-tag-version --allow-same-version version "${{ steps.tagger.outputs.new-tag }}"
+          git commit -m "version bump to ${{ steps.tagger.outputs.new-tag }}" -a
+        
+      - name: Push changes back to the repo
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Autotag
+        uses: phish108/autotag-action@1.1.26
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          with-v: 'true'
+        
+      # Verify that everything is still ok
+      - run: npm ci
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

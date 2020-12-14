@@ -64,63 +64,84 @@ jobs:
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         MERGE_LABELS: ""
-
+  
   release: 
-    needs: merge
-    if: github.actor == 'phish108' || startsWith(github.actor, 'dependabot')
-
     runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: master
-
-      - run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
- 
-      - name: Autotag Draft
-        uses: phish108/autotag-action@1.1.26
-        id: tagger
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
-          dry-run: 'true'
-
-      - run: | 
-          echo "${{ steps.tagger.outputs.new-tag }}"
-          npm --no-git-tag-version --allow-same-version version "${{ steps.tagger.outputs.new-tag }}"
-          git commit -m "version bump to ${{ steps.tagger.outputs.new-tag }}" -a
-        
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Autotag
-        uses: phish108/autotag-action@1.1.26
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
-          with-v: 'true'
-
-  publish-npm:
-    needs: release
+    needs: merge
     if: github.actor == 'phish108' ||  startsWith(github.actor, 'dependabot')
 
-    runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
+      - name: check hold
+        id: holdrelease
+        uses: actions/github-script@v3
         with:
-          ref: master
-      - uses: actions/setup-node@v1
+          script: |
+            result = await github.request(context.payload.repository.compare_url, {
+                base: context.payload.before,
+                head: context.payload.after
+              })
+
+            files = result.data.files.map(file => file.filename)
+
+            hold = files
+              .map(file => (file.startsWith('.github/') || 
+                            file.startsWith('tests/') ||
+                            file.startsWith('test/') || 
+                            file.startsWith('.gitignore')))
+              .reduce((sw,c) => (sw && c), true)
+
+            core.info("protected directories? " + hold)
+            core.setOutput('hold_protected', hold)
+
+            isdevChange = 0
+            isotherChange = 0
+
+            hold2 = files
+              .map(file => (file == 'package.json' || 
+                            file == 'package-lock.json'))
+              .reduce((sw,c) => (sw && c), true)
+
+            core.info("package info only? " + hold2)
+            core.setOutput('hold_package', hold2)
+
+            if (hold2) {
+              pInfo = result.data.files.
+                filter(file => file.filename == "package.json")
+
+              pFile = await github.request(pInfo[0].raw_url)
+              devDeps = Object.keys(JSON.parse(pFile.data).devDependencies)
+
+              changes = pInfo[0].patch
+                .split("\n")
+                .filter(change => change.match(/^[+-]\s*/))
+                .map(change => change.replace(/^[+-]\s*"([^"]+).*$/, "$1"))
+                .filter(change => change && change.length)
+                
+              isdevChange = changes
+                .filter(change => devDeps.includes(change))
+                .length
+              
+              isotherChange = changes.length - isdevChange
+            }
+
+            hold3 = (isdevChange > 0 && isotherChange == 0)
+            if (hold3) {
+              core.info("is dev only change. HOLD!")
+            }
+
+            core.setOutput('hold_testing', hold3)
+            core.setOutput('proceed', !(hold1 || hold3))
+
+      - name: trigger release activity
+        uses: actions/github-script@v3
+        if: ${{ steps.holdrelease.outputs.proceed }}
         with:
-          node-version: 14
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-  
+          github-token: ${{ secrets.TRIGGER_TOKEN }}
+          script: |
+            core.info("release via release activity")
+            await github.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: context.ref,
+                workflow_id: "release.yml"
+              })  
