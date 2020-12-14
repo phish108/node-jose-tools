@@ -1,6 +1,6 @@
 {
   "name": "node-jose-tools",
-  "version": "1.6.21",
+  "version": "1.6.22",
   "description": "tools for the node-jose library",
   "main": "index.js",
   "homepage": "https://github.com/phish108/node-jose-tools",
