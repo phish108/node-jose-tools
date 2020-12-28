@@ -57,70 +57,18 @@ jobs:
     if: github.actor == 'phish108' 
 
     steps:
-      - name: check hold
-        id: holdrelease
-        uses: actions/github-script@v3
-        with:
-          script: |
-            result = await github.request(context.payload.repository.compare_url, {
-                base: context.payload.before,
-                head: context.payload.after
-              })
-
-            files = result.data.files.map(file => file.filename)
-
-            hold1 = files
-              .map(file => (file.startsWith('.github/') || 
-                            file.startsWith('tests/') ||
-                            file.startsWith('test/') || 
-                            file.startsWith('.gitignore')))
-              .reduce((sw,c) => (sw && c), true)
-
-            core.info("protected directories? " + hold1)
-            core.setOutput('hold_protected', hold1)
-
-            isdevChange = 0
-            isotherChange = 0
-
-            hold2 = files
-              .map(file => (file == 'package.json' || 
-                            file == 'package-lock.json'))
-              .reduce((sw,c) => (sw && c), true)
-
-            core.info("package info only? " + hold2)
-            core.setOutput('hold_package', hold2)
-
-            if (hold2) {
-              pInfo = result.data.files.
-                filter(file => file.filename == "package.json")
-
-              pFile = await github.request(pInfo[0].raw_url)
-              devDeps = Object.keys(JSON.parse(pFile.data).devDependencies)
-
-              changes = pInfo[0].patch
-                .split("\n")
-                .filter(change => change.match(/^[+-]\s*/))
-                .map(change => change.replace(/^[+-]\s*"([^"]+).*$/, "$1"))
-                .filter(change => change && change.length)
-                
-              isdevChange = changes
-                .filter(change => devDeps.includes(change))
-                .length
-              
-              isotherChange = changes.length - isdevChange
-            }
-
-            hold3 = (isdevChange > 0 && isotherChange == 0)
-            if (hold3) {
-              core.info("is dev only change. HOLD!")
-            }
-
-            core.setOutput('hold_testing', hold3)
-            core.setOutput('proceed', !(hold1 || hold3))
+      - name: check need to release 
+        id: release
+        uses: phish108/release-check:1.0.9
+        with: 
+          proteced-paths: |
+            README.md
+            .eslintrc
+            .gitattributes
 
       - name: trigger release activity
         uses: actions/github-script@v3
-        if: ${{ steps.holdrelease.outputs.proceed == true }}
+        if: ${{ steps.release.outputs.proceed == true }}
         with:
           github-token: ${{ secrets.TRIGGER_TOKEN }}
           script: |
