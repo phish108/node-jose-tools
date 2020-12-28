@@ -61,7 +61,7 @@ jobs:
         id: release
         uses: phish108/release-check@1.0.9
         with: 
-          proteced-paths: |
+          protected-paths: |
             README.md
             .eslintrc
             .gitattributes
