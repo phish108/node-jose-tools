@@ -73,7 +73,7 @@ jobs:
     steps:
       - name: check hold
         id: release
-        uses: phish108/release-check:1.0.9
+        uses: phish108/release-check@1.0.9
         with: 
           proteced-paths: |
             README.md
