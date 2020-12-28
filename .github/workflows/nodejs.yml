@@ -8,16 +8,12 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: 
-        - 14
 
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 14
     - run: npm ci
     - run: npm run lint
 
@@ -68,7 +64,7 @@ jobs:
 
       - name: trigger release activity
         uses: actions/github-script@v3
-        if: ${{ steps.release.outputs.proceed == true }}
+        if: ${{ steps.release.outputs.proceed == 'true' }}
         with:
           github-token: ${{ secrets.TRIGGER_TOKEN }}
           script: |

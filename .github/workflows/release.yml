@@ -46,9 +46,27 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           with-v: 'true'
-        
+      
       # Verify that everything is still ok
       - run: npm ci
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: create an official Release on Github 
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner
+            const repo = context.repo.repo
+            const tag_name = "${{ steps.tagger.outputs.new-tag}}"
+
+            await github.repos.createRelease({
+              owner,
+              repo,
+              tag_name,
+              name: "Version " + tag_name + " 🚚💨"
+            });
+
+            core.info(`successfully released ${ tag_name }! 🎉`)
