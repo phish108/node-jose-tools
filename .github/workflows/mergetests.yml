@@ -55,13 +55,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: automerge
-      uses: "pascalgn/automerge-action@5ad9f38505afff96c6ad2d1c1bf2775135a7d309"
-      env:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        MERGE_LABELS: ""
 
-    # Once every thing is merged, we can trigger a release if necessary in a signle step.
+    # this check has to run BEFORE merging, otherwise the check will fail because the 
+    # IDs are no longer available
 
     - name: check hold
       id: release
@@ -71,6 +67,12 @@ jobs:
           README.md
           .eslintrc
           .gitattributes
+
+    - name: automerge
+      uses: "pascalgn/automerge-action@5ad9f38505afff96c6ad2d1c1bf2775135a7d309"
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        MERGE_LABELS: ""
 
     - name: trigger release activity
       uses: actions/github-script@v3
