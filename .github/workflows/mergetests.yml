@@ -56,12 +56,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    # this check has to run BEFORE merging, otherwise the check will fail because the 
-    # IDs are no longer available
-
     - name: check hold
       id: release
-      uses: phish108/release-check@1.0.9
+      uses: phish108/release-check@1.0.11
       with: 
         protected-paths: |
           README.md
