@@ -76,3 +76,7 @@ jobs:
                 ref: context.ref,
                 workflow_id: "release.yml"
               })
+      - name: No Release required
+        run: echo 1
+        if: ${{ steps.release.outputs.proceed != 'true' }}
+        
