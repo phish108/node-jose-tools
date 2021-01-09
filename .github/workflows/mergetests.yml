@@ -69,7 +69,7 @@ jobs:
           .gitattributes
 
     - name: automerge
-      uses: "pascalgn/automerge-action@5ad9f38505afff96c6ad2d1c1bf2775135a7d309"
+      uses: "pascalgn/automerge-action@v0.13.0"
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         MERGE_LABELS: ""
