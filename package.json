@@ -47,6 +47,6 @@
     "mock-stdin": "1.0.0"
   },
   "bin": {
-    "jose": "./index.js"
+    "jose": "index.js"
   }
 }
