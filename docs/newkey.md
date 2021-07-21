@@ -38,6 +38,8 @@ The following parameters are supported:
 
  * ```-a, --alg ALG``` - add the alg-claim to the key, for using a key for specific algorithms.
 
+ * ```-k, --kid KEYID``` - create key using the specified key id
+
  * ```-b, --beautify``` - pretty print JSON
 
  Note that ```oct``` require a minimum key size of 256 bit and RSA-keys require a
