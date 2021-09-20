@@ -32,7 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "marked": "2.0.1",
-    "marked-terminal": "4.1.1",
+    "marked-terminal": "4.2.0",
     "minimist": "1.2.5",
     "node-jose": "2.0.0",
     "superagent": "6.1.0"
