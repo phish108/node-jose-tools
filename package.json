@@ -33,7 +33,7 @@
   "dependencies": {
     "marked": "2.0.1",
     "marked-terminal": "4.1.1",
-    "minimist": "1.2.5",
+    "minimist": "1.2.6",
     "node-jose": "2.0.0",
     "superagent": "6.1.0"
   },
