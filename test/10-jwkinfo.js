@@ -1,12 +1,12 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 
-const encrypttool = require("../lib/encrypt");
-const signtool = require("../lib/sign");
-const infotool = require("../lib/info");
+const encrypttool = require("../lib/encrypt.js");
+const signtool = require("../lib/sign.js");
+const infotool = require("../lib/info.js");
 
 describe( "info tool tests", function() {
     const pubkeys = "examples/example-pub.jwks";

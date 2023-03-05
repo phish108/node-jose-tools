@@ -1,10 +1,10 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 
-const tool = require("../lib/thumbprint");
+const tool = require("../lib/thumbprint.js");
 // const findtool = require("../lib/findkey");
 
 describe( "thumbprint tool tests", function() {

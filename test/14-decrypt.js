@@ -1,14 +1,15 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const fs = require("fs");
-const chai = require("chai");
+import * as fs from "node:fs/promises";
+
+import chai from "chai";
 const expect = chai.expect;
 const stdinmock = require("mock-stdin");
 
-const newkeyTool = require("../lib/newkey");
-const encrypttool = require("../lib/encrypt");
-const tool = require("../lib/decrypt");
+import newkey from "../lib/newkey.js";
+import encrypt from "../lib/encrypt.js";
+import decrypt from "../lib/decrypt.js";
 
 describe( "decrypt tool tests", function() {
     const pubkeys = "examples/example-pub.jwks";

@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 const fs = require("fs");
 

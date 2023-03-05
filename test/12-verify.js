@@ -1,11 +1,11 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 
-const tool = require("../lib/verify");
-const signtool = require("../lib/sign");
+const tool = require("../lib/verify.js");
+const signtool = require("../lib/sign.js");
 
 describe( "verify tool tests", function() {
     this.timeout(15000);

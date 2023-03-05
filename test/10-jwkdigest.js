@@ -1,11 +1,11 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 const mockStdin = require("mock-stdin");
 
-const tool = require("../lib/digest");
+const tool = require("../lib/digest.js");
 
 describe( "digest tool tests", function() {
     this.timeout(15000);

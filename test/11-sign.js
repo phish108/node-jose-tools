@@ -1,14 +1,13 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 
 const { util } = require("node-jose");
 const base64 = util.base64url;
 
-
-const tool = require("../lib/sign");
+const tool = require("../lib/sign.js");
 
 describe( "sign tool tests", function() {
 

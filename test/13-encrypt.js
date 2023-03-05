@@ -1,13 +1,15 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 
-const { util } = require("node-jose");
+import jose from "node-jose";
+
+const { util } = jose;
 const base64 = util.base64url;
 
-const tool = require("../lib/encrypt");
+const tool = require("../lib/encrypt.js");
 
 describe( "encrypt tool tests", function() {
     const pubkeys = "examples/example-pub.jwks";

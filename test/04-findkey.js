@@ -1,10 +1,10 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 
-const tool = require("../lib/findkey");
+const tool = require("../lib/findkey.js");
 
 describe( "findkey tool tests", function() {
     // This datastore has three keys: foobar (oct), barfoo (oct), foorsa (RSA)
