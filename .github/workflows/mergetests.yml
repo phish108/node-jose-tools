@@ -27,10 +27,12 @@ jobs:
         node-version: 
         # - 8.x
         # - 10.x
-        - 12.x
-        - 13.x
-        - 14.x
-        - 15.x
+        # - 12.x
+        # - 13.x
+        # - 14.x
+        - 16.x
+        - 18.x
+        - 19.x
         os:
         - ubuntu-latest
         - macos-latest
