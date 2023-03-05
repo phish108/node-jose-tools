@@ -3,6 +3,7 @@
   "version": "1.6.28",
   "description": "tools for the node-jose library",
   "main": "index.js",
+  "type": "module",
   "homepage": "https://github.com/phish108/node-jose-tools",
   "repository": "phish108/node-jose-tools",
   "keywords": [
@@ -31,19 +32,18 @@
   "author": "Christian Glahn <phish108@mobinaut.io>",
   "license": "MIT",
   "dependencies": {
-    "marked": "2.0.1",
-    "marked-terminal": "4.1.1",
-    "minimist": "1.2.5",
-    "node-jose": "2.0.0",
-    "superagent": "6.1.0"
+    "marked": "4.2.12",
+    "marked-terminal": "5.1.1",
+    "minimist": "1.2.8",
+    "node-jose": "2.2.0",
+    "superagent": "8.0.9"
   },
   "devDependencies": {
-    "babel-eslint": "10.1.0",
-    "chai": "4.3.3",
+    "chai": "4.3.7",
     "chai-string": "1.5.0",
-    "eslint": "7.21.0",
-    "eslint-plugin-babel": "5.3.1",
-    "mocha": "8.3.1",
+    "eslint": "8.35.0",
+    "@eslint/js": "8.35.0",
+    "mocha": "10.2.0",
     "mock-stdin": "1.0.0"
   },
   "bin": {
