@@ -1,10 +1,10 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 const expect = chai.expect;
 
-const tool = require("../lib/helper/sanitize");
+import sanitize from "../lib/helper/sanitize.js";
 
 describe( "sanitize tool names", function() {
     const cwd = process.cwd();
@@ -17,7 +17,7 @@ describe( "sanitize tool names", function() {
         let count = 0;
 
         try {
-            await tool();
+            await sanitize();
         }
         catch (err) {
             count += 1;
@@ -30,7 +30,7 @@ describe( "sanitize tool names", function() {
         let count = 0;
 
         try {
-            await tool("");
+            await sanitize("");
         }
         catch (err) {
             count += 1;
@@ -43,7 +43,7 @@ describe( "sanitize tool names", function() {
         let result, count = 0;
 
         try {
-            result =  await tool("addkey");
+            result =  await sanitize("addkey");
         }
         catch (err) {
             count += 1;
@@ -58,7 +58,7 @@ describe( "sanitize tool names", function() {
         let result, count = 0;
 
         try {
-            result =  await tool("add.key");
+            result =  await sanitize("add.key");
         }
         catch (err) {
             count += 1;
@@ -73,7 +73,7 @@ describe( "sanitize tool names", function() {
         let result, count = 0;
 
         try {
-            result =  await tool("no/op");
+            result =  await sanitize("no/op");
         }
         catch (err) {
             count += 1;
@@ -88,7 +88,7 @@ describe( "sanitize tool names", function() {
         let count = 0;
 
         try {
-            await tool("missing");
+            await sanitize("missing");
         }
         catch (err) {
             count += 1;
@@ -102,7 +102,7 @@ describe( "sanitize tool names", function() {
         let count = 0;
 
         try {
-            await tool("helper");
+            await sanitize("helper");
         }
         catch (err) {
             count += 1;
@@ -116,7 +116,7 @@ describe( "sanitize tool names", function() {
         let count = 0;
 
         try {
-            await tool("helper/readfile");
+            await sanitize("helper/readfile");
         }
         catch (err) {
             count += 1;
@@ -130,7 +130,7 @@ describe( "sanitize tool names", function() {
         let count = 0;
 
         try {
-            await tool("addkey.js");
+            await sanitize("addkey.js");
         }
         catch (err) {
             count += 1;
@@ -144,7 +144,7 @@ describe( "sanitize tool names", function() {
         let count = 0;
 
         try {
-            await tool("../../lib/addkey");
+            await sanitize("../../lib/addkey");
         }
         catch (err) {
             count += 1;
@@ -161,7 +161,7 @@ describe( "sanitize tool names", function() {
         // console.log(process.cwd());
 
         try {
-            await tool("addkey");
+            await sanitize("addkey");
         }
         catch (err) {
             count += 1;

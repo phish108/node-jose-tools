@@ -1,13 +1,18 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const fs = require("fs");
-const chai = require("chai");
+import * as fs from "node:fs/promises";
+import minimist from "minimist";
+
+import chai from "chai";
 const expect = chai.expect;
 
-const tool = require("../lib/addkey.js");
+import addkey from "../lib/addkey.js";
 
-describe( "addkey tool tests", function() {
+import newkey from "../lib/newkey.js";
+import * as filehelper from "../lib/helper/readfile.js";
+
+describe( "addkey addkey tests", function() {
     const filestore = "test/files/";
 
     this.timeout(15000);
@@ -16,8 +21,14 @@ describe( "addkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", filestore + "empty.jwks",
-                filestore + "single_key.jwk"]);
+            result = await addkey(minimist(["-j", filestore + "empty.jwks",
+                filestore + "single_key.jwk"], {boolean: [
+                    "U", "update",
+                    "q", "quiet",
+                    "C", "create",
+                    "b", "beautify",
+                    "h", "help"
+                ]}));
         }
         catch (err) {
             count += 1;
@@ -57,9 +68,15 @@ describe( "addkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", filestore + "empty.jwks",
+            result = await addkey(minimist(["-j", filestore + "empty.jwks",
                 filestore + "single_key.jwk",
-                filestore + "octet_key.jwk"]);
+                filestore + "octet_key.jwk"], {boolean: [
+                    "U", "update",
+                    "q", "quiet",
+                    "C", "create",
+                    "b", "beautify",
+                    "h", "help"
+                ]}));
         }
         catch (err) {
             count += 1;
@@ -89,8 +106,14 @@ describe( "addkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", filestore + "testing_rsa.jwks",
-                filestore + "testing_octets.jwks"]);
+            result = await addkey(minimist(["-j", filestore + "testing_rsa.jwks",
+                filestore + "testing_octets.jwks"], {boolean: [
+                    "U", "update",
+                    "q", "quiet",
+                    "C", "create",
+                    "b", "beautify",
+                    "h", "help"
+                ]}));
         }
         catch (err) {
             count += 1;
@@ -127,9 +150,15 @@ describe( "addkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", filestore + "testing_rsa.jwks",
+            result = await addkey(minimist(["-j", filestore + "testing_rsa.jwks",
                 filestore + "testing_octets.jwks",
-                filestore + "testing_rsa2.jwks"]);
+                filestore + "testing_rsa2.jwks"], {boolean: [
+                    "U", "update",
+                    "q", "quiet",
+                    "C", "create",
+                    "b", "beautify",
+                    "h", "help"
+                ]}));
         }
         catch (err) {
             count += 1;
@@ -164,18 +193,26 @@ describe( "addkey tool tests", function() {
     });
 
 
-    describe("addkey tool fs updates", async () => {
-        const newkeyTool = require("../lib/newkey");
-        const filehelper = require("../lib/helper/readfile");
+    describe("addkey fs updates", async () => {
         const datastore = "tmp_store.jwks";
 
         before(async () => {
-            await newkeyTool(["-r", "-U", "-j", filestore + datastore]);
+            await newkey(minimist(["-r", "-U", "-j", filestore + datastore],  {boolean: [
+                "U", "update",
+                "q", "quiet",
+                "K", "as-keystore",
+                "r", "rsa", "RSA",
+                "e", "EC", "ec",
+                "o", "oct", "OCT",
+                "d", "OKP", "dh", "okp",
+                "b", "beautify",
+                "h", "help"
+            ]}));
         });
 
-        after(() => {
-            fs.unlinkSync(filestore + datastore);
-            fs.unlinkSync(filestore + "tmp_newkey.jwks");
+        after(async () => {
+            await fs.unlink(filestore + datastore);
+            await fs.unlink(filestore + "tmp_newkey.jwks");
             // fs.unlinkSync(filestore + "tmp_newkey2.jwks");
         });
 
@@ -183,8 +220,14 @@ describe( "addkey tool tests", function() {
             let count = 0;
 
             try {
-                await tool(["-U", "-j", filestore + datastore,
-                    filestore + "testing_octets.jwks"]);
+                await addkey(minimist(["-U", "-j", filestore + datastore,
+                    filestore + "testing_octets.jwks"], {boolean: [
+                        "U", "update",
+                        "q", "quiet",
+                        "C", "create",
+                        "b", "beautify",
+                        "h", "help"
+                    ]}));
             }
             catch (err) {
                 count += 1;
@@ -210,8 +253,14 @@ describe( "addkey tool tests", function() {
             let count = 0;
 
             try {
-                await tool(["-U", "-C", "-j", filestore + "tmp_newkey.jwks",
-                    filestore + "testing_octets.jwks"]);
+                await addkey(minimist(["-U", "-C", "-j", filestore + "tmp_newkey.jwks",
+                    filestore + "testing_octets.jwks"], {boolean: [
+                        "U", "update",
+                        "q", "quiet",
+                        "C", "create",
+                        "b", "beautify",
+                        "h", "help"
+                    ]}));
             }
             catch (err) {
                 count += 1;
@@ -236,8 +285,14 @@ describe( "addkey tool tests", function() {
             let count = 0;
 
             try {
-                await tool(["-U", "-j", filestore + "tmp_newkey2.jwks",
-                    filestore + "testing_octets.jwks"]);
+                await addkey(minimist(["-U", "-j", filestore + "tmp_newkey2.jwks",
+                    filestore + "testing_octets.jwks"], {boolean: [
+                        "U", "update",
+                        "q", "quiet",
+                        "C", "create",
+                        "b", "beautify",
+                        "h", "help"
+                    ]}));
             }
             catch (err) {
                 count += 1;

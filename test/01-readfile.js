@@ -1,13 +1,15 @@
 /* eslint-env node, mocha */
 /* eslint-disable require-jsdoc */
 
-const chai = require("chai");
+import chai from "chai";
 
-chai.use(require("chai-string"));
+import chai_string from "chai-string";
+
+chai.use(chai_string);
 
 const expect = chai.expect;
 
-const readfile = require("../lib/helper/readfile");
+import * as readfile from "../lib/helper/readfile.js";
 
 // process.stdin.on("data", (chunk) => console.log("pretest data " + chunk.length));
 
