@@ -2,21 +2,14 @@
 
 import loaddoc from "./lib/helper/loaddoc.js";
 import sanitize from "./lib/helper/sanitize.js";
-
-import minimist from "minimist";
+import calltool from "./lib/helper/calltool.js";
 
 try {
     const toolmodule = await sanitize(process.argv[2]);
-    const { default: tool, options, requireArgs } = await import(`./lib/${toolmodule}.js`);
-
     const argv = process.argv.slice(3);
 
-    if (requireArgs && !argv.length) {
-        throw new Error("no options provided");
-    }
-
-    const args = minimist(argv, options);
-
+    const {tool, args} = await calltool(toolmodule, argv);
+    
     if (args.h || args.help) {
         console.log(await loaddoc(toolmodule));
         process.exit(0);
