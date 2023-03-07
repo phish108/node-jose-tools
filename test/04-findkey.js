@@ -4,7 +4,7 @@
 import chai from "chai";
 const expect = chai.expect;
 
-const tool = require("../lib/findkey.js");
+import {execute} from "../lib/helper/sanitize.js";
 
 describe( "findkey tool tests", function() {
     // This datastore has three keys: foobar (oct), barfoo (oct), foorsa (RSA)
@@ -15,7 +15,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", datastore]);
+            result = await execute("findkey", ["-j", datastore]);
         }
         catch (err) {
             count += 1;
@@ -36,7 +36,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", datastore, "foobar"]);
+            result = await execute("findkey", ["-j", datastore, "foobar"]);
         }
         catch (err) {
             count += 1;
@@ -57,7 +57,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", datastore, "barfoo"]);
+            result = await execute("findkey", ["-j", datastore, "barfoo"]);
         }
         catch (err) {
             count += 1;
@@ -78,7 +78,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", datastore, "-k", "barfoo"]);
+            result = await execute("findkey", ["-j", datastore, "-k", "barfoo"]);
         }
         catch (err) {
             count += 1;
@@ -99,7 +99,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", datastore, "--kid", "barfoo"]);
+            result = await execute("findkey", ["-j", datastore, "--kid", "barfoo"]);
         }
         catch (err) {
             count += 1;
@@ -120,7 +120,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", datastore, "barfoo", "foobar"]);
+            result = await execute("findkey", ["-j", datastore, "barfoo", "foobar"]);
         }
         catch (err) {
             count += 1;
@@ -141,7 +141,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", datastore, "-k", "foobar", "barfoo"]);
+            result = await execute("findkey", ["-j", datastore, "-k", "foobar", "barfoo"]);
         }
         catch (err) {
             count += 1;
@@ -163,7 +163,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", datastore, "--kid", "foobar", "barfoo"]);
+            result = await execute("findkey", ["-j", datastore, "--kid", "foobar", "barfoo"]);
         }
         catch (err) {
             count += 1;
@@ -184,7 +184,7 @@ describe( "findkey tool tests", function() {
         let count = 0;
 
         try {
-            await tool(["-j", datastore, "barrsa"]);
+            await execute("findkey", ["-j", datastore, "barrsa"]);
         }
         catch (err) {
             count += 1;
@@ -198,7 +198,7 @@ describe( "findkey tool tests", function() {
         let count = 0;
 
         try {
-            await tool(["-j", "examples/example-fake.jwks", "foorsa"]);
+            await execute("findkey", ["-j", "examples/example-fake.jwks", "foorsa"]);
         }
         catch (err) {
             count += 1;
@@ -212,7 +212,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", datastore, "foorsa"]);
+            result = await execute("findkey", ["-j", datastore, "foorsa"]);
         }
         catch (err) {
             count += 1;
@@ -240,7 +240,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-p", "-j", datastore, "foorsa"]);
+            result = await execute("findkey", ["-p", "-j", datastore, "foorsa"]);
         }
         catch (err) {
             count += 1;
@@ -268,7 +268,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-p", "-j", "examples/example-pub.jwks", "foorsa"]);
+            result = await execute("findkey", ["-p", "-j", "examples/example-pub.jwks", "foorsa"]);
         }
         catch (err) {
             count += 1;
@@ -296,7 +296,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-b", "-j", datastore, "barfoo"]);
+            result = await execute("findkey", ["-b", "-j", datastore, "barfoo"]);
         }
         catch (err) {
             count += 1;
@@ -321,7 +321,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-c", "-j", datastore, "barfoo"]);
+            result = await execute("findkey", ["-c", "-j", datastore, "barfoo"]);
         }
         catch (err) {
             count += 1;
@@ -344,7 +344,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-r", "-j", datastore, "barfoo"]);
+            result = await execute("findkey", ["-r", "-j", datastore, "barfoo"]);
         }
         catch (err) {
             count += 1;
@@ -365,7 +365,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-r", "-j", datastore, "barfoo", "foobar"]);
+            result = await execute("findkey", ["-r", "-j", datastore, "barfoo", "foobar"]);
         }
         catch (err) {
             count += 1;
@@ -385,7 +385,7 @@ describe( "findkey tool tests", function() {
         let count = 0;
 
         try {
-            await tool(["-r", "-j", "examples/example-pub.jwks", "foorsa"]);
+            await execute("findkey", ["-r", "-j", "examples/example-pub.jwks", "foorsa"]);
         }
         catch (err) {
             count += 1;
@@ -399,7 +399,7 @@ describe( "findkey tool tests", function() {
         let count = 0;
 
         try {
-            await tool(["-c", "-j", "examples/example-pub.jwks", "foorsa"]);
+            await execute("findkey", ["-c", "-j", "examples/example-pub.jwks", "foorsa"]);
         }
         catch (err) {
             count += 1;
@@ -413,7 +413,7 @@ describe( "findkey tool tests", function() {
         let count = 0;
 
         try {
-            await tool(["-c", "-j", "examples/example-pub.jwks", "barrsa"]);
+            await execute("findkey", ["-c", "-j", "examples/example-pub.jwks", "barrsa"]);
         }
         catch (err) {
             count += 1;
@@ -427,7 +427,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-q", "-r", "-j", datastore, "barfoo"]);
+            result = await execute("findkey", ["-q", "-r", "-j", datastore, "barfoo"]);
         }
         catch (err) {
             count += 1;
@@ -443,7 +443,7 @@ describe( "findkey tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-q", "-r", "-j", datastore, "barfoo"]);
+            result = await execute("findkey", ["-q", "-r", "-j", datastore, "barfoo"]);
         }
         catch (err) {
             count += 1;

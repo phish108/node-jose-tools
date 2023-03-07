@@ -4,14 +4,14 @@
 import chai from "chai";
 const expect = chai.expect;
 
-const tool = require("../lib/listkeys.js");
+import {execute} from "../lib/helper/sanitize.js";
 
 describe( "listkeys tool tests", function() {
     it("list all keys", async () => {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", "examples/example-pub.jwks"]);
+            result = await execute("listkeys", ["-j", "examples/example-pub.jwks"]);
         }
         catch (err) {
             count += 1;
@@ -30,7 +30,7 @@ describe( "listkeys tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-j", "test/files/empty.jwks"]);
+            result = await execute("listkeys", ["-j", "test/files/empty.jwks"]);
         }
         catch (err) {
             count += 1;
@@ -49,7 +49,7 @@ describe( "listkeys tool tests", function() {
         let count = 0;
 
         try {
-            await tool(["-j", "test/files/non-existant.jwks"]);
+            await execute("listkeys", ["-j", "test/files/non-existant.jwks"]);
         }
         catch (err) {
             count += 1;
@@ -68,7 +68,7 @@ describe( "listkeys tool tests", function() {
         let count = 0;
 
         try {
-            await tool(["-j", "examples/simple.jwe"]);
+            await execute("listkeys", ["-j", "examples/simple.jwe"]);
         }
         catch (err) {
             count += 1;
