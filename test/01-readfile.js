@@ -10,30 +10,20 @@ chai.use(chai_string);
 const expect = chai.expect;
 
 import * as readfile from "../lib/helper/readfile.js";
+import mock from "mock-stdin";
 
 // process.stdin.on("data", (chunk) => console.log("pretest data " + chunk.length));
 
 describe( "readfile helper tests", function() {
-    let mockStdin;
+    let mockStdin = mock.stdin();
 
     this.timeout(5000);
 
-    // mockStdin.reset();
-    // mockStdin.restore();
-    // the following function is inspired by https://glebbahmutov.com/blog/unit-testing-cli-programs/
     beforeEach(function() {
-        mockStdin = require("mock-stdin").stdin();
-        // process.stdin.on("data", (chunk) => console.log("test data " + chunk.length));
-    });
-
-    afterEach(function() {
         mockStdin.reset();
-        // mockStdin.resteore();
     });
 
     it("read from stdin", async () => {
-        process.stdin = mockStdin;
-
         let result, count = 0;
 
         try {
@@ -59,9 +49,7 @@ describe( "readfile helper tests", function() {
         const emptyKeys = "test/files/empty.jwks";
 
         try {
-            const foo = readfile.loadFile(emptyKeys);
-
-            result = await foo;
+            result = await readfile.loadFile(emptyKeys);
         }
         catch (err) {
             count += 1;
@@ -81,6 +69,7 @@ describe( "readfile helper tests", function() {
 
             mockStdin.send(data);
             mockStdin.end();
+
             result = await foo;
         }
         catch (err) {
@@ -106,9 +95,7 @@ describe( "readfile helper tests", function() {
         const missingFile = "test/files/missing.jwks";
 
         try {
-            const foo = readfile.loadFile(missingFile);
-
-            await foo;
+            await readfile.loadFile(missingFile);
         }
         catch (err) {
             count += 1;
@@ -150,9 +137,7 @@ describe( "readfile helper tests", function() {
         const emptyKeys = "test/files/empty.jwks";
 
         try {
-            const foo = readfile.loadKeyStore(emptyKeys);
-
-            result = await foo;
+            result = await readfile.loadKeyStore(emptyKeys);
         }
         catch (err) {
             count += 1;
@@ -175,9 +160,7 @@ describe( "readfile helper tests", function() {
         const missingFile = "test/files/empty2.jwks";
 
         try {
-            const foo = readfile.loadKeyStore(missingFile);
-
-            result = await foo;
+            result = await readfile.loadKeyStore(missingFile);
         }
         catch (err) {
             count += 1;
@@ -196,9 +179,7 @@ describe( "readfile helper tests", function() {
         const missingFile = "test/files/empty2.jwks";
 
         try {
-            const foo = readfile.loadKeyStore(missingFile, true);
-
-            result = await foo;
+            result = await readfile.loadKeyStore(missingFile, true);
         }
         catch (err) {
             count += 1;
