@@ -4,11 +4,13 @@
 import chai from "chai";
 const expect = chai.expect;
 
-const tool = require("../lib/verify.js");
-const signtool = require("../lib/sign.js");
+import {execute} from "../lib/helper/sanitize.js";
+
+// const tool = require("../lib/verify.js");
+// const signtool = require("../lib/sign.js");
 
 describe( "verify tool tests", function() {
-    this.timeout(15000);
+    this.timeout(5000);
 
     const signstore = "examples/example-priv.jwks";
     const verifystore = "examples/example-pub.jwks";
@@ -17,7 +19,7 @@ describe( "verify tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([]);
+            result = await execute("verify", []);
         }
         catch (err) {
             count += 1;
@@ -30,12 +32,12 @@ describe( "verify tool tests", function() {
 
     it("verify with key", async () => {
         // first prepare the signed jws
-        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256"]);
+        const jws = await execute("sign", ["-j", signstore, "-k", "foobar", "-l", "HS256"]);
 
         let result, count = 0;
 
         try {
-            result = await tool(["-j", verifystore, jws]);
+            result = await execute("verify", ["-j", verifystore, jws]);
         }
         catch (err) {
             count += 1;
@@ -52,12 +54,12 @@ describe( "verify tool tests", function() {
 
     it("verify aud header", async () => {
         // first prepare the signed jws
-        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-a", "foo"]);
+        const jws = await execute("sign", ["-j", signstore, "-k", "foobar", "-l", "HS256", "-a", "foo"]);
 
         let result, count = 0;
 
         try {
-            result = await tool(["-j", verifystore, "-a", "foo", jws]);
+            result = await execute("verify", ["-j", verifystore, "-a", "foo", jws]);
         }
         catch (err) {
             count += 1;
@@ -75,12 +77,12 @@ describe( "verify tool tests", function() {
 
     it("verify iss header", async () => {
         // first prepare the signed jws
-        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-i", "foo"]);
+        const jws = await execute("sign", ["-j", signstore, "-k", "foobar", "-l", "HS256", "-i", "foo"]);
 
         let result, count = 0;
 
         try {
-            result = await tool(["-j", verifystore, "-i", "foo", jws]);
+            result = await execute("verify", ["-j", verifystore, "-i", "foo", jws]);
         }
         catch (err) {
             count += 1;
@@ -98,12 +100,12 @@ describe( "verify tool tests", function() {
 
     it("verify sub header", async () => {
         // first prepare the signed jws
-        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-s", "foo"]);
+        const jws = await execute("sign", ["-j", signstore, "-k", "foobar", "-l", "HS256", "-s", "foo"]);
 
         let result, count = 0;
 
         try {
-            result = await tool(["-j", verifystore, "-s", "foo", jws]);
+            result = await execute("verify", ["-j", verifystore, "-s", "foo", jws]);
         }
         catch (err) {
             count += 1;
@@ -121,12 +123,12 @@ describe( "verify tool tests", function() {
 
     it("verify exp times header", async () => {
         // first prepare the signed jws
-        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-s", "foo", "-x", "5"]);
+        const jws = await execute("sign", ["-j", signstore, "-k", "foobar", "-l", "HS256", "-s", "foo", "-x", "5"]);
 
         let result, count = 0;
 
         try {
-            result = await tool(["-j", verifystore, "-s", "foo", jws]);
+            result = await execute("verify", ["-j", verifystore, "-s", "foo", jws]);
         }
         catch (err) {
             count += 1;
@@ -146,13 +148,13 @@ describe( "verify tool tests", function() {
 
     it("verify outdated exp times header", async () => {
         // first prepare the signed jws
-        const jws = await signtool(["-j", signstore, "-k", "foobar", "-l", "HS256", "-s", "foo", "-x", "1"]);
+        const jws = await execute("sign", ["-j", signstore, "-k", "foobar", "-l", "HS256", "-s", "foo", "-x", "1"]);
 
         let count = 0;
 
         await new Promise((result) => setTimeout(result, 2000));
         try {
-            await tool(["-j", verifystore, "-s", "foo", jws]);
+            await execute("verify", ["-j", verifystore, "-s", "foo", jws]);
         }
         catch (err) {
             count += 1;

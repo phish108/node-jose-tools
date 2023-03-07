@@ -4,10 +4,10 @@
 import chai from "chai";
 const expect = chai.expect;
 
-const { util } = require("node-jose");
-const base64 = util.base64url;
+import {execute} from "../lib/helper/sanitize.js";
 
-const tool = require("../lib/sign.js");
+import jose from "node-jose";
+const base64 = jose.util.base64url;
 
 describe( "sign tool tests", function() {
 
@@ -15,7 +15,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([]);
+            result = await execute("sign", []);
         }
         catch (err) {
             count += 1;
@@ -30,7 +30,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar"
             ]);
@@ -71,7 +71,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "none"
@@ -90,7 +90,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "HS256"
@@ -132,7 +132,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "hs512"
@@ -151,7 +151,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobaz",
                 "-l", "hs512"
@@ -172,7 +172,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-p", extrapayload,
                 "-j", "examples/example-priv.jwks",
                 "-k", "foorsa",
@@ -217,7 +217,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-p", extrapayload,
                 "-j", "examples/example-priv.jwks",
                 "-k", "foorsa",
@@ -265,7 +265,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-p", payload,
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
@@ -287,7 +287,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-p", payload,
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobaz",
@@ -307,7 +307,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "HS256",
@@ -352,7 +352,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "HS256",
@@ -405,7 +405,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "HS256",
@@ -449,7 +449,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "HS256",
@@ -495,7 +495,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "HS256",
@@ -540,7 +540,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "HS256",
@@ -584,7 +584,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "HS256",
@@ -629,7 +629,7 @@ describe( "sign tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("sign", [
                 "-j", "examples/example-priv.jwks",
                 "-k", "foobar",
                 "-l", "HS256",

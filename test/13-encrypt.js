@@ -5,11 +5,11 @@ import chai from "chai";
 const expect = chai.expect;
 
 import jose from "node-jose";
+import {execute} from "../lib/helper/sanitize.js";
 
-const { util } = jose;
-const base64 = util.base64url;
+const base64 = jose.util.base64url;
 
-const tool = require("../lib/encrypt.js");
+// const tool = require("../lib/encrypt.js");
 
 describe( "encrypt tool tests", function() {
     const pubkeys = "examples/example-pub.jwks";
@@ -18,7 +18,7 @@ describe( "encrypt tool tests", function() {
         let count = 0;
 
         try {
-            await tool([]);
+            await execute("encrypt", []);
         }
         catch (err) {
             count += 1;
@@ -32,7 +32,7 @@ describe( "encrypt tool tests", function() {
         let count = 0;
 
         try {
-            await tool(["-k", "foorsa", "-j", pubkeys, "hello world"]);
+            await execute("encrypt", ["-k", "foorsa", "-j", pubkeys, "hello world"]);
         }
         catch (err) {
             count += 1;
@@ -50,7 +50,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-k", key,
                 "-j", pubkeys,
@@ -88,7 +88,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-k", key,
                 "-j", pubkeys,
@@ -126,7 +126,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-e", enc,
                 // "-k", "foobar",
@@ -166,7 +166,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-e", enc,
                 "-k", key,
@@ -205,7 +205,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-e", enc,
                 "-k", key,
@@ -244,7 +244,7 @@ describe( "encrypt tool tests", function() {
         let count = 0;
 
         try {
-            await tool([
+            await execute("encrypt", [
                 "-l", alg,
                 "-e", enc,
                 "-k", key,
@@ -271,7 +271,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 // "-l", alg,
                 "-e", enc,
                 "-k", key,
@@ -309,7 +309,7 @@ describe( "encrypt tool tests", function() {
         let count = 0;
 
         try {
-            await tool([
+            await execute("encrypt", [
                 "-l", alg,
                 "-k", "foorsa",
                 "-j", pubkeys,
@@ -332,7 +332,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-k", "foorsa",
                 "-j", pubkeys,
@@ -368,7 +368,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-k", "foorsa",
                 "-j", pubkeys,
@@ -404,7 +404,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-k", "foorsa",
                 "-j", pubkeys,
@@ -442,7 +442,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-e", enc,
                 "-k", "foorsa",
@@ -480,7 +480,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-e", enc,
                 "-k", "foorsa",
@@ -518,7 +518,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-e", enc,
                 "-k", "foorsa",
@@ -556,7 +556,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-e", enc,
                 "-k", "foorsa",
@@ -593,7 +593,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-G",
                 "-k", "barfoo",
@@ -639,7 +639,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 "-F",
                 "-k", "barfoo",
@@ -686,7 +686,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-G",
                 "-l", alg,
                 "-e", enc,
@@ -737,7 +737,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-F",
                 "-l", alg,
                 "-e", enc,
@@ -785,7 +785,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-l", alg,
                 // "-k", "foobar",
                 // "-k", "foorsa",
@@ -824,7 +824,7 @@ describe( "encrypt tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("encrypt", [
                 "-F",
                 "-l", alg,
                 "-e", enc,

@@ -4,9 +4,11 @@
 import chai from "chai";
 const expect = chai.expect;
 
-const encrypttool = require("../lib/encrypt.js");
-const signtool = require("../lib/sign.js");
-const infotool = require("../lib/info.js");
+import {execute} from "../lib/helper/sanitize.js";
+
+// const encrypttool = require("../lib/encrypt.js");
+// const signtool = require("../lib/sign.js");
+// const infotool = require("../lib/info.js");
 
 describe( "info tool tests", function() {
     const pubkeys = "examples/example-pub.jwks";
@@ -19,7 +21,7 @@ describe( "info tool tests", function() {
         const kid = "foobar";
         const payload = "hello world";
 
-        const token = await encrypttool([
+        const token = await execute("encrypt", [
             "-j", prvkeys,
             "-l", alg,
             "-k", kid,
@@ -27,7 +29,7 @@ describe( "info tool tests", function() {
         ]);
 
         try {
-            result = await infotool([token]);
+            result = await execute("info", [token]);
         }
         catch (err) {
             count += 1;
@@ -56,7 +58,7 @@ describe( "info tool tests", function() {
         const kid = "foobar";
         const payload = "hello world";
 
-        const token = await encrypttool([
+        const token = await execute("encrypt", [
             "-j", pubkeys,
             "-l", alg,
             "-k", kid,
@@ -65,7 +67,7 @@ describe( "info tool tests", function() {
         ]);
 
         try {
-            result = await infotool([token]);
+            result = await execute("info", [token]);
         }
         catch (err) {
             count += 1;
@@ -94,7 +96,7 @@ describe( "info tool tests", function() {
         const kid = "foobar";
         const payload = "hello world";
 
-        const token = await encrypttool([
+        const token = await execute("encrypt", [
             "-j", pubkeys,
             "-l", alg,
             "-k", kid,
@@ -103,7 +105,7 @@ describe( "info tool tests", function() {
         ]);
 
         try {
-            result = await infotool([token]);
+            result = await execute("info", [token]);
         }
         catch (err) {
             count += 1;
@@ -133,7 +135,7 @@ describe( "info tool tests", function() {
         const kid = "foorsa";
         const payload = "hello world";
 
-        const token = await encrypttool([
+        const token = await execute("encrypt", [
             "-j", pubkeys,
             "-l", alg,
             "-k", kid,
@@ -142,7 +144,7 @@ describe( "info tool tests", function() {
         ]);
 
         try {
-            result = await infotool([token]);
+            result = await execute("info", [token]);
         }
         catch (err) {
             count += 1;
@@ -171,7 +173,7 @@ describe( "info tool tests", function() {
         const kid = "foorsa";
         const payload = "hello world";
 
-        const token = await encrypttool([
+        const token = await execute("encrypt", [
             "-j", pubkeys,
             "-l", alg,
             "-k", kid,
@@ -180,7 +182,7 @@ describe( "info tool tests", function() {
         ]);
 
         try {
-            result = await infotool([token]);
+            result = await execute("info", [token]);
         }
         catch (err) {
             count += 1;
@@ -208,7 +210,7 @@ describe( "info tool tests", function() {
         // const enc;
         const kid = "foobar";
 
-        const token = await signtool([
+        const token = await execute("sign", [
             "-j", prvkeys,
             "-l", alg,
             "-k", kid,
@@ -216,7 +218,7 @@ describe( "info tool tests", function() {
         ]);
 
         try {
-            result = await infotool([token]);
+            result = await execute("info", [token]);
         }
         catch (err) {
             count += 1;
@@ -245,7 +247,7 @@ describe( "info tool tests", function() {
         // const enc;
         const kid = "foobar";
 
-        const token = await signtool([
+        const token = await execute("sign", [
             "-j", prvkeys,
             "-l", alg,
             "-k", kid,
@@ -253,7 +255,7 @@ describe( "info tool tests", function() {
         ]);
 
         try {
-            result = await infotool([token]);
+            result = await execute("info", [token]);
         }
         catch (err) {
             count += 1;
@@ -282,7 +284,7 @@ describe( "info tool tests", function() {
         // const enc;
         const kid = "foobar";
 
-        const token = await signtool([
+        const token = await execute("sign", [
             "-j", prvkeys,
             "-l", alg,
             "-k", kid,
@@ -290,7 +292,7 @@ describe( "info tool tests", function() {
         ]);
 
         try {
-            result = await infotool([token]);
+            result = await execute("info", [token]);
         }
         catch (err) {
             count += 1;
@@ -317,7 +319,7 @@ describe( "info tool tests", function() {
         let count = 0;
 
         try {
-            await infotool(["foobar"]);
+            await execute("info", ["foobar"]);
         }
         catch (err) {
             count += 1;
@@ -331,7 +333,7 @@ describe( "info tool tests", function() {
         let count = 0;
 
         try {
-            await infotool(["{\"foo\":\"bar\"}"]);
+            await execute("info", ["{\"foo\":\"bar\"}"]);
         }
         catch (err) {
             count += 1;

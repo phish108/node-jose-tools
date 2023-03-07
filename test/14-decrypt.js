@@ -5,11 +5,12 @@ import * as fs from "node:fs/promises";
 
 import chai from "chai";
 const expect = chai.expect;
-const stdinmock = require("mock-stdin");
+import mock from "mock-stdin";
+import {execute} from "../lib/helper/sanitize.js";
 
-import newkey from "../lib/newkey.js";
-import encrypt from "../lib/encrypt.js";
-import decrypt from "../lib/decrypt.js";
+// import newkey from "../lib/newkey.js";
+// import encrypt from "../lib/encrypt.js";
+// import decrypt from "../lib/decrypt.js";
 
 describe( "decrypt tool tests", function() {
     const pubkeys = "examples/example-pub.jwks";
@@ -20,13 +21,13 @@ describe( "decrypt tool tests", function() {
 
     // create temporary keystore and RSA and EC Keys
     before(async () => {
-        await newkeyTool(["-r", "-U", "-j", tmpkeys, "-k", "foobaz"]);
-        // await newkeyTool(["-e", "-U", "-j", tmpkeys, "-k", "fecbar"]);
+        await execute("newkey", ["-r", "-U", "-j", tmpkeys, "-k", "foobaz"]);
+        // await execute("newkey", ["-e", "-U", "-j", tmpkeys, "-k", "fecbar"]);
     });
 
     // remove temporary keystore
-    after(() => {
-        fs.unlinkSync(tmpkeys);
+    after(async () => {
+        await fs.unlink(tmpkeys);
     });
 
 
@@ -34,7 +35,7 @@ describe( "decrypt tool tests", function() {
         let count = 0;
 
         try {
-            await tool([]);
+            await execute("decrypt", []);
         }
         catch (err) {
             count += 1;
@@ -51,7 +52,7 @@ describe( "decrypt tool tests", function() {
         const kid = "foobar";
         const payload = "hello world";
 
-        token = await encrypttool([
+        token = await execute("encrypt", [
             "-j", prvkeys,
             "-l", alg,
             "-k", kid,
@@ -59,7 +60,7 @@ describe( "decrypt tool tests", function() {
         ]);
 
         try {
-            result = await tool([
+            result = await execute("decrypt", [
                 "-j", prvkeys,
                 token
             ]);
@@ -81,7 +82,7 @@ describe( "decrypt tool tests", function() {
         const kid = "foobaz";
         const payload = "hello world";
 
-        token = await encrypttool([
+        token = await execute("encrypt", [
             "-j", tmpkeys,
             "-l", alg,
             "-k", kid,
@@ -89,7 +90,7 @@ describe( "decrypt tool tests", function() {
         ]);
 
         try {
-            await tool([
+            await execute("decrypt", [
                 "-j", prvkeys,
                 token
             ]);
@@ -109,7 +110,7 @@ describe( "decrypt tool tests", function() {
         const kid = "foorsa";
         const payload = "hello world";
 
-        token = await encrypttool([
+        token = await execute("encrypt", [
             "-j", pubkeys,
             "-l", alg,
             "-k", kid,
@@ -117,7 +118,7 @@ describe( "decrypt tool tests", function() {
         ]);
 
         try {
-            result = await tool([
+            result = await execute("decrypt", [
                 "-j", prvkeys,
                 token
             ]);
@@ -137,14 +138,14 @@ describe( "decrypt tool tests", function() {
         const kid = "foorsa";
         // const payload = "hello world";
 
-        token = await encrypttool([
+        token = await execute("encrypt", [
             "-j", pubkeys,
             "-l", alg,
             "-k", kid,
         ]);
 
         try {
-            result = await tool([
+            result = await execute("decrypt", [
                 "-j", prvkeys,
                 token
             ]);
@@ -165,7 +166,7 @@ describe( "decrypt tool tests", function() {
         const kid = "foorsa";
         const payload = "hello world";
 
-        token = await encrypttool([
+        token = await execute("encrypt", [
             "-j", pubkeys,
             "-l", alg,
             "-k", kid,
@@ -173,7 +174,7 @@ describe( "decrypt tool tests", function() {
         ]);
 
         try {
-            await tool([
+            await execute("decrypt", [
                 "-j", pubkeys,
                 token
             ]);
@@ -193,7 +194,7 @@ describe( "decrypt tool tests", function() {
         const kid = "foorsa";
         const payload = "hello world";
 
-        token = await encrypttool([
+        token = await execute("encrypt", [
             "-j", pubkeys,
             "-l", alg,
             "-k", kid,
@@ -201,7 +202,7 @@ describe( "decrypt tool tests", function() {
         ]);
 
         try {
-            result = await tool([
+            result = await execute("decrypt", [
                 "-j", prvkeys,
                 token
             ]);
@@ -221,7 +222,7 @@ describe( "decrypt tool tests", function() {
         const kid = "foorsa";
         const payload = "hello world";
 
-        token = await encrypttool([
+        token = await execute("encrypt", [
             "-j", pubkeys,
             "-l", alg,
             "-k", kid,
@@ -229,7 +230,7 @@ describe( "decrypt tool tests", function() {
         ]);
 
         try {
-            result = await tool([
+            result = await execute("decrypt", [
                 "-j", prvkeys,
                 token
             ]);
@@ -250,7 +251,7 @@ describe( "decrypt tool tests", function() {
 
         beforeEach(function() {
             // console.log("prep");
-            mockStdin = stdinmock.stdin();
+            mockStdin = mock.stdin();
         });
 
         afterEach(function() {
@@ -265,7 +266,7 @@ describe( "decrypt tool tests", function() {
             const kid = "foorsa";
             const payload = "hello world";
 
-            token = await encrypttool([
+            token = await execute("encrypt", [
                 "-j", pubkeys,
                 "-l", alg,
                 "-k", kid,
@@ -273,7 +274,7 @@ describe( "decrypt tool tests", function() {
             ]);
 
             try {
-                const prom = tool([
+                const prom = execute("decrypt", [
                     "-j", prvkeys
                 ]);
 

@@ -4,8 +4,9 @@
 import chai from "chai";
 const expect = chai.expect;
 
-const tool = require("../lib/thumbprint.js");
+import {execute} from "../lib/helper/sanitize.js";
 // const findtool = require("../lib/findkey");
+import mock from "mock-stdin";
 
 describe( "thumbprint tool tests", function() {
     const key = "{\"kty\":\"oct\",\"kid\":\"foobar\",\"k\":\"QYPTbIwxRbVuCLU0T3lQWYGP05asffZLAuM1KiNyqj4\"}";
@@ -19,7 +20,7 @@ describe( "thumbprint tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([key]);
+            result = await execute("thumbprint", [key]);
         }
         catch (err) {
             count += 1;
@@ -36,7 +37,7 @@ describe( "thumbprint tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-s", "1", key]);
+            result = await execute("thumbprint", ["-s", "1", key]);
         }
         catch (err) {
             count += 1;
@@ -53,7 +54,7 @@ describe( "thumbprint tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-s", "256", key]);
+            result = await execute("thumbprint", ["-s", "256", key]);
         }
         catch (err) {
             count += 1;
@@ -70,7 +71,7 @@ describe( "thumbprint tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-s", "256", "-b", key]);
+            result = await execute("thumbprint", ["-s", "256", "-b", key]);
         }
         catch (err) {
             count += 1;
@@ -87,7 +88,7 @@ describe( "thumbprint tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-s", "384", key]);
+            result = await execute("thumbprint", ["-s", "384", key]);
         }
         catch (err) {
             count += 1;
@@ -104,7 +105,7 @@ describe( "thumbprint tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-s", "512", key]);
+            result = await execute("thumbprint", ["-s", "512", key]);
         }
         catch (err) {
             count += 1;
@@ -121,7 +122,7 @@ describe( "thumbprint tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-s", "256", key0]);
+            result = await execute("thumbprint", ["-s", "256", key0]);
         }
         catch (err) {
             count += 1;
@@ -136,7 +137,7 @@ describe( "thumbprint tool tests", function() {
         let count = 0;
 
         try {
-            await tool(["-s", "1024", key0]);
+            await execute("thumbprint", ["-s", "1024", key0]);
         }
         catch (err) {
             count += 1;
@@ -150,7 +151,7 @@ describe( "thumbprint tool tests", function() {
         let count = 0;
 
         try {
-            const result = await tool(["-s", "256", "{\"kty\":\"OKP\"}"]);
+            const result = await execute("thumbprint", ["-s", "256", "{\"kty\":\"OKP\"}"]);
 
             console.log(result);
         }
@@ -166,7 +167,7 @@ describe( "thumbprint tool tests", function() {
         let count = 0;
 
         try {
-            const result = await tool(["-s", "256", "{\"kty\":\"nono\"}"]);
+            const result = await execute("thumbprint", ["-s", "256", "{\"kty\":\"nono\"}"]);
 
             console.log(result);
         }
@@ -182,7 +183,7 @@ describe( "thumbprint tool tests", function() {
         let count = 0;
 
         try {
-            const result = await tool(["-s", "256", "thisisnotakey"]);
+            const result = await execute("thumbprint", ["-s", "256", "thisisnotakey"]);
 
             console.log(result);
         }
@@ -201,7 +202,7 @@ describe( "thumbprint tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool(["-s", "256", "-U", key0]);
+            result = await execute("thumbprint", ["-s", "256", "-U", key0]);
         }
         catch (err) {
             count += 1;
@@ -220,12 +221,12 @@ describe( "thumbprint tool tests", function() {
 
     it("thumbprint key sha256 from stdin", async () => {
         const tp256 = "gGKfJUyAshkpKJvVbUJM-kwW0QfS3KxlzOzSagUiAgw";
-        const mockStdin = require("mock-stdin").stdin();
+        const mockStdin = mock.stdin();
 
         let result, count = 0;
 
         try {
-            const prom = tool(["-s", 256]);
+            const prom = execute("thumbprint", ["-s", 256]);
 
             await new Promise((resolve) => setTimeout(resolve, 10));
 

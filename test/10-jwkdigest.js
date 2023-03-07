@@ -3,9 +3,9 @@
 
 import chai from "chai";
 const expect = chai.expect;
-const mockStdin = require("mock-stdin");
+import mock from "mock-stdin";
 
-const tool = require("../lib/digest.js");
+import {execute} from "../lib/helper/sanitize.js";
 
 describe( "digest tool tests", function() {
     this.timeout(15000);
@@ -14,7 +14,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "hello world"
             ]);
         }
@@ -35,7 +35,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "-s", "256",
                 "hello world"
             ]);
@@ -57,7 +57,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "-s", "384",
                 "hello world"
             ]);
@@ -79,7 +79,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "-s", "512",
                 "hello world"
             ]);
@@ -101,7 +101,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "-s", "sha-256",
                 "hello world"
             ]);
@@ -123,7 +123,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "-s", "sha-384",
                 "hello world"
             ]);
@@ -144,7 +144,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "-s", "sha-512",
                 "hello world"
             ]);
@@ -166,7 +166,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "-s", "sha256",
                 "hello world"
             ]);
@@ -188,7 +188,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "-s", "sha384",
                 "hello world"
             ]);
@@ -210,7 +210,7 @@ describe( "digest tool tests", function() {
         let result, count = 0;
 
         try {
-            result = await tool([
+            result = await execute("digest", [
                 "-s", "sha512",
                 "hello world"
             ]);
@@ -232,7 +232,7 @@ describe( "digest tool tests", function() {
         let count = 0;
 
         try {
-            await tool([
+            await execute("digest", [
                 "-s", "sha128",
                 "hello world"
             ]);
@@ -249,7 +249,7 @@ describe( "digest tool tests", function() {
         let count = 0;
 
         try {
-            await tool([
+            await execute("digest", [
                 "-s", "128",
                 "hello world"
             ]);
@@ -263,12 +263,12 @@ describe( "digest tool tests", function() {
     });
 
     it("digest from stdin", async () => {
-        const stdin = mockStdin.stdin();
+        const stdin = mock.stdin();
 
         let result, count = 0;
 
         try {
-            const prom = tool([
+            const prom = execute("digest", [
                 "-s", "256"
             ]);
 
