@@ -47,7 +47,7 @@ describe( "sanitize tool names", function() {
         }
         catch (err) {
             count += 1;
-            console.log(err.message);
+            // console.log(err.message);
         }
 
         expect(count).to.equal(0);
@@ -62,7 +62,7 @@ describe( "sanitize tool names", function() {
         }
         catch (err) {
             count += 1;
-            console.log(err.message);
+            // console.log(err.message);
         }
 
         expect(count).to.equal(0);
@@ -77,7 +77,7 @@ describe( "sanitize tool names", function() {
         }
         catch (err) {
             count += 1;
-            console.log(err.message);
+            // console.log(err.message);
         }
 
         expect(count).to.equal(0);
@@ -165,7 +165,7 @@ describe( "sanitize tool names", function() {
         }
         catch (err) {
             count += 1;
-            console.log(err.message);
+            // console.log(err.message);
         }
 
         expect(count).to.equal(0);
