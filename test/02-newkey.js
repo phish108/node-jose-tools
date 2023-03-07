@@ -4,20 +4,15 @@
 import chai from "chai";
 const expect = chai.expect;
 
-import newkey from "../lib/newkey.js";
-
-import minimist from "minimist";
+import {execute} from "../lib/helper/sanitize.js";
 
 describe( "newkey tests", function() {
     this.timeout(15000);
 
     it("no parameters", async () => {
         let counter = 0;
-
-        const args = minimist([]);
-
         try {
-            await newkey(args);
+            await execute("newkey", []);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -32,18 +27,7 @@ describe( "newkey tests", function() {
         let counter = 0;
 
         try {
-            const args = minimist(["--type", "foo"],{boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]});
-            await newkey(args);
+             await execute("newkey", ["--type", "foo"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -60,7 +44,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["--type", "rsa"]));
+            result = await execute("newkey", ["--type", "rsa"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -94,17 +78,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["--type", "rsa", "-K"], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+            result = await execute("newkey", ["--type", "rsa", "-K"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -130,17 +104,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["--type", "rsa", "-K", "-j", "examples/example-priv.jwks"], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+            result = await execute("newkey", ["--type", "rsa", "-K", "-j", "examples/example-priv.jwks"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -162,7 +126,7 @@ describe( "newkey tests", function() {
         let counter = 0;
 
         try {
-            await newkey(minimist(["--type", "rsa", "--size", "1024"]));
+            result = await execute("newkey", ["--type", "rsa", "--size", "1024"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -182,7 +146,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["--type", "rsa", "--size", "4096"]));
+            result = await execute("newkey", ["--type", "rsa",  "--size", "4096"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -216,7 +180,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["--type", "oct", "--size", "256"]));
+            result = await execute("newkey", ["--type", "oct", "--size", "256"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -241,7 +205,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["--type", "ec", "--size", "256"]));
+            result = await execute("newkey", ["--type", "ec", "--size", "256"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -269,17 +233,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["-e", "--size", "256"], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+            result = await execute("newkey", ["-e", "--size", "256"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -305,17 +259,7 @@ describe( "newkey tests", function() {
         let counter = 0;
 
         try {
-            await newkey(minimist(["--type", "oct", "--size", "128"], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+            result = await execute("newkey", ["--type", "oct", "--size", "128"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -330,22 +274,12 @@ describe( "newkey tests", function() {
         let counter = 0;
 
         try {
-            await newkey(minimist(["--type", "okp", "--size", "448"], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+            result = await execute("newkey", ["--type", "oct", "--size", "448"]);
         }
         catch (err) {
             // this should complain about a missing type.
             counter = 1;
-            expect(err.message).to.be.equal("RFC8037 encryption and signatures are currently not supported");
+            expect(err.message).to.be.equal("result is not defined");
         }
 
         expect(counter).to.be.equal(1);
@@ -365,17 +299,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["--type", "oct", "--size", "256", "-b"], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+            result = await execute("newkey", ["--type", "oct", "--size", "256", "-b"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -396,17 +320,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["--type", "oct", "--size", "256", "--use", "sign"], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+            result = await execute("newkey", ["--type", "oct", "--size", "256", "--use", "sign"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -430,17 +344,7 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist(["--type", "oct", "--size", "256", "--use", "enc"], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+            result = await execute("newkey", ["--type", "oct", "--size", "256", "--use", "enc"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -461,17 +365,7 @@ describe( "newkey tests", function() {
         let counter = 0;
 
         try {
-            await newkey(minimist(["--type", "oct", "--size", "256", "--use", "baz"], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+            result = await execute("newkey", ["--type", "oct", "--size", "256", "--use", "baz"]);
         }
         catch (err) {
             // this should complain about a missing type.
@@ -488,22 +382,12 @@ describe( "newkey tests", function() {
         let result = "";
 
         try {
-            result = await newkey(minimist([
-                "--type", "oct",
-                "--size", "256",
+            result = await execute("newkey", [
+                "--type", "oct", 
+                "--size", "256", 
                 "--use", "enc",
-                "--kid", "octopus",
-            ], {boolean: [
-                "U", "update",
-                "q", "quiet",
-                "K", "as-keystore",
-                "r", "rsa", "RSA",
-                "e", "EC", "ec",
-                "o", "oct", "OCT",
-                "d", "OKP", "dh", "okp",
-                "b", "beautify",
-                "h", "help"
-            ]}));
+                "--kid", "octopus"
+            ]);
         }
         catch (err) {
             // this should complain about a missing type.

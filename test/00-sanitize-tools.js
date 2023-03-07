@@ -4,7 +4,7 @@
 import chai from "chai";
 const expect = chai.expect;
 
-import sanitize from "../lib/helper/sanitize.js";
+import {sanitize} from "../lib/helper/sanitize.js";
 
 describe( "sanitize tool names", function() {
     const cwd = process.cwd();

@@ -1,39 +1,30 @@
 #!/usr/bin/env node
 
 import loaddoc from "./lib/helper/loaddoc.js";
-import sanitize from "./lib/helper/sanitize.js";
-import calltool from "./lib/helper/calltool.js";
+import {sanitize, execute} from "./lib/helper/sanitize.js";
+
+let toolname = process.argv[2];
+
+const errors = {
+    "missing toolname": () => loaddoc("00_help"),
+    "basic help": () => loaddoc("00_INDEX"),
+    "tool help": () => loaddoc(toolname)
+};
 
 try {
-    const toolmodule = await sanitize(process.argv[2]);
-    const argv = process.argv.slice(3);
-
-    const {tool, args} = await calltool(toolmodule, argv);
+    toolname = await sanitize(toolname);
     
-    if (args.h || args.help) {
-        console.log(await loaddoc(toolmodule));
-        process.exit(0);
-    }
-
-    const data = await tool(args);
+    const argv = process.argv.slice(3);
+    const data = await execute(toolname, argv);
 
     process.stdout.write(data, "utf8");
 }
 catch (err) {
-    // show mini help
-    let doc = "";
-
-    if (err.message === "missing toolname") {
-        doc = await loaddoc("00_help");
-    }
-    // show full help if requested
-    else if (err.message === "basic help") {
-        doc = await loaddoc("00_INDEX");
+    if (err.message in errors) {
+        console.log(await errors[err.message]());
     }
     else {
-        console.log(err.message); // eslint-disable-line no-console
+        console.log(err.message);
         process.exit(1);
     }
-
-    console.log(doc);
 }
