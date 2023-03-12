@@ -17,10 +17,10 @@ export default [
                         "let": 2,
                         "const": 3
                     },
-                     "MemberExpression": 1,
-                     "FunctionDeclaration": {"parameters": "first"},
-                     "CallExpression": {"arguments": "first"},
-                     "ObjectExpression": 1
+                    "MemberExpression": 1,
+                    "FunctionDeclaration": {"parameters": "first"},
+                    "CallExpression": {"arguments": "first"},
+                    "ObjectExpression": 1
                 }
             ],
             "quotes": [
@@ -82,4 +82,4 @@ export default [
             ]
         }
     }
-]
+];
