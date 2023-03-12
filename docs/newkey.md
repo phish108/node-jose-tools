@@ -20,6 +20,8 @@ The following parameters are supported:
 
  * ```-t, --type KEYTYPE``` - creates a new key of the provided ```KEYTYPE```. Only ```RSA```, ```oct```, ```EC```, and ```OKP``` are supported values.
 
+ * ```-k, --kid KEYID``` - create key using the specified key id
+
  * ```-u, --use USETYPE``` - sets the indented use of a key. Currently `sig` or `enc` are supported. Using `sign` or `encrypt` as use are also accepted. 
 
  * ```-j, --jwks, --keystore KEYSTORE``` - loads the given ```KEYSTORE```. If this parameter is missing, ```newkey``` tries to load a key store from ```STDIN```. If that fails, then the tool creates a new key store.
