@@ -1,7 +1,5 @@
 ## node-jose-tools for JOSE key management, token signing and encryption
 
-![Tests](https://github.com/phish108/node-jose-tools/workflows/Node.js%20CI/badge.svg)
-
 The Swiss-army knife tool for [node-jose](https://github.com/cisco/node-jose) for handling JSON Web Tokens.
 
 ### Overview
