@@ -18,26 +18,27 @@ jobs:
         npm ci
         npm run lint
 
-  pre-build: 
-    runs-on: ubuntu-latest
-    needs: lint
+  # pre-build: 
+  #   runs-on: ubuntu-latest
+  #   needs: lint
 
-    steps:
-      - name: check need to release 
-        id: release
-        uses: phish108/release-check@1.0.11
-        with: 
-          protected-paths: |
-            README.md
-            .eslintrc
-            .gitattributes
+  #   steps:
+  #     # - name: check need to release 
+  #     #   id: release
+  #     #   uses: phish108/release-check@1.0.11
+  #     #   with: 
+  #     #     protected-paths: |
+  #     #       README.md
+  #     #       .eslintrc
+  #     #       .gitattributes
 
-      - name: No Building
-        run: exit 1
-        if: ${{ steps.release.outputs.proceed != 'true' }}
+  #     - name: No Building
+  #       run: exit 1
+  #       if: ${{ steps.release.outputs.proceed != 'true' }}
 
   build:
-    needs: pre-build
+    # needs: pre-build
+    needs: lint
 
     runs-on: ${{ matrix.os }}
 
