@@ -73,21 +73,21 @@ jobs:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         MERGE_LABELS: ""
 
-    - name: trigger release activity
-      uses: actions/github-script@v3
-      if: ${{ steps.release.outputs.proceed == 'true' }}
-      with:
-        github-token: ${{ secrets.TRIGGER_TOKEN }}
-        script: |
-          core.info("release via release activity")
-          await github.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: "refs/heads/master",
-              workflow_id: "release.yml"
-          })
+    # - name: trigger release activity
+    #   uses: actions/github-script@v3
+    #   if: ${{ steps.release.outputs.proceed == 'true' }}
+    #   with:
+    #     github-token: ${{ secrets.TRIGGER_TOKEN }}
+    #     script: |
+    #       core.info("release via release activity")
+    #       await github.actions.createWorkflowDispatch({
+    #           owner: context.repo.owner,
+    #           repo: context.repo.repo,
+    #           ref: "refs/heads/master",
+    #           workflow_id: "release.yml"
+    #       })
 
-    - name: No Release required
-      run: echo 1
-      if: ${{ steps.release.outputs.proceed != 'true' }}
+    # - name: No Release required
+    #   run: echo 1
+    #   if: ${{ steps.release.outputs.proceed != 'true' }}
         

@@ -3,7 +3,8 @@ name: Tag and Release to NPM
 # This workflow is only manually triggered or from one the CI/CD actions of push and PR
 # It is triggered only by authorised users or bots, therefore we will not check here.
 on:
-  workflow_dispatch:
+  # deactivate dispatch
+  # workflow_dispatch:
 
 jobs:
   release: 
