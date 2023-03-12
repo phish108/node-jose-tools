@@ -20,6 +20,8 @@ The following parameters are supported:
 
  * ```-t, --type KEYTYPE``` - creates a new key of the provided ```KEYTYPE```. Only ```RSA```, ```oct```, ```EC```, and ```OKP``` are supported values.
 
+ * ```-u, --use USETYPE``` - sets the indented use of a key. Currently `sig` or `enc` are supported. Using `sign` or `encrypt` as use are also accepted. 
+
  * ```-j, --jwks, --keystore KEYSTORE``` - loads the given ```KEYSTORE```. If this parameter is missing, ```newkey``` tries to load a key store from ```STDIN```. If that fails, then the tool creates a new key store.
 
  * ```-K, --as-keystore``` - return the new key in JWKS format.
@@ -40,5 +42,4 @@ The following parameters are supported:
 
  * ```-b, --beautify``` - pretty print JSON
 
- Note that ```oct``` require a minimum key size of 256 bit and RSA-keys require a
- minimum key size of 2048 bit.
+ Note that ```oct``` require a minimum key size of 256 bit and RSA-keys require a minimum key size of 2048 bit.

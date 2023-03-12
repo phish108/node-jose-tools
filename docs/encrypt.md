@@ -26,6 +26,6 @@ The following parameters are accepted.
 
  * ```-a, --aud AUDIENCE``` - OPTIONAL the audience of the token. ```encrypt``` tries to determine the audience from the payload (e.g. if a JWS is passed). If no audience is given and ```encrypt``` cannot determine the ```aud``` automatically , then the tools ends with an error.
 
-  * ```-p, --payload``` - indicate that the last argument is a filename and not the actual payload. If this flag is used and no additional argument is provided the, then the payload is read from ```STDIN```.
+  * ```-p, --payload``` - indicate that the last argument is a filename and not the actual payload. If this flag is used and no additional argument is provided, then the payload is read from ```STDIN```.
 
   * ```--header claim=value``` - adds an extra claim to the protected header. It is possible to pass this option multiple times to add all extra headers. This option parses JSON values and adds them correctly, in this case appropriate quote are required.
