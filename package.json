@@ -27,7 +27,8 @@
   ],
   "scripts": {
     "test": "mocha --exit",
-    "lint": "eslint lib/"
+    "lint": "eslint lib/",
+    "quickfix": "eslint --fix lib/"
   },
   "author": "Christian Glahn <phish108@mobinaut.io>",
   "license": "MIT",
