@@ -4,7 +4,9 @@
 import * as fs from "node:fs/promises";
 
 import chai from "chai";
+
 const expect = chai.expect;
+
 import mock from "mock-stdin";
 import {execute} from "../lib/helper/sanitize.js";
 
@@ -260,7 +262,7 @@ describe( "decrypt tool tests", function() {
         });
 
 
-        it("rsa decrypt from stdin", async () => {
+        it("rsa decrypt from stdin", async function () {
             let result, token, count = 0;
             const alg = "RSA-OAEP";
             const kid = "foorsa";

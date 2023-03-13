@@ -1,6 +1,9 @@
 name: Master Commits CI
 
-on: 
+on:
+  pull_request:
+    branches: 
+      - master
   push:
     branches: 
       - master
