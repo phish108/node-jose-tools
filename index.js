@@ -13,7 +13,7 @@ const errors = {
 
 try {
     toolname = await sanitize(toolname);
-    
+
     const argv = process.argv.slice(3);
     const data = await execute(toolname, argv);
 
@@ -21,10 +21,10 @@ try {
 }
 catch (err) {
     if (err.message in errors) {
-        console.log(await errors[err.message]());
+        process.stderr.write(await errors[err.message](), "utf8");
     }
     else {
-        console.log(err.message);
+        process.stderr.write(err.message, "utf8");
         process.exit(1);
     }
 }
