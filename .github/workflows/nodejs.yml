@@ -17,6 +17,8 @@ jobs:
     - run: |
         npm ci
         npm run lint
+    - run: |
+        npm test
 
   # pre-build: 
   #   runs-on: ubuntu-latest
