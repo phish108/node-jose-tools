@@ -33,7 +33,7 @@
   "author": "Christian Glahn <phish108@mobinaut.io>",
   "license": "MIT",
   "dependencies": {
-    "marked": "4.2.12",
+    "marked": "4.3.0",
     "marked-terminal": "5.1.1",
     "minimist": "1.2.8",
     "node-jose": "2.2.0",
