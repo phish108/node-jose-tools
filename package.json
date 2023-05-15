@@ -34,7 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "marked": "4.3.0",
-    "marked-terminal": "5.1.1",
+    "marked-terminal": "5.2.0",
     "minimist": "1.2.8",
     "node-jose": "2.2.0",
     "superagent": "8.0.9"
