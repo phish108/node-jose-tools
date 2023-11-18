@@ -37,7 +37,7 @@
     "marked-terminal": "5.2.0",
     "minimist": "1.2.8",
     "node-jose": "2.2.0",
-    "superagent": "8.0.9"
+    "superagent": "8.1.2"
   },
   "devDependencies": {
     "@eslint/js": "8.42.0",
