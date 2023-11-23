@@ -43,7 +43,7 @@
     "@eslint/js": "8.54.0",
     "chai": "4.3.10",
     "chai-string": "1.5.0",
-    "eslint": "8.53.0",
+    "eslint": "8.54.0",
     "globals": "13.23.0",
     "mocha": "10.2.0",
     "mock-stdin": "1.0.0"
