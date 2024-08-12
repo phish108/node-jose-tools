@@ -45,7 +45,7 @@
     "chai-string": "1.5.0",
     "eslint": "8.57.0",
     "globals": "15.0.0",
-    "mocha": "10.4.0",
+    "mocha": "10.7.3",
     "mock-stdin": "1.0.0"
   },
   "bin": {
